@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.k12system.dao.ex.IEXMenuDAO">
+    <select id="getMenuPojoListByPost" resultType="MenuPojo">
+        SELECT
+            c.id AS menuId,
+            c.menuCode AS menuCode,
+            c.menuName AS menuName,
+            c.menuUrl AS menuUrl,
+            c.menuIcon AS menuIcon,
+            c.parentCode AS parentCode,
+            c.seqSort as seqSort
+        FROM
+            k12system_role_post a
+        LEFT JOIN k12system_role_menu b ON a.roleCode = b.roleCode
+        LEFT JOIN k12system_menu c ON b.menuCode = c.menuCode
+        WHERE
+            a.`status` = 0
+        AND b.`status` = 0
+        AND c.`status` = 0
+        AND c.parentCode = #{parentCode}
+        <if test="postCode != null">
+            AND a.postCode = #{postCode}
+        </if>
+        ORDER BY c.seqSort ASC
+    </select>
+    <select id="getMenuAllPojoList" resultType="MenuPojo">
+        SELECT
+            a.id as menuId,
+            a.menuCode as menuCode,
+            a.menuName as menuName,
+            a.menuIcon as menuIcon,
+            a.menuUrl as menuUrl,
+            a.parentCode as parentCode,
+            a.seqSort as seqSort
+        FROM
+            k12system_menu a
+        WHERE
+            a.parentCode = #{parentCode}
+        AND a.`status` = 0
+        ORDER BY
+            a.seqSort ASC
+    </select>
+    <update id="updateMenuRole">
+        UPDATE k12system_role_menu set `status` = -1 WHERE menuCode = #{menuCode}
+    </update>
+    <select id="getMenuCodeByRole" resultType="java.lang.Long">
+        SELECT menuCode FROM k12system_role_menu WHERE status = 0 AND roleCode = #{roleCode}
+    </select>
+</mapper>

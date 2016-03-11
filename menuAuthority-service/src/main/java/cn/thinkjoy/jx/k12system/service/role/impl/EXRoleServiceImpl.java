@@ -1,0 +1,34 @@
+package cn.thinkjoy.jx.k12system.service.role.impl;
+
+import cn.thinkjoy.jx.k12system.dao.ex.IEXRoleDAO;
+import cn.thinkjoy.jx.k12system.service.role.IEXRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * Created by yhwang on 15/9/16.
+ */
+@Service("EXRoleServiceImpl")
+public class EXRoleServiceImpl implements IEXRoleService{
+    @Autowired
+    private IEXRoleDAO iexRoleDAO;
+    /**
+     * 修改角色菜单表
+     *
+     * @param roleCode
+     */
+    @Override
+    public void updateRoleMenu(Long roleCode) {
+        iexRoleDAO.updateRoleMenu(roleCode);
+    }
+
+    /**
+     * 修改角色资源表
+     *
+     * @param roleCode
+     */
+    @Override
+    public void updateRoleResource(Long roleCode) {
+        iexRoleDAO.updateRoleResource(roleCode);
+    }
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>家校互动运营支撑平台 </title>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<meta content="
+        width=device-width,
+        initial-scale=1.0,
+        minimum-scale=1.0,
+        maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta name="format-detection" content="telephone=no">
+		<meta name="renderer" content="webkit">
+
+		<link rel="icon" type="image/ico" href="../static/images/chimer.ico" />
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="../static/styles/common/bootstrap3.min.css">
+		<link rel="stylesheet" href="../static/styles/common/font-awesome.css">
+		<link rel="stylesheet" href="../static/styles/common/common.css"/>
+		<link rel="stylesheet" href="../static/styles/login/login.css"/>
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="../lib/html5/html5shiv.js"></script>
+		<script src="../lib/html5/respond.min.js"></script>
+    	<![endif]-->
+	</head>
+
+	<body class="bg-1">
+
+		<!-- Wrap all page content here -->
+		<div id="wrap">
+			<!-- Make page fluid -->
+			<div class="row">
+				<!-- Page content -->
+				<div id="content" class="col-md-12 full-page login">
+
+					<div class="inside-block">
+						<img src="../static/images/logo-big.png" alt class="logo">
+						<h1>教育人人通</h1>
+						<h5>家校互动运营支撑平台</h5>
+
+						<div id="form-signin" class="form-signin">
+							<section>
+								<div class="input-group error-tip" id="error_tip"></div>
+								<div class="input-group">
+									<input type="text" class="form-control input-lg" name="username" id="username" placeholder="账号">
+									<div class="input-group-addon"><i class="fa fa-user"></i></div>
+								</div>
+								<div class="input-group">
+									<input type="password" class="form-control input-lg" name="password" id="password" placeholder="密码">
+									<div class="input-group-addon"><i class="fa fa-key"></i></div>
+								</div>
+							</section>
+							<section class="log-in">
+								<button id="login" class="btn btn-greensea">登录</button>
+							</section>
+						</div>
+					</div>
+
+				</div>
+				<!-- /Page content -->
+			</div>
+		</div>
+		<!-- Wrap all page content end -->
+		<script type="text/javascript" src="../static/sea.js"></script>
+		<script type="text/javascript" src="../lib/jquery/jquery.2.1.4.js"></script>
+		<script type="text/javascript">
+			seajs.use('../static/scripts/login/login');
+		</script>
+	</body>
+
+</html>

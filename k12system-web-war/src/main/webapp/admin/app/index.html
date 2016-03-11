@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>家校互动运营支撑平台 </title>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<meta content="
+			width=device-width,
+			initial-scale=1.0,
+			minimum-scale=1.0,
+			maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta name="format-detection" content="telephone=no">
+		<meta name="renderer" content="webkit">
+
+		<link rel="icon" type="image/ico" href="../static/images/chimer.ico" />
+		<link rel="stylesheet" href="../static/styles/common/font-awesome.css">
+
+		<link rel="stylesheet" href="../static/styles/common/bootstrap3.min.css">
+		<link rel="stylesheet" href="../static/styles/common/jquery.dataTables.css">
+		<link rel="stylesheet" href="../static/styles/common/jquery.mCustomScrollbar.css">
+		<link rel="stylesheet" href="../static/styles/common/dataTables.bootstrap.css">
+		<!--<link rel="stylesheet" href="../static/styles/common/bootstrap-datetimepicker.css">-->
+		<link rel="stylesheet" href="../static/styles/common/TableTools.css">
+		<link rel="stylesheet" href="../lib/uploadify/uploadify.css">
+		<link rel="stylesheet" href="../static/styles/zTreeStyle/zTreeStyle.css">
+		<link rel="stylesheet" href="../static/styles/index/minimal.css">
+
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="../lib/html5/html5shiv.js"></script>
+		<script src="../lib/html5/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body class="bg-1">
+
+		<!-- Preloader -->
+		<div class="mask" style="display: none">
+			<div id="loader"></div>
+		</div>
+		<!--/Preloader -->
+
+		<!-- Wrap all page content here -->
+		<div id="wrap">
+			<!-- Make page fluid -->
+			<div class="row">
+				<!-- Fixed navbar -->
+				<div class="navbar navbar-default navbar-fixed-top navbar-transparent-black mm-fixed-top" role="navigation" id="navbar">
+					<!-- Branding -->
+					<div class="navbar-header col-md-2">
+						<a class="navbar-brand" href="index.html">
+							家校即时通
+						</a>
+						<div class="sidebar-collapse">
+							<a href="#">
+								<i class="fa fa-bars"></i>
+							</a>
+						</div>
+					</div>
+					<!-- Branding end -->
+
+					<!-- .nav-collapse -->
+					<div class="navbar-collapse">
+
+						<!-- Page refresh -->
+						<ul class="nav navbar-nav refresh">
+							<li class="divided">
+								<a href="index.html" class="page-refresh"><i class="fa fa-refresh"></i></a>
+							</li>
+							<li class="divided">
+								<a href="choose_system.html" class="page-refresh"><i class="fa fa-home"></i></a>
+							</li>
+						</ul>
+						<!-- /Page refresh -->
+
+						<!-- Quick Actions -->
+						<ul class="nav navbar-nav quick-actions">
+
+							<li class="dropdown divided user" id="current-user">
+								<a class="dropdown-toggle options" data-toggle="dropdown" href="#">
+									<span id="login_real_name"></span><i class="fa fa-caret-down"></i>
+								</a>
+								<ul class="dropdown-menu arrow settings">
+									<li>
+										<h3>换肤:</h3>
+										<ul id="color-schemes">
+											<li><a href="#" class="bg-1"></a></li>
+											<li><a href="#" class="bg-2"></a></li>
+											<li><a href="#" class="bg-3"></a></li>
+											<li><a href="#" class="bg-4"></a></li>
+											<li><a href="#" class="bg-5"></a></li>
+											<li><a href="#" class="bg-6"></a></li>
+										</ul>
+									</li>
+
+									<li class="divider"></li>
+									<li><a href="javascript:void(0)" id="change_pwd"><i class="fa fa-user"></i>&nbsp;账户设置</a></li>
+									<li class="divider"></li>
+
+									<li>
+										<a href="#" id="logout"><i class="fa fa-power-off"></i> 登出</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+						<!-- /Quick Actions -->
+
+						<!-- Sidebar -->
+						<ul class="nav navbar-nav side-nav" id="sidebar">
+							<li class="navigation" id="navigation">
+							</li>
+						</ul>
+						<!-- Sidebar end -->
+					</div>
+					<!--/.nav-collapse -->
+				</div>
+				<!-- Fixed navbar end -->
+
+				<!-- Page content -->
+				<div id="content" class="col-md-12">
+					<!-- content main container -->
+					<section class="main" id="page_0">
+					</section>
+					<!-- /content container -->
+				</div>
+				<!-- Page content end -->
+
+			</div>
+			<!-- Make page fluid-->
+		</div>
+		<!-- Wrap all page content end -->
+		<!--树和列表结构模板-->
+		<script type="text/x-jquery-tmpl" id="tmpl_0">
+			<div class="form-tree">
+				<ul id="tree_menu" class="ztree"></ul>
+			</div>
+			<div class="form-tree-content">
+				<div class="tile transparent menu-list-content">
+					<div class="tile-body transparent rounded-corners">
+						<div class="form-inline" id="form_search">
+						</div>
+						<div class="form-button" id="form_button">
+						</div>
+						<div class="table-responsive" id="menu_table_content">
+						</div>
+					</div>
+				</div>
+			</div>
+		</script>
+		<!--列表结构模板-->
+		<script type="text/x-jquery-tmpl" id="tmpl_1">
+			<section class="tile transparent">
+				<div class="tile-body transparent rounded-corners">
+					<div class="form-inline" id="form_search">
+					</div>
+					<div class="form-button" id="form_button">
+					</div>
+					<div class="table-responsive" id="table_content">
+					</div>
+				</div>
+			</section>
+		</script>
+		<script type="text/x-jquery-tmpl" id="tmpl_2">
+			<div id="change_pwd_form" class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label" for="login_user_name">登录账号:</label>
+					<div class="controls">
+						<span class="account-span login-user-name"></span>
+						<a class="change" data-class="change_pwd" data-title="修改密码">修改密码</a>
+						<i class="fa fa-arrow-left" style="display:none"></i>
+					</div>
+					<p class="form-error"></p>
+				</div>
+				<div style="display:none" id="change_basic_info">
+					<div class="control-group">
+						<label class="control-label" for="userName">用户姓名:</label>
+						<div class="controls">
+							<span class="account-span user-name"></span>
+							<input style="display:none" class="form-control form-w200" type="text" id="userName" />
+							<a class="change" data-method="isName" data-title="修改姓名">修改姓名</a>
+						</div>
+						<p class="form-error"></p>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="phone">电话:</label>
+						<div class="controls">
+							<span class="account-span user-phone"></span>
+							<input style="display:none" class="form-control form-w200" type="text" id="phone" />
+							<a class="change" data-method="isMobile" data-title="修改电话">修改电话</a>
+						</div>
+						<p class="form-error"></p>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="email">邮箱:</label>
+						<div class="controls">
+							<span class="account-span user-eamil"></span>
+							<input style="display:none" class="form-control form-w200" type="text" id="email" />
+							<a class="change" data-method="isEmail" data-title="修改邮箱">修改邮箱</a>
+						</div>
+						<p class="form-error"></p>
+					</div>
+				</div>
+				<div style="display:none" id="change_basic_pwd">
+					<div class="control-group">
+						<label class="control-label" for="old_password">原密码:</label>
+						<div class="controls">
+							<input data-flag="0" class="form-control form-w200" type="password" id="old_password" placeholder="请输入原密码" />
+						</div>
+						<p class="form-error"></p>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="new_password">新密码:</label>
+						<div class="controls">
+							<input class="form-control form-w200" type="password" id="new_password" placeholder="请输入新密码" />
+						</div>
+						<p class="form-error"></p>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="confirm_new_password">确认新密码:</label>
+						<div class="controls">
+							<input class="form-control form-w200" type="password" id="confirm_new_password" placeholder="确认新密码" />
+						</div>
+						<p class="form-error"></p>
+					</div>
+				</div>
+			</div>
+		</script>
+
+		<script type="text/javascript" src="../static/sea.js"></script>
+		<!--<script type="text/javascript" src="../lib/echarts/echarts-all.js"></script>-->
+		<script type="text/javascript" src="../lib/jquery/jquery.2.1.4.js"></script>
+		<script type="text/javascript" src="../lib/uploadify/jquery.uploadify.min.js"></script>
+		<script type="text/javascript">
+			seajs.use('../static/scripts/index/index');
+		</script>
+	</body>
+</html>

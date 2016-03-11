@@ -1,0 +1,878 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.k12system.dao.ICompanyDAO">
+<!--
+insert
+update
+updateNull
+deleteById
+deleteByCondition
+deleteByProperty
+fetch
+findOne
+findList
+findAll
+queryPage
+like
+queryList
+queryOne
+count
+selectMaxId
+updateOrSave
+selectOne
+selectList
+-->
+    <sql id="Base_Column_List">
+        id,
+        companyCode,
+        productCode,
+        companyName,
+        companyShortName,
+        companyLogo,
+        companyAddress,
+        zipCode,
+        contactPhone,
+        contactFax,
+        contactPerson,
+        email,
+        status,
+        seqSort,
+        description,
+        creator,
+        createDate,
+        lastModDate,
+        lastModifier
+    </sql>
+    <insert id="insert" parameterType="Company">
+        INSERT INTO k12system_company (
+        companyCode,
+        productCode,
+        companyName,
+        companyShortName,
+        companyLogo,
+        companyAddress,
+        zipCode,
+        contactPhone,
+        contactFax,
+        contactPerson,
+        email,
+        status,
+        seqSort,
+        description,
+        creator,
+        createDate,
+        lastModDate,
+        lastModifier
+        ) VALUES (
+        #{companyCode},
+        #{productCode},
+        #{companyName},
+        #{companyShortName},
+        #{companyLogo},
+        #{companyAddress},
+        #{zipCode},
+        #{contactPhone},
+        #{contactFax},
+        #{contactPerson},
+        #{email},
+        #{status},
+        #{seqSort},
+        #{description},
+        #{creator},
+        #{createDate},
+        #{lastModDate},
+        #{lastModifier}
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+        SELECT LAST_INSERT_ID() AS ID
+        </selectKey>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="Company">
+        UPDATE k12system_company
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyCode!=null">
+                companyCode = #{companyCode},
+            </if>
+            <if test="productCode!=null">
+                productCode = #{productCode},
+            </if>
+            <if test="companyName!=null">
+                companyName = #{companyName},
+            </if>
+            <if test="companyShortName!=null">
+                companyShortName = #{companyShortName},
+            </if>
+            <if test="companyLogo!=null">
+                companyLogo = #{companyLogo},
+            </if>
+            <if test="companyAddress!=null">
+                companyAddress = #{companyAddress},
+            </if>
+            <if test="zipCode!=null">
+                zipCode = #{zipCode},
+            </if>
+            <if test="contactPhone!=null">
+                contactPhone = #{contactPhone},
+            </if>
+            <if test="contactFax!=null">
+                contactFax = #{contactFax},
+            </if>
+            <if test="contactPerson!=null">
+                contactPerson = #{contactPerson},
+            </if>
+            <if test="email!=null">
+                email = #{email},
+            </if>
+            <if test="status!=null">
+                status = #{status},
+            </if>
+            <if test="seqSort!=null">
+                seqSort = #{seqSort},
+            </if>
+            <if test="description!=null">
+                description = #{description},
+            </if>
+            <if test="creator!=null">
+                creator = #{creator},
+            </if>
+            <if test="createDate!=null">
+                createDate = #{createDate},
+            </if>
+            <if test="lastModDate!=null">
+                lastModDate = #{lastModDate},
+            </if>
+            <if test="lastModifier!=null">
+                lastModifier = #{lastModifier},
+            </if>
+        </trim>
+        WHERE
+        id = #{id}
+    </update>
+
+    <update id="updateMap">
+        UPDATE k12system_company
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="map.companyCode!=null">
+                companyCode = #{map.companyCode},
+            </if>
+            <if test="map.productCode!=null">
+                productCode = #{map.productCode},
+            </if>
+            <if test="map.companyName!=null">
+                companyName = #{map.companyName},
+            </if>
+            <if test="map.companyShortName!=null">
+                companyShortName = #{map.companyShortName},
+            </if>
+            <if test="map.companyLogo!=null">
+                companyLogo = #{map.companyLogo},
+            </if>
+            <if test="map.companyAddress!=null">
+                companyAddress = #{map.companyAddress},
+            </if>
+            <if test="map.zipCode!=null">
+                zipCode = #{map.zipCode},
+            </if>
+            <if test="map.contactPhone!=null">
+                contactPhone = #{map.contactPhone},
+            </if>
+            <if test="map.contactFax!=null">
+                contactFax = #{map.contactFax},
+            </if>
+            <if test="map.contactPerson!=null">
+                contactPerson = #{map.contactPerson},
+            </if>
+            <if test="map.email!=null">
+                email = #{map.email},
+            </if>
+            <if test="map.status!=null">
+                status = #{map.status},
+            </if>
+            <if test="map.seqSort!=null">
+                seqSort = #{map.seqSort},
+            </if>
+            <if test="map.description!=null">
+                description = #{map.description},
+            </if>
+            <if test="map.creator!=null">
+                creator = #{map.creator},
+            </if>
+            <if test="map.createDate!=null">
+                createDate = #{map.createDate},
+            </if>
+            <if test="map.lastModDate!=null">
+                lastModDate = #{map.lastModDate},
+            </if>
+            <if test="map.lastModifier!=null">
+                lastModifier = #{map.lastModifier},
+            </if>
+        </trim>
+        WHERE
+        id = #{map.id}
+    </update>
+
+    <update id="updateByCondition">
+        UPDATE k12system_company
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="update.companyCode!=null">
+                companyCode = #{update.companyCode},
+            </if>
+            <if test="update.productCode!=null">
+                productCode = #{update.productCode},
+            </if>
+            <if test="update.companyName!=null">
+                companyName = #{update.companyName},
+            </if>
+            <if test="update.companyShortName!=null">
+                companyShortName = #{update.companyShortName},
+            </if>
+            <if test="update.companyLogo!=null">
+                companyLogo = #{update.companyLogo},
+            </if>
+            <if test="update.companyAddress!=null">
+                companyAddress = #{update.companyAddress},
+            </if>
+            <if test="update.zipCode!=null">
+                zipCode = #{update.zipCode},
+            </if>
+            <if test="update.contactPhone!=null">
+                contactPhone = #{update.contactPhone},
+            </if>
+            <if test="update.contactFax!=null">
+                contactFax = #{update.contactFax},
+            </if>
+            <if test="update.contactPerson!=null">
+                contactPerson = #{update.contactPerson},
+            </if>
+            <if test="update.email!=null">
+                email = #{update.email},
+            </if>
+            <if test="update.status!=null">
+                status = #{update.status},
+            </if>
+            <if test="update.seqSort!=null">
+                seqSort = #{update.seqSort},
+            </if>
+            <if test="update.description!=null">
+                description = #{update.description},
+            </if>
+            <if test="update.creator!=null">
+                creator = #{update.creator},
+            </if>
+            <if test="update.createDate!=null">
+                createDate = #{update.createDate},
+            </if>
+            <if test="update.lastModDate!=null">
+                lastModDate = #{update.lastModDate},
+            </if>
+            <if test="update.lastModifier!=null">
+                lastModifier = #{update.lastModifier},
+            </if>
+        </trim>
+
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.companyCode!=null">
+                AND companyCode = #{condition.companyCode}
+            </if>
+            <if test="condition.productCode!=null">
+                AND productCode = #{condition.productCode}
+            </if>
+            <if test="condition.companyName!=null">
+                AND companyName = #{condition.companyName}
+            </if>
+            <if test="condition.companyShortName!=null">
+                AND companyShortName = #{condition.companyShortName}
+            </if>
+            <if test="condition.companyLogo!=null">
+                AND companyLogo = #{condition.companyLogo}
+            </if>
+            <if test="condition.companyAddress!=null">
+                AND companyAddress = #{condition.companyAddress}
+            </if>
+            <if test="condition.zipCode!=null">
+                AND zipCode = #{condition.zipCode}
+            </if>
+            <if test="condition.contactPhone!=null">
+                AND contactPhone = #{condition.contactPhone}
+            </if>
+            <if test="condition.contactFax!=null">
+                AND contactFax = #{condition.contactFax}
+            </if>
+            <if test="condition.contactPerson!=null">
+                AND contactPerson = #{condition.contactPerson}
+            </if>
+            <if test="condition.email!=null">
+                AND email = #{condition.email}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+            <if test="condition.seqSort!=null">
+                AND seqSort = #{condition.seqSort}
+            </if>
+            <if test="condition.description!=null">
+                AND description = #{condition.description}
+            </if>
+            <if test="condition.creator!=null">
+                AND creator = #{condition.creator}
+            </if>
+            <if test="condition.createDate!=null">
+                AND createDate = #{condition.createDate}
+            </if>
+            <if test="condition.lastModDate!=null">
+                AND lastModDate = #{condition.lastModDate}
+            </if>
+            <if test="condition.lastModifier!=null">
+                AND lastModifier = #{condition.lastModifier}
+            </if>
+        </trim>
+    </update>
+
+    <insert id="insertMap" >
+        INSERT INTO k12system_company (
+                companyCode,
+                productCode,
+                companyName,
+                companyShortName,
+                companyLogo,
+                companyAddress,
+                zipCode,
+                contactPhone,
+                contactFax,
+                contactPerson,
+                email,
+                status,
+                seqSort,
+                description,
+                creator,
+                createDate,
+                lastModDate,
+                lastModifier
+        ) VALUES (
+                    #{map.companyCode},
+                    #{map.productCode},
+                    #{map.companyName},
+                    #{map.companyShortName},
+                    #{map.companyLogo},
+                    #{map.companyAddress},
+                    #{map.zipCode},
+                    #{map.contactPhone},
+                    #{map.contactFax},
+                    #{map.contactPerson},
+                    #{map.email},
+                    #{map.status},
+                    #{map.seqSort},
+                    #{map.description},
+                    #{map.creator},
+                    #{map.createDate},
+                    #{map.lastModDate},
+                    #{map.lastModifier}
+        )
+    </insert>
+
+
+    <update id="updateNull" parameterType="Company">
+        UPDATE k12system_company
+        <trim prefix="SET" suffixOverrides=",">
+            companyCode = #{companyCode},
+            productCode = #{productCode},
+            companyName = #{companyName},
+            companyShortName = #{companyShortName},
+            companyLogo = #{companyLogo},
+            companyAddress = #{companyAddress},
+            zipCode = #{zipCode},
+            contactPhone = #{contactPhone},
+            contactFax = #{contactFax},
+            contactPerson = #{contactPerson},
+            email = #{email},
+            status = #{status},
+            seqSort = #{seqSort},
+            description = #{description},
+            creator = #{creator},
+            createDate = #{createDate},
+            lastModDate = #{lastModDate},
+            lastModifier = #{lastModifier},
+        </trim>
+        WHERE
+        id = #{id} 
+    </update>
+
+    <!-- 按Id删除 -->
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM k12system_company
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+    </delete>
+
+
+    <delete id="deleteByCondition" parameterType="java.util.Map">
+        DELETE FROM k12system_company
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id!=null">
+                AND id = #{id}
+            </if>
+            <if test="companyCode!=null">
+                AND companyCode = #{companyCode}
+            </if>
+            <if test="productCode!=null">
+                AND productCode = #{productCode}
+            </if>
+            <if test="companyName!=null">
+                AND companyName = #{companyName}
+            </if>
+            <if test="companyShortName!=null">
+                AND companyShortName = #{companyShortName}
+            </if>
+            <if test="companyLogo!=null">
+                AND companyLogo = #{companyLogo}
+            </if>
+            <if test="companyAddress!=null">
+                AND companyAddress = #{companyAddress}
+            </if>
+            <if test="zipCode!=null">
+                AND zipCode = #{zipCode}
+            </if>
+            <if test="contactPhone!=null">
+                AND contactPhone = #{contactPhone}
+            </if>
+            <if test="contactFax!=null">
+                AND contactFax = #{contactFax}
+            </if>
+            <if test="contactPerson!=null">
+                AND contactPerson = #{contactPerson}
+            </if>
+            <if test="email!=null">
+                AND email = #{email}
+            </if>
+            <if test="status!=null">
+                AND status = #{status}
+            </if>
+            <if test="seqSort!=null">
+                AND seqSort = #{seqSort}
+            </if>
+            <if test="description!=null">
+                AND description = #{description}
+            </if>
+            <if test="creator!=null">
+                AND creator = #{creator}
+            </if>
+            <if test="createDate!=null">
+                AND createDate = #{createDate}
+            </if>
+            <if test="lastModDate!=null">
+                AND lastModDate = #{lastModDate}
+            </if>
+            <if test="lastModifier!=null">
+                AND lastModifier = #{lastModifier}
+            </if>
+        </trim>
+    </delete>
+
+    <delete id="deleteByProperty" parameterType="java.util.Map">
+        DELETE FROM k12system_company WHERE
+        ${property} = #{value}
+    </delete>
+
+    <select id="fetch" parameterType="java.lang.Long" resultType="Company">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM k12system_company
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findOne" parameterType="java.util.Map" resultType="Company">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM k12system_company WHERE
+        ${property} = #{value}
+        LIMIT 0,1
+    </select>
+
+    <select id="findList" parameterType="java.util.Map" resultType="Company">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM k12system_company WHERE
+        ${property} = #{value}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findAll" resultType="Company">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM k12system_company
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryPage" resultType="Company">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM k12system_company
+        <where>
+
+            <if test="condition.whereSql != null">
+                and id in (#{condition.whereSql})
+            </if>
+
+            <if test="condition.id!=null">
+                ${condition.groupOp}   id  ${condition.id.op}  #{condition.id.data}
+            </if>
+            <if test="condition.companyCode!=null">
+                ${condition.groupOp}   companyCode  ${condition.companyCode.op}  #{condition.companyCode.data}
+            </if>
+            <if test="condition.productCode!=null">
+                ${condition.groupOp}   productCode  ${condition.productCode.op}  #{condition.productCode.data}
+            </if>
+            <if test="condition.companyName!=null">
+                ${condition.groupOp}   companyName  ${condition.companyName.op}  #{condition.companyName.data}
+            </if>
+            <if test="condition.companyShortName!=null">
+                ${condition.groupOp}   companyShortName  ${condition.companyShortName.op}  #{condition.companyShortName.data}
+            </if>
+            <if test="condition.companyLogo!=null">
+                ${condition.groupOp}   companyLogo  ${condition.companyLogo.op}  #{condition.companyLogo.data}
+            </if>
+            <if test="condition.companyAddress!=null">
+                ${condition.groupOp}   companyAddress  ${condition.companyAddress.op}  #{condition.companyAddress.data}
+            </if>
+            <if test="condition.zipCode!=null">
+                ${condition.groupOp}   zipCode  ${condition.zipCode.op}  #{condition.zipCode.data}
+            </if>
+            <if test="condition.contactPhone!=null">
+                ${condition.groupOp}   contactPhone  ${condition.contactPhone.op}  #{condition.contactPhone.data}
+            </if>
+            <if test="condition.contactFax!=null">
+                ${condition.groupOp}   contactFax  ${condition.contactFax.op}  #{condition.contactFax.data}
+            </if>
+            <if test="condition.contactPerson!=null">
+                ${condition.groupOp}   contactPerson  ${condition.contactPerson.op}  #{condition.contactPerson.data}
+            </if>
+            <if test="condition.email!=null">
+                ${condition.groupOp}   email  ${condition.email.op}  #{condition.email.data}
+            </if>
+            <if test="condition.status!=null">
+                ${condition.groupOp}   status  ${condition.status.op}  #{condition.status.data}
+            </if>
+            <if test="condition.seqSort!=null">
+                ${condition.groupOp}   seqSort  ${condition.seqSort.op}  #{condition.seqSort.data}
+            </if>
+            <if test="condition.description!=null">
+                ${condition.groupOp}   description  ${condition.description.op}  #{condition.description.data}
+            </if>
+            <if test="condition.creator!=null">
+                ${condition.groupOp}   creator  ${condition.creator.op}  #{condition.creator.data}
+            </if>
+            <if test="condition.createDate!=null">
+                ${condition.groupOp}   createDate  ${condition.createDate.op}  #{condition.createDate.data}
+            </if>
+            <if test="condition.lastModDate!=null">
+                ${condition.groupOp}   lastModDate  ${condition.lastModDate.op}  #{condition.lastModDate.data}
+            </if>
+            <if test="condition.lastModifier!=null">
+                ${condition.groupOp}   lastModifier  ${condition.lastModifier.op}  #{condition.lastModifier.data}
+            </if>
+
+
+    </where>
+
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="like" parameterType="java.util.Map" resultType="Company">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM k12system_company
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id!=null">
+                AND id like CONCAT('%', #{id} , '%')
+            </if>
+            <if test="companyCode!=null">
+                AND companyCode like CONCAT('%', #{companyCode} , '%')
+            </if>
+            <if test="productCode!=null">
+                AND productCode like CONCAT('%', #{productCode} , '%')
+            </if>
+            <if test="companyName!=null">
+                AND companyName like CONCAT('%', #{companyName} , '%')
+            </if>
+            <if test="companyShortName!=null">
+                AND companyShortName like CONCAT('%', #{companyShortName} , '%')
+            </if>
+            <if test="companyLogo!=null">
+                AND companyLogo like CONCAT('%', #{companyLogo} , '%')
+            </if>
+            <if test="companyAddress!=null">
+                AND companyAddress like CONCAT('%', #{companyAddress} , '%')
+            </if>
+            <if test="zipCode!=null">
+                AND zipCode like CONCAT('%', #{zipCode} , '%')
+            </if>
+            <if test="contactPhone!=null">
+                AND contactPhone like CONCAT('%', #{contactPhone} , '%')
+            </if>
+            <if test="contactFax!=null">
+                AND contactFax like CONCAT('%', #{contactFax} , '%')
+            </if>
+            <if test="contactPerson!=null">
+                AND contactPerson like CONCAT('%', #{contactPerson} , '%')
+            </if>
+            <if test="email!=null">
+                AND email like CONCAT('%', #{email} , '%')
+            </if>
+            <if test="status!=null">
+                AND status like CONCAT('%', #{status} , '%')
+            </if>
+            <if test="seqSort!=null">
+                AND seqSort like CONCAT('%', #{seqSort} , '%')
+            </if>
+            <if test="description!=null">
+                AND description like CONCAT('%', #{description} , '%')
+            </if>
+            <if test="creator!=null">
+                AND creator like CONCAT('%', #{creator} , '%')
+            </if>
+            <if test="createDate!=null">
+                AND createDate like CONCAT('%', #{createDate} , '%')
+            </if>
+            <if test="lastModDate!=null">
+                AND lastModDate like CONCAT('%', #{lastModDate} , '%')
+            </if>
+            <if test="lastModifier!=null">
+                AND lastModifier like CONCAT('%', #{lastModifier} , '%')
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+
+    <select id="queryList" parameterType="java.util.Map" resultType="Company">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM k12system_company
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.companyCode!=null">
+                AND companyCode = #{condition.companyCode}
+            </if>
+            <if test="condition.productCode!=null">
+                AND productCode = #{condition.productCode}
+            </if>
+            <if test="condition.companyName!=null">
+                AND companyName = #{condition.companyName}
+            </if>
+            <if test="condition.companyShortName!=null">
+                AND companyShortName = #{condition.companyShortName}
+            </if>
+            <if test="condition.companyLogo!=null">
+                AND companyLogo = #{condition.companyLogo}
+            </if>
+            <if test="condition.companyAddress!=null">
+                AND companyAddress = #{condition.companyAddress}
+            </if>
+            <if test="condition.zipCode!=null">
+                AND zipCode = #{condition.zipCode}
+            </if>
+            <if test="condition.contactPhone!=null">
+                AND contactPhone = #{condition.contactPhone}
+            </if>
+            <if test="condition.contactFax!=null">
+                AND contactFax = #{condition.contactFax}
+            </if>
+            <if test="condition.contactPerson!=null">
+                AND contactPerson = #{condition.contactPerson}
+            </if>
+            <if test="condition.email!=null">
+                AND email = #{condition.email}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+            <if test="condition.seqSort!=null">
+                AND seqSort = #{condition.seqSort}
+            </if>
+            <if test="condition.description!=null">
+                AND description = #{condition.description}
+            </if>
+            <if test="condition.creator!=null">
+                AND creator = #{condition.creator}
+            </if>
+            <if test="condition.createDate!=null">
+                AND createDate = #{condition.createDate}
+            </if>
+            <if test="condition.lastModDate!=null">
+                AND lastModDate = #{condition.lastModDate}
+            </if>
+            <if test="condition.lastModifier!=null">
+                AND lastModifier = #{condition.lastModifier}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryOne" parameterType="java.util.Map" resultType="Company">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM k12system_company
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.companyCode!=null">
+                AND companyCode = #{condition.companyCode}
+            </if>
+            <if test="condition.productCode!=null">
+                AND productCode = #{condition.productCode}
+            </if>
+            <if test="condition.companyName!=null">
+                AND companyName = #{condition.companyName}
+            </if>
+            <if test="condition.companyShortName!=null">
+                AND companyShortName = #{condition.companyShortName}
+            </if>
+            <if test="condition.companyLogo!=null">
+                AND companyLogo = #{condition.companyLogo}
+            </if>
+            <if test="condition.companyAddress!=null">
+                AND companyAddress = #{condition.companyAddress}
+            </if>
+            <if test="condition.zipCode!=null">
+                AND zipCode = #{condition.zipCode}
+            </if>
+            <if test="condition.contactPhone!=null">
+                AND contactPhone = #{condition.contactPhone}
+            </if>
+            <if test="condition.contactFax!=null">
+                AND contactFax = #{condition.contactFax}
+            </if>
+            <if test="condition.contactPerson!=null">
+                AND contactPerson = #{condition.contactPerson}
+            </if>
+            <if test="condition.email!=null">
+                AND email = #{condition.email}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+            <if test="condition.seqSort!=null">
+                AND seqSort = #{condition.seqSort}
+            </if>
+            <if test="condition.description!=null">
+                AND description = #{condition.description}
+            </if>
+            <if test="condition.creator!=null">
+                AND creator = #{condition.creator}
+            </if>
+            <if test="condition.createDate!=null">
+                AND createDate = #{condition.createDate}
+            </if>
+            <if test="condition.lastModDate!=null">
+                AND lastModDate = #{condition.lastModDate}
+            </if>
+            <if test="condition.lastModifier!=null">
+                AND lastModifier = #{condition.lastModifier}
+            </if>
+        </trim>
+        limit 0,1
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(id) FROM k12system_company
+       <where>
+           <if test="id!=null">
+               ${groupOp} id ${id.op}  #{id.data}
+           </if>
+           <if test="companyCode!=null">
+               ${groupOp} companyCode ${companyCode.op}  #{companyCode.data}
+           </if>
+           <if test="productCode!=null">
+               ${groupOp} productCode ${productCode.op}  #{productCode.data}
+           </if>
+           <if test="companyName!=null">
+               ${groupOp} companyName ${companyName.op}  #{companyName.data}
+           </if>
+           <if test="companyShortName!=null">
+               ${groupOp} companyShortName ${companyShortName.op}  #{companyShortName.data}
+           </if>
+           <if test="companyLogo!=null">
+               ${groupOp} companyLogo ${companyLogo.op}  #{companyLogo.data}
+           </if>
+           <if test="companyAddress!=null">
+               ${groupOp} companyAddress ${companyAddress.op}  #{companyAddress.data}
+           </if>
+           <if test="zipCode!=null">
+               ${groupOp} zipCode ${zipCode.op}  #{zipCode.data}
+           </if>
+           <if test="contactPhone!=null">
+               ${groupOp} contactPhone ${contactPhone.op}  #{contactPhone.data}
+           </if>
+           <if test="contactFax!=null">
+               ${groupOp} contactFax ${contactFax.op}  #{contactFax.data}
+           </if>
+           <if test="contactPerson!=null">
+               ${groupOp} contactPerson ${contactPerson.op}  #{contactPerson.data}
+           </if>
+           <if test="email!=null">
+               ${groupOp} email ${email.op}  #{email.data}
+           </if>
+           <if test="status!=null">
+               ${groupOp} status ${status.op}  #{status.data}
+           </if>
+           <if test="seqSort!=null">
+               ${groupOp} seqSort ${seqSort.op}  #{seqSort.data}
+           </if>
+           <if test="description!=null">
+               ${groupOp} description ${description.op}  #{description.data}
+           </if>
+           <if test="creator!=null">
+               ${groupOp} creator ${creator.op}  #{creator.data}
+           </if>
+           <if test="createDate!=null">
+               ${groupOp} createDate ${createDate.op}  #{createDate.data}
+           </if>
+           <if test="lastModDate!=null">
+               ${groupOp} lastModDate ${lastModDate.op}  #{lastModDate.data}
+           </if>
+           <if test="lastModifier!=null">
+               ${groupOp} lastModifier ${lastModifier.op}  #{lastModifier.data}
+           </if>
+
+       </where>
+    <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+    </if>
+    </select>
+
+    <select id="selectMaxId" resultType="java.lang.Long">
+        SELECT
+        MAX(id)
+        FROM k12system_company
+    </select>
+
+</mapper>
+

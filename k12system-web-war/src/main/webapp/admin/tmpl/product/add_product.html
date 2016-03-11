@@ -1,0 +1,80 @@
+<div id="add_product" class="form-horizontal">
+	<ul id="breadcrumb">
+		<li><a href="#"><span class="icon icon-home"> </span></a></li>
+		<li><a href="#" class="focus" id="step_title_1">第一步：创建产品</a></li>
+		<li><a href="#" id="step_title_2">第二步：创建产品管理员</a></li>
+	</ul>
+	<div id="page_body" style="position: relative">
+		<section class="form-page">
+			<div class="control-group">
+				<label class="control-label" for="product_name">产品名称:</label>
+				<div class="controls">
+					<input class="form-control form-w200" type="text" id="product_name" placeholder="产品名称，2-10汉字,数字,或者字母">
+				</div>
+				<p class="form-error"></p>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="product_url">产品地址:</label>
+				<div class="controls">
+					<input class="form-control form-w200" type="text" id="product_url" placeholder="产品地址,以http://或者https://开头" />
+				</div>
+				<p class="form-error"></p>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="product_logo">产品logo:</label>
+				<div class="controls">
+					<button type="button" id="file_upload" class="btn btn-success form-w200">上传logo</button>
+					<input type="hidden" id="product_logo"  />
+				</div>
+				<div class="form-upload">
+					<img id="product_logo_img" src="../static/images/msg-avatar.png" width="80" height="80"  />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="product_describe">产品描述:</label>
+				<div class="controls">
+					<textarea class="form-control form-w200" rows="3" id="product_describe" placeholder="产品描述文字，10-200"></textarea>
+				</div>
+				<p class="form-error"></p>
+			</div>
+		</section>
+		<section class="form-page">
+			<div class="control-group">
+				<label class="control-label" for="real_name">真实姓名:</label>
+				<div class="controls">
+					<input class="form-control form-w200" type="text" id="real_name" placeholder="请输入管理员真实姓名" />
+				</div>
+				<p class="form-error"></p>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="user_name">产品管理员:</label>
+				<div class="controls">
+					<input class="form-control form-w200" type="text" id="user_name" placeholder="请输入管理员，字母或者数字组合，6-10" />
+				</div>
+				<p class="form-error"></p>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="user_pwd">管理员密码:</label>
+				<div class="controls">
+					<input class="form-control form-w200" type="password" id="user_pwd" placeholder="请输入密码，字母或者数字组合，6-10" />
+				</div>
+				<p class="form-error"></p>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="user_phone">管理员电话:</label>
+				<div class="controls">
+					<input class="form-control form-w200" type="text" id="user_phone" placeholder="" />
+				</div>
+				<p class="form-error"></p>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="user_email">管理员邮箱:</label>
+				<div class="controls">
+					<input class="form-control form-w200" type="text" id="user_email" placeholder="" />
+				</div>
+				<p class="form-error"></p>
+			</div>
+			<div id="model_error_msg" style="display: none"></div>
+		</section>
+	</div>
+</div>

@@ -1,0 +1,47 @@
+<div id="add_resource" class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label" for="resource_name">资源名称:</label>
+        <div class="controls">
+            <input class="form-control form-w200" type="text" id="resource_name" placeholder="请输入资源名称,中文字符1-5" />
+        </div>
+        <p class="form-error"></p>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="resource_url">资源代码:</label>
+        <div class="controls">
+            <input class="form-control form-w200" type="text" id="resource_url" placeholder="请输入资源代码，只能输入字母" />
+        </div>
+        <p class="form-error"></p>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="resource_icon">资源样式:</label>
+        <div class="controls">
+            <!--<input class="form-control form-w200" type="text" id="resource_icon" placeholder="请使用bootstrap按钮样式" />-->
+            <select class="form-control form-w200" id="resource_icon">
+                <option value="btn-default">（默认样式）Default</option>
+                <option value="btn-primary">（首选项）Primary</option>
+                <option value="btn-success">（成功）Success</option>
+                <option value="btn-info">（一般信息）Info</option>
+                <option value="btn-warning">（警告）Warning</option>
+                <option value="btn-danger">（危险）Danger</option>
+            </select>
+
+            <p class="style-show">
+                <button type="button" class="btn btn-default">（默认样式）Default</button>
+                <button type="button" class="btn btn-primary">（首选项）Primary</button>
+            </p>
+
+            <p class="style-show">
+                <button type="button" class="btn btn-success">（成功）Success</button>
+                <button type="button" class="btn btn-info">（一般信息）Info</button>
+            </p>
+
+            <p class="style-show">
+                <button type="button" class="btn btn-warning">（警告）Warning</button>
+                <button type="button" class="btn btn-danger">（危险）Danger</button>
+            </p>
+
+        </div>
+        <p class="form-error"></p>
+    </div>
+</div>

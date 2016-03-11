@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.k12system.dao.ex.IEXk12systemDAO">
+    <select id="getSystemListByPost" resultType="K12SystemPojo">
+      SELECT
+        b.id as systemId,
+        b.systemCode as systemCode,
+        b.systemName as systemName,
+        b.systemUrl as systemUrl,
+        b.systemLogo as systemLogo,
+        b.description as description
+    FROM
+        k12system_k12system_post a
+    LEFT JOIN k12system_k12system b ON a.systemCode = b.systemCode
+    WHERE a.`status`=0 and b.`status`=0
+    <if test="postCode != null ">
+        and a.postCode=#{postCode}
+    </if>
+    </select>
+</mapper>

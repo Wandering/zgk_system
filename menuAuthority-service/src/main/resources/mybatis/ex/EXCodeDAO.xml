@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.k12system.dao.ex.IEXCodeDAO">
+
+    <!--获取表最大编码Code-->
+    <select id="selectMaxCode" resultType="java.lang.Long">
+        SELECT MAX(${columnName}) as columnName FROM ${tableName}
+    </select>
+
+    <!--获取人员信息最大编码Code-->
+    <!--<select id="selectMaxProductCode" resultType="java.lang.Long">-->
+        <!--SELECT MAX(productCode) as productCode FROM k12system_product-->
+    <!--</select>-->
+
+    <!--&lt;!&ndash;获取代理公司最大编码Code&ndash;&gt;-->
+    <!--<select id="selectMaxCompanyCode" resultType="java.lang.Long">-->
+        <!--select max(companyCode) as companyCode FROM k12system_company where productCode=${productCode}-->
+    <!--</select>-->
+
+    <!--&lt;!&ndash;获取部门最大编码Code&ndash;&gt;-->
+    <!--<select id="selectMaxDepartmentCode" resultType="java.lang.Long">-->
+        <!--select max(departmentCode) as departmentCode FROM k12system_department where companyCode=${companyCode}-->
+    <!--</select>-->
+
+    <!--&lt;!&ndash;获取岗位最大编码Code&ndash;&gt;-->
+    <!--<select id="selectMaxPostCode" resultType="java.lang.Long">-->
+        <!--select max(postCode) as postCode FROM k12system_post where departmentCode=${departmentCode}-->
+    <!--</select>-->
+
+    <!--根据父级Code获取最大编码Code-->
+    <select id="selectMaxCodeByParent" resultType="java.lang.Long">
+        select max(${columnName}) as columnName FROM ${tableName} where ${parentName}=#{parentCode}
+    </select>
+
+    <select id="selectMaxCodeByScope" resultType="java.lang.Long">
+        select max(${columnName}) as columnName FROM ${tableName} where ${columnName} BETWEEN  #{minCode} and #{maxCode}
+    </select>
+
+</mapper>
+

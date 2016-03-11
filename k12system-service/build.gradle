@@ -1,0 +1,41 @@
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile "org.springframework:spring-test:$springVersion"
+
+    compile group: "cn.thinkjoy.common", name: "thinkjoy-mus-common", version: "$thinkjoyCommonVersion", changing: true
+
+    compile "net.esoar:esoar-core:1.1.0"
+
+    compile "com.squareup.retrofit:retrofit:$retrofitVersion"
+    compile "com.squareup.okhttp:okhttp:$okhttpVersion"
+    compile "com.squareup.okhttp:okhttp-urlconnection:$okhttpVersion"
+
+    compile "org.mortbay.jetty:jetty-util:$jettyVersion"
+    compile "org.mortbay.jetty:jetty:$jettyVersion"
+
+
+    compile "cn.thinkjoy.jx.oauth:oauth-api:$jxOAuthVersion"
+
+
+    compile "cn.thinkjoy.jx:jx-auth-common:$jxCommonVersion"
+
+    compile "org.unidal.framework:foundation-service:2.1.0"
+    compile ("org.codehaus.plexus:plexus-container-default:1.5.5"){
+        exclude group: 'com.google.collections'
+    }
+    compile "io.netty:netty-all:4.0.24.Final"
+
+    compile ("cn.thinkjoy.ucm:ucm-api:$thinkjoyUCMVersion"){
+        exclude group: 'cn.thinkjoy.common', module: 'thinkjoy-mus-common'
+        exclude group: 'cn.thinkjoy.common', module: 'thinkjoy-mu-common'
+    }
+
+    compile ("cn.thinkjoy:microschool-core:$microschoolCoreVersion"){
+        exclude group: 'org.mortbay.jetty', module: 'servlet-api'
+        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    }
+
+
+    compile project(':menuAuthority-service')
+
+}

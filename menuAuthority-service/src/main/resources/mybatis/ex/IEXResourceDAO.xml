@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.k12system.dao.ex.IEXResourceDAO">
+    <select id="getResourcesByMenuPost" resultType="ResourcesPojo">
+       SELECT
+        c.resourceCode AS resourceCode,
+        c.resourceName AS resourceName,
+        c.resourceIcon AS resourceIcon
+        FROM
+        k12system_role_post a
+        LEFT JOIN k12system_role_resources b ON a.roleCode = b.roleCode
+        LEFT JOIN k12system_resources c ON b.resourceCode = c.resourceCode
+        WHERE
+        a.`status` = 0
+        AND b.`status` = 0
+        AND	c.`status` = 0
+        <if test="postCode != null">
+            AND a.postCode = #{postCode}
+        </if>
+        <if test="menuCode != null">
+            AND c.menuCode = #{menuCode}
+        </if>
+    </select>
+    <select id="getResourcesAll" resultType="ResourcesPojo">
+        SELECT resourceCode,resourceName,resourceIcon from k12system_resources WHERE `status`=0 and menuCode = #{menuCode}
+    </select>
+    <select id="resourceCodeListByRole" resultType="java.lang.Long">
+        SELECT resourceCode FROM k12system_role_resources WHERE status = 0 AND roleCode = #{roleCode}
+    </select>
+</mapper>

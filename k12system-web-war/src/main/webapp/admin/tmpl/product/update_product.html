@@ -1,0 +1,33 @@
+<div id="add_product" class="form-horizontal">
+	<div class="control-group">
+		<label class="control-label" for="product_name">产品名称:</label>
+		<div class="controls">
+			<input class="form-control form-w200" type="text" id="product_name" placeholder="产品名称，2-10汉字,数字,或者字母">
+		</div>
+		<p class="form-error"></p>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="product_url">产品地址:</label>
+		<div class="controls">
+			<input class="form-control form-w200" type="text" id="product_url" placeholder="产品地址,以http://或者https://开头" />
+		</div>
+		<p class="form-error"></p>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="product_logo">产品logo:</label>
+		<div class="controls">
+			<button type="button" id="file_upload" class="btn btn-success form-w200">上传logo</button>
+			<input type="hidden" id="product_logo"  />
+		</div>
+		<div class="form-upload">
+			<img id="product_logo_img" src="../static/images/msg-avatar.png" width="80" height="80"  />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="product_describe">产品描述:</label>
+		<div class="controls">
+			<textarea class="form-control form-w200" rows="3" id="product_describe" placeholder="产品描述文字，10-200"></textarea>
+		</div>
+		<p class="form-error"></p>
+	</div>
+</div>

@@ -1,0 +1,15 @@
+
+
+include 'k12system-domain'
+
+include 'k12system-api'
+
+include 'k12system-service'
+
+include 'k12system-web-war'
+
+include 'menuAuthority-domain'
+
+include 'menuAuthority-service'
+
+include 'k12system-common'
