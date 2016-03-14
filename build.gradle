@@ -23,7 +23,7 @@ tasks.withType(Compile) {
 
 /** 此闭包内的声明子类皆可使用 */
 allprojects {
-    group = 'cn.thinkjoy.jx.k12system'
+    group = 'cn.thinkjoy.jx.zgksystem'
     version = '0.0.18-SNAPSHOT'
 
     apply plugin: 'java'

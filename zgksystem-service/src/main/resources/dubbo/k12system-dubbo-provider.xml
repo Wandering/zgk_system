@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <description>k12system dubbo 服务提供配置 </description>
+
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="k12system"  />
+    <!-- 注册中心暴露服务地址 -->
+     <dubbo:registry address="${dubbo_zk_url}" file="/tmp/dubbo.cache"/>
+
+    <dubbo:service id="userApiService" interface="cn.thinkjoy.zgk.zgksystem.UserApiService" ref="UserApiServiceImpl" executes="100" timeout="600000" retries="0" />
+    <dubbo:service id="companyApiService" interface="cn.thinkjoy.zgk.zgksystem.CompanyApiService" ref="CompanyApiServiceImpl" executes="100" timeout="600000" retries="0" />
+    <dubbo:service id="productApiService" interface="cn.thinkjoy.zgk.zgksystem.ProductApiService" ref="ProductApiServiceImpl" executes="100" timeout="600000" retries="0" />
+    <dubbo:service id="postApiService" interface="cn.thinkjoy.zgk.zgksystem.PostApiService" ref="PostApiServiceImpl" executes="100" timeout="600000" retries="0" />
+    <dubbo:service id="deparmentApiService" interface="cn.thinkjoy.zgk.zgksystem.DeparmentApiService" ref="DeparmentApiServiceImpl" executes="100" timeout="600000" retries="0" />
+    <dubbo:service id="userInfoApiService" interface="cn.thinkjoy.zgk.zgksystem.UserInfoApiService" ref="UserInfoApiServiceImpl" executes="100" timeout="600000" retries="0"/>
+    <dubbo:service id="userAccountApiService" interface="cn.thinkjoy.zgk.zgksystem.UserAccountApiService" ref="UserAccountApiServiceImpl" executes="100" timeout="600000" retries="0"/>
+    <dubbo:service id="eXCodeApiService" interface="cn.thinkjoy.zgk.zgksystem.EXCodeApiService" ref="EXCodeApiServiceImpl" executes="100" timeout="600000" retries="0"/>
+</beans>

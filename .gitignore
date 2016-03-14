@@ -85,10 +85,10 @@
 /.idea/
 *.iml
 classes/
-k12system-service/build/
+zgksystem-service/build/
 menuAuthority-service/build/
-k12system-api/build/
-k12system-common/build/
-k12system-domain/build/
-k12system-web-war/build/
+zgksystem-api/build/
+zgksystem-common/build/
+zgksystem-domain/build/
+zgksystem-web-war/build/
 menuAuthority-domain/build/

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.zgk.zgksystem.dao.ex.IEXIdentitySystemDAO">
+    <select id="getSystemList" resultType="K12SystemPojo">
+        SELECT
+            a.systemCode AS systemCode,
+            b.systemName AS systemName,
+            b.systemUrl AS systemUrl,
+            b.systemLogo AS systemLogo,
+            b.description AS description
+        FROM
+            k12system_identity_system a
+        LEFT JOIN k12system_k12system b ON a.systemCode = b.systemCode
+        <if test="identityCode != null">
+            WHERE a.identityCode = #{identityCode}
+        </if>
+
+    </select>
+    <delete id="delIdentitySystemByIdentity">
+        DELETE  FROM k12system_identity_system WHERE identityCode
+             in
+            <foreach collection="codeList" item="item" index="index"
+                     separator="," open="(" close=")">
+                #{item}
+            </foreach>
+    </delete>
+</mapper>

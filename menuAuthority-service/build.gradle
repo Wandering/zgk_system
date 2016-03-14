@@ -36,6 +36,6 @@ dependencies {
     }
 
 
-    compile project(':k12system-api')
+    compile project(':zgksystem-api')
 
 }

@@ -1,15 +1,15 @@
 
 
-include 'k12system-domain'
+include 'zgksystem-domain'
 
-include 'k12system-api'
+include 'zgksystem-api'
 
-include 'k12system-service'
+include 'zgksystem-service'
 
-include 'k12system-web-war'
+include 'zgksystem-web-war'
 
 include 'menuAuthority-domain'
 
 include 'menuAuthority-service'
 
-include 'k12system-common'
+include 'zgksystem-common'
