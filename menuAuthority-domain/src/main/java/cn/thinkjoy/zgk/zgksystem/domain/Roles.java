@@ -15,7 +15,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import cn.thinkjoy.common.domain.CreateBaseDomain;
 
-public class Roles extends CreateBaseDomain{
+public class Roles extends CreateBaseDomain<Long>{
     private Long roleCode;
     private Long parentCode;
     private String roleName;

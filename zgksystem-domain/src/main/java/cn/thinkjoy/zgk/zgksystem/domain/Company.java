@@ -15,7 +15,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import cn.thinkjoy.common.domain.CreateBaseDomain;
 
-public class Company extends CreateBaseDomain{
+public class Company extends CreateBaseDomain<Long>{
     private Long companyCode;
     private Long productCode;
     private String companyName;

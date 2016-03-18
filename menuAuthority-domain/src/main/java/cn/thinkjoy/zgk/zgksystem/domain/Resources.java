@@ -15,7 +15,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import cn.thinkjoy.common.domain.CreateBaseDomain;
 
-public class Resources extends CreateBaseDomain{
+public class Resources extends CreateBaseDomain<Long>{
     private Long resourceCode;
     private Long menuCode;
     private String resourceName;

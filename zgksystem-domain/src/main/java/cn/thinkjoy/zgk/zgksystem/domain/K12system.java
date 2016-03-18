@@ -15,7 +15,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import cn.thinkjoy.common.domain.CreateBaseDomain;
 
-public class K12system extends CreateBaseDomain{
+public class K12system extends CreateBaseDomain<Long>{
     private Long systemCode;
     private String systemName;
     private String systemUrl;

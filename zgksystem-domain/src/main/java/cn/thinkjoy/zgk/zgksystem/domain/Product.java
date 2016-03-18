@@ -15,7 +15,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class Product extends CreateBaseDomain{
+public class Product extends CreateBaseDomain<Long>{
     private Long productCode;
     private String productName;
     private String productLogo;

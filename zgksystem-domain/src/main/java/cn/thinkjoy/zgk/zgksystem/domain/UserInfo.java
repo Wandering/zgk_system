@@ -17,7 +17,7 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 
 import java.util.*;
 
-public class UserInfo extends CreateBaseDomain{
+public class UserInfo extends CreateBaseDomain<Long>{
     private Long userCode;
     private Long departmentCode;
     private Long postCode;

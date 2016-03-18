@@ -15,7 +15,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class Menu extends CreateBaseDomain{
+public class Menu extends CreateBaseDomain<Long>{
     private Long menuCode;
     private Long parentCode;
     private String menuName;
