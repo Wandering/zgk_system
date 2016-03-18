@@ -15,7 +15,7 @@
     <dubbo:application name="k12system"  />
     <!-- 注册中心暴露服务地址 -->
      <dubbo:registry address="${dubbo_zk_url}" file="/tmp/dubbo.cache"/>
-
+    <dubbo:protocol name="dubbo"  port="20881" />
     <dubbo:service id="userApiService" interface="cn.thinkjoy.zgk.zgksystem.UserApiService" ref="UserApiServiceImpl" executes="100" timeout="600000" retries="0" />
     <dubbo:service id="companyApiService" interface="cn.thinkjoy.zgk.zgksystem.CompanyApiService" ref="CompanyApiServiceImpl" executes="100" timeout="600000" retries="0" />
     <dubbo:service id="productApiService" interface="cn.thinkjoy.zgk.zgksystem.ProductApiService" ref="ProductApiServiceImpl" executes="100" timeout="600000" retries="0" />
