@@ -15,7 +15,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class UserAccount extends CreateBaseDomain{
+public class UserAccount extends CreateBaseDomain<Long>{
     private Long accountCode;
     private Long userCode;
     private Long identityCode;
