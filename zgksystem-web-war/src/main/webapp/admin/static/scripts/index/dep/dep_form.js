@@ -45,7 +45,10 @@ define(function(require, exports, module) {
             return;
         }
 
-        callback([name, telephone, fax, leading]);
+        var provinces = $("#dep_provinces").find("option:selected").val();
+        var city = $("#dep_city").find("option:selected").val();
+        var county = $("#dep_county").find("option:selected").val();
+        callback([name, telephone, fax, leading,provinces,city,county]);
     }
     module.exports = {
         validate: function(callback) {
