@@ -111,7 +111,7 @@ public class DepartmentServiceImpl extends AbstractPageService<IBaseDAO<Departme
     }
 
 
-    public  List<TreeBean> recursionTree(Long parentCode){
+    public  List<TreeBean> recursionTreeAll(Long parentCode){
         if(parentCode==null || parentCode==0){
             parentCode=-1L;
         }
@@ -122,7 +122,24 @@ public class DepartmentServiceImpl extends AbstractPageService<IBaseDAO<Departme
         List<Department> departmentList=this.queryList(dataMap, CodeFactoryUtil.ORDER_BY_FIELD, SqlOrderEnum.DESC.getAction());
         if(departmentList!=null && departmentList.size()>0){
             for (Department d:departmentList) {
-                resultTree.add(new TreeBean(d.getDepartmentCode(), d.getDepartmentName(),recursionTree(d.getDepartmentCode())));
+                resultTree.add(new TreeBean(d.getDepartmentCode(), d.getDepartmentName(),recursionTreeAll(d.getDepartmentCode())));
+            }
+        }
+        return resultTree;
+    }
+
+    public  List<TreeBean> recursionTree(Long parentCode){
+        if(parentCode==null || parentCode==0){
+            parentCode=-1L;
+        }
+        List<TreeBean>  resultTree=new ArrayList<>();
+        Map<String,Object> dataMap = new HashMap<>();
+        dataMap.put("departmentCode",parentCode);
+        dataMap.put("status",Constants.NORMAL_STATUS);
+        List<Department> departmentList=this.queryList(dataMap, CodeFactoryUtil.ORDER_BY_FIELD, SqlOrderEnum.DESC.getAction());
+        if(departmentList!=null && departmentList.size()>0){
+            for (Department d:departmentList) {
+                resultTree.add(new TreeBean(d.getDepartmentCode(), d.getDepartmentName(),new ArrayList<TreeBean>()));
             }
         }
         return resultTree;

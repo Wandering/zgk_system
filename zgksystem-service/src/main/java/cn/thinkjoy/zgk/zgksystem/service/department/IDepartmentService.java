@@ -48,5 +48,7 @@ public interface IDepartmentService<D extends IBaseDAO<T>, T extends BaseDomain>
      */
     List<TreeBean> recursionTree(Long parentCode);
 
+    List<TreeBean> recursionTreeAll(Long parentCode);
+
 
 }
