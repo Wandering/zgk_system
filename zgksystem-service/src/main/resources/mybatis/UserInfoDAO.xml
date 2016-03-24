@@ -59,7 +59,9 @@ selectList
         creator,
         createDate,
         lastModDate,
-        lastModifier
+        lastModifier,
+        roleType,
+        areaCode
         ) VALUES (
         #{userCode},
         #{departmentCode},
@@ -75,7 +77,9 @@ selectList
         #{creator},
         #{createDate},
         #{lastModDate},
-        #{lastModifier}
+        #{lastModifier},
+        #{roleType},
+        #{areaCode}
         )
         <selectKey resultType="java.lang.Long" keyProperty="id">
         SELECT LAST_INSERT_ID() AS ID
@@ -130,6 +134,12 @@ selectList
             </if>
             <if test="lastModifier!=null">
                 lastModifier = #{lastModifier},
+            </if>
+            <if test="roleType!=null">
+                roleType = #{roleType},
+            </if>
+            <if test="areaCode!=null">
+                areaCode = #{areaCode},
             </if>
         </trim>
         WHERE
