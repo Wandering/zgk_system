@@ -91,6 +91,7 @@ public class DepartmentController {
             d.setDepartmentPrincipal(department.getDepartmentPrincipal());
             d.setSeqSort(department.getSeqSort());
             d.setStatus(Constants.NORMAL_STATUS);
+            d.setAreaCode(department.getAreaCode());
             Long maxDepartmentCode=excodeService.selectMaxCodeByParent(CodeFactoryUtil.DEPARTMENT_CODE,CodeFactoryUtil.DEPARTMENT_TABLE,CodeFactoryUtil.COMPANY_CODE, temp.getCompanyCode());
             if(maxDepartmentCode==null||maxDepartmentCode==0){
                 maxDepartmentCode= CodeFactoryUtil.getInitDepartment(temp.getCompanyCode());//部门Code初始生成规则 所属公司信息的Code*1000+1

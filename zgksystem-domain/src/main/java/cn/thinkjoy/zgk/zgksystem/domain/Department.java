@@ -25,8 +25,17 @@ public class Department extends CreateBaseDomain{
     private String departmentName;
     private Integer seqSort;
     private String description;
+    private String areaCode;
 
-	public Department(){
+    public String getAreaCode() {
+        return areaCode;
+    }
+
+    public void setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
+    }
+
+    public Department(){
 	}
     public void setDepartmentCode(Long value) {
         this.departmentCode = value;
