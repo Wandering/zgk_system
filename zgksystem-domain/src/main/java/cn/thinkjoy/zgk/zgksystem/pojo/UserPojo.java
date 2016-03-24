@@ -26,6 +26,8 @@ public class UserPojo implements Serializable{
     private List<Long> areaIds;//区域ID列表
     private List<Long> schoolIds;//学校ID列表
     private ClientInfoPojo clientInfoPojo;
+    private Integer roleType;
+    private String areaCode;
 
     public ClientInfoPojo getClientInfoPojo() {
         return clientInfoPojo;
@@ -169,5 +171,21 @@ public class UserPojo implements Serializable{
 
     public void setSchoolIds(List<Long> schoolIds) {
         this.schoolIds = schoolIds;
+    }
+
+    public Integer getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(Integer roleType) {
+        this.roleType = roleType;
+    }
+
+    public String getAreaCode() {
+        return areaCode;
+    }
+
+    public void setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
     }
 }

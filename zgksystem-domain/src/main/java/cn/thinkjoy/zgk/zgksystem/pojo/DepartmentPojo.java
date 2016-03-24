@@ -21,6 +21,8 @@ public class DepartmentPojo extends UserPojo{
     private String departmentName;//部门名称
     private Integer seqSort; //部门排序
     private String description;//部门描述
+    private Integer roleType;
+    private String areaCode;
 
     public Long getId() {
         return id;
@@ -104,6 +106,26 @@ public class DepartmentPojo extends UserPojo{
     @Override
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public Integer getRoleType() {
+        return roleType;
+    }
+
+    @Override
+    public void setRoleType(Integer roleType) {
+        this.roleType = roleType;
+    }
+
+    @Override
+    public String getAreaCode() {
+        return areaCode;
+    }
+
+    @Override
+    public void setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
     }
 }
 
