@@ -10,6 +10,7 @@ import cn.thinkjoy.zgk.zgksystem.domain.Post;
 import cn.thinkjoy.zgk.zgksystem.domain.UserAccount;
 import cn.thinkjoy.zgk.zgksystem.domain.UserInfo;
 import cn.thinkjoy.zgk.zgksystem.common.TreePojo;
+import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserInfoService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
@@ -175,7 +176,10 @@ public class DepartmentController {
     @ResponseBody
     @RequestMapping(value = "queryTreeDepartmentAll",method = RequestMethod.GET)
     public List<TreeBean> queryTreeDepartmentAll(HttpServletRequest request){
-        Long parentCode=Long.parseLong(HttpUtil.getParameter(request, "parentCode", "-1"));
+        //当前用户的岗位code
+        UserPojo userPojo=(UserPojo)HttpUtil.getSession(request,"user");
+        Long userDepartmentCode=userPojo.getDepartmentCode();
+        Long parentCode=Long.parseLong(HttpUtil.getParameter(request, "parentCode", String.valueOf(userDepartmentCode)));
         return departmentService.recursionTree(parentCode);
     }
 

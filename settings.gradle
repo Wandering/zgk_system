@@ -13,3 +13,5 @@ include 'menuAuthority-domain'
 include 'menuAuthority-service'
 
 include 'zgksystem-common'
+include 'AgentsSystem'
+

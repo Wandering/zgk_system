@@ -82,20 +82,20 @@ public class PostController {
         if(postPojo == null ||postPojo.getAreaIds() == null || postPojo.getAreaIds().size() == 0){
             throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(), ERRORCODE.PARAM_ISNULL.getMessage());
         }
-            Post post = new Post();
-            if (postPojo.getId() == null || postPojo.getId().equals(0)) {
-                post.setDepartmentCode(postPojo.getDepartmentCode());
-                post.setPostName(postPojo.getPostName());
-                post.setDescription(postPojo.getDescription());
-                post.setSeqSort(postPojo.getSeqSort());
-                post.setStatus(Constants.NORMAL_STATUS);
+        Post post = new Post();
+        if (postPojo.getId() == null || postPojo.getId() == 0) {
+            post.setDepartmentCode(postPojo.getDepartmentCode());
+            post.setPostName(postPojo.getPostName());
+            post.setDescription(postPojo.getDescription());
+            post.setSeqSort(postPojo.getSeqSort());
+            post.setStatus(Constants.NORMAL_STATUS);
             Long maxPostCode = excodeService.selectMaxCodeByParent(CodeFactoryUtil.POSITION_CODE,CodeFactoryUtil.POSITION_TABLE,CodeFactoryUtil.DEPARTMENT_CODE,post.getDepartmentCode());
             if (maxPostCode == null || maxPostCode == 0) {
                 maxPostCode = CodeFactoryUtil.getInitPosition(postPojo.getDepartmentCode()) ;
             } else {
                 ++maxPostCode;
             }
-                post.setPostCode(maxPostCode);
+            post.setPostCode(maxPostCode);
             postService.updateOrSave(post, null);
         } else {
             BeanUtils.copyProperties(postPojo,post);
