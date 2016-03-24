@@ -120,6 +120,7 @@ define(function(require, exports, module) {
 
                                 var  curProvincesCookieId = cookieJson.areaCode;
 
+                                console.log(roleType)
 
                                 switch (roleType){
                                     case 1:
