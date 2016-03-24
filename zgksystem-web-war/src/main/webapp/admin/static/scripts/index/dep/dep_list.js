@@ -55,10 +55,7 @@ define(function(require, exports, module) {
                 departmentName: formArry[0] || '',
                 departmentPhone: formArry[1] || '',
                 departmentFax: formArry[2] || '',
-                departmentPrincipal: formArry[3] || '',
-                departmentProvince: formArry[4] || '',
-                departmentCity: formArry[5] || '',
-                departmentCounty: formArry[6] || ''
+                departmentPrincipal: formArry[3] || ''
             };
 
             if (id) {
@@ -66,7 +63,20 @@ define(function(require, exports, module) {
             } else {
                 departmentJson.parentCode = parentCode;
             }
-
+            var cookieJson = JSON.parse($.cookie('userInfo'));
+            var roleType = cookieJson.roleType;
+            switch (roleType){
+                case 1:
+                    departmentJson.areaCode = formArry[4];
+                    break;
+                case 2:
+                    departmentJson.areaCode = formArry[5];
+                    break;
+                case 3:
+                    departmentJson.areaCode = formArry[6];
+                    break;
+                default:
+            }
             $.ajax({
                 type: 'post',
                 url: '/system/department/addOrEditDepartment?token=' + token,
