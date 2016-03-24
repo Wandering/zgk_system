@@ -39,7 +39,9 @@ selectList
         creator,
         createDate,
         lastModDate,
-        lastModifier
+        lastModifier,
+        roleType,
+        areaCode
     </sql>
     <insert id="insert" parameterType="UserInfo">
         INSERT INTO k12system_user_info (

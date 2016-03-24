@@ -69,6 +69,8 @@ public class EXLoginServiceImpl implements IEXLoginService{
         userPojo.setPhone(userInfo.getPhone());
         userPojo.setPostCode(userInfo.getPostCode());
         userPojo.setDepartmentCode(userInfo.getDepartmentCode());
+        userPojo.setAreaCode(userInfo.getAreaCode());
+        userPojo.setRoleType(userInfo.getRoleType());
 
         userPojo.setAccountCode(userAccount.getAccountCode());
         userPojo.setLoginNumber(userAccount.getLoginNumber());

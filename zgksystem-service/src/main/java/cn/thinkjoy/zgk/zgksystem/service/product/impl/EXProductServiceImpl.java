@@ -85,13 +85,8 @@ public class EXProductServiceImpl implements IEXProductService {
         Map<String,Object> dataMap = new HashMap<>();
         dataMap.put("status", Constants.NORMAL_STATUS);
         if(IdentityUtil.ADMIN_MANAGER_POST!=userPojo.getPostCode() && IdentityUtil.SYSTEM_MANAGER_POST!=userPojo.getPostCode() && IdentityUtil.PRODUCT_MANAGER_POST!=userPojo.getPostCode()){
-            Map<String,Object> departmentMap=new HashMap<>();
-            departmentMap.put("departmentCode",userPojo.getDepartmentCode());
-            Department department=(Department)departmentService.queryOne(departmentMap);
-            Map<String,Object> companyMap=new HashMap<>();
-            companyMap.put("companyCode",department.getCompanyCode());
-            Company company=(Company)companyService.queryOne(companyMap);
-            dataMap.put("productCode",company.getProductCode());
+            String userCode = String.valueOf(userPojo.getAccountCode());
+            dataMap.put("productCode",userCode.substring(0, 2));
         }
         List<Product> listProduct = productService.queryList(dataMap, CodeFactoryUtil.ORDER_BY_FIELD, "DESC");
         for(Product p :listProduct){
