@@ -11,16 +11,16 @@ define(function(require, exports, module) {
             data: 'id'
         }, {
             data: 'departmentName',
-            title: '部门名称'
+            title: '代理商名称'
         }, {
             data: 'departmentPhone',
-            title: '部门电话'
+            title: '代理商电话'
         }, {
             data: 'departmentFax',
-            title: '部门传真'
+            title: '代理商传真'
         }, {
             data: 'departmentPrincipal',
-            title: '部门负责人'
+            title: '代理商负责人'
         }
 
         ];
@@ -99,6 +99,7 @@ define(function(require, exports, module) {
             });
         };
 
+
         var ButtonEvent = {
             add: function(elementId) {
                 $('#' + elementId).off('click');
@@ -109,7 +110,7 @@ define(function(require, exports, module) {
                     $.get('../tmpl/dep/dep_form.html', function(tmpl) {
                         require('dialog');
                         $("#add_dep").dialog({
-                            title: "新增部门",
+                            title: "新增代理商",
                             tmpl: tmpl,
                             onClose: function() {
                                 $("#add_dep").dialog("destroy");
@@ -223,7 +224,7 @@ define(function(require, exports, module) {
                             $.get('../tmpl/dep/dep_form.html', function(tmpl) {
                                 require('dialog');
                                 $("#add_dep").dialog({
-                                    title: "修改部门",
+                                    title: "修改代理商",
                                     tmpl: tmpl,
                                     onClose: function() {
                                         $("#add_dep").dialog("destroy");
@@ -349,7 +350,7 @@ define(function(require, exports, module) {
                     var anSelected = Table.fnGetSelected(tableObj);
                     if (anSelected.length !== 0) {
                         var aData = tableObj.fnGetData(anSelected[0]);
-                        var str = '确认删除部门' + aData.departmentName;
+                        var str = '确认删除代理商' + aData.departmentName;
                         message({
                             title: '温馨提示',
                             msg: str,

@@ -22,7 +22,7 @@ define(function(require, exports, module) {
     function validateForm(callback, flag) {
         var position_name = $('#position_name').val();
         if (!position_name) {
-            tip($('#position_name').parent().parent(), '请选择岗位名称');
+            tip($('#position_name').parent().parent(), '请选择代理商名称');
             return;
         }
         var name = $('#employee_name').val().trim();

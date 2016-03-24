@@ -36,7 +36,7 @@ define(function(require, exports, module) {
             });
         };
         /**
-         * 获取所有一级部门
+         * 获取所有一级代理商
          */
         $.get('/system/department/queryTreeDepartmentAll?token=' + token, function(data) {
             if ('0000000' === data.rtnCode) {

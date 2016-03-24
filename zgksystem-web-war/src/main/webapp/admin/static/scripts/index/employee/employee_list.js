@@ -137,14 +137,14 @@ define(function(require, exports, module) {
                                 $.get('../tmpl/employee/employee_form.html', function(tmpl) {
                                     require('dialog');
                                     $("#add_employee").dialog({
-                                        title: "新增人员",
+                                        title: "新增账号",
                                         tmpl: tmpl,
                                         onClose: function() {
                                             $("#add_employee").dialog("destroy");
                                         },
                                         render: function() {
                                             var str = [];
-                                            str.push('<option>请选择岗位...</option>');
+                                            str.push('<option>请选择代理商...</option>');
                                             for (var key in comboxData) {
                                                 str.push('<option value="' + key + '">' + comboxData[key] + '</option>');
                                             };
@@ -189,7 +189,7 @@ define(function(require, exports, module) {
                                     });
                                 })
                             } else {
-                                var tipOne = '部门【' + parentCode.name + '】下没有岗位，请先添加该部门下的岗位信息';
+                                var tipOne = '代理商【' + parentCode.name + '】下没有岗位，请先添加该代理商下的岗位信息';
                                 message({
                                     title:'温馨提示',
                                     msg:tipOne,
@@ -197,7 +197,7 @@ define(function(require, exports, module) {
                                 });
                             }
                         } else {
-                            var tipOne = '部门【' + parentCode.name + '】下没有岗位，请先添加该部门下的岗位信息';
+                            var tipOne = '代理商【' + parentCode.name + '】下没有岗位，请先添加该代理商下的岗位信息';
                             message({
                                 title:'温馨提示',
                                 msg:tipOne,
@@ -223,7 +223,7 @@ define(function(require, exports, module) {
                             $.get('../tmpl/employee/employee_form.html', function(tmpl) {
                                 require('dialog');
                                 $("#add_employee").dialog({
-                                    title: "修改人员",
+                                    title: "修改账号",
                                     tmpl: tmpl,
                                     onClose: function() {
                                         $("#add_employee").dialog("destroy");
@@ -297,7 +297,7 @@ define(function(require, exports, module) {
                     if (anSelected.length !== 0) {
                         var aData = tableObj.fnGetData(anSelected[0]);
                         //console.log(aData);
-                        var str = '确认删除人员' + aData.userName;
+                        var str = '确认删除账号' + aData.userName;
                         message({
                             title:'温馨提示',
                             msg:str,
