@@ -251,6 +251,7 @@ define(function(require, exports, module) {
                                                         $('#dep_provinces').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].provinceName +'</option>')
                                                     }
                                                 });
+                                                $('#dep_leading').val(data.bizData.areaCode);
                                                 break;
                                             case 2:
                                                 curProvincesCookieId = curProvincesCookieId+"0000";
