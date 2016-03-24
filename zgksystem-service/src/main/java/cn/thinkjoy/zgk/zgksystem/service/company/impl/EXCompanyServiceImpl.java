@@ -98,12 +98,9 @@ public class EXCompanyServiceImpl implements IEXCompanyService{
         dataMap.put("status", statusMap);
         dataMap.put("productCode",productMap);
         if(IdentityUtil.ADMIN_MANAGER_POST!=userPojo.getPostCode() && IdentityUtil.SYSTEM_MANAGER_POST!=userPojo.getPostCode() && IdentityUtil.PRODUCT_MANAGER_POST!=userPojo.getPostCode()){
-            Map<String,Object> departmentMap=new HashMap<>();
-            departmentMap.put("departmentCode",userPojo.getDepartmentCode());
-            Department department=(Department)departmentService.queryOne(departmentMap);
             Map<String,Object> companyMap=new HashMap<>();
             companyMap.put("op"," = ");
-            companyMap.put("data",department.getCompanyCode());
+            companyMap.put("data", userPojo.getAccountCode().toString().substring(0,5));
             dataMap.put("companyCode",companyMap);
         }
         int count = companyService.count(dataMap);
