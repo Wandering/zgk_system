@@ -210,7 +210,10 @@ public class DepartmentController {
         //当前用户的岗位code
         UserPojo userPojo=(UserPojo)HttpUtil.getSession(request,"user");
         Long userDepartmentCode=userPojo.getDepartmentCode();
-        Long parentCode=Long.parseLong(HttpUtil.getParameter(request, "parentCode", String.valueOf(userDepartmentCode)));
+        long parentCode=userDepartmentCode;
+        if (userDepartmentCode==-1){
+            return departmentService.recursionTreeAll(parentCode);
+        }
         return departmentService.recursionTree(parentCode);
     }
 
