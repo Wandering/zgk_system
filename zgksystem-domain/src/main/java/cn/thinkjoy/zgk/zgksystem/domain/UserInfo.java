@@ -28,7 +28,8 @@ public class UserInfo extends CreateBaseDomain<Long>{
     private Date birthday;
     private Integer seqSort;
     private String description;
-
+    private Integer roleType;
+    private String areaCode;
 	public UserInfo(){
 	}
     public void setUserCode(Long value) {
@@ -103,7 +104,23 @@ public class UserInfo extends CreateBaseDomain<Long>{
         return this.description;
     }
 
-	public String toString() {
+    public Integer getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(Integer roleType) {
+        this.roleType = roleType;
+    }
+
+    public String getAreaCode() {
+        return areaCode;
+    }
+
+    public void setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
+    }
+
+    public String toString() {
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
 			.append("Id",getId())
 			.append("UserCode",getUserCode())
@@ -121,6 +138,8 @@ public class UserInfo extends CreateBaseDomain<Long>{
 			.append("CreateDate",getCreateDate())
 			.append("LastModDate",getLastModDate())
 			.append("LastModifier",getLastModifier())
+			.append("RoleType",getRoleType())
+			.append("AreaCode",getAreaCode())
 			.toString();
 	}
 	
