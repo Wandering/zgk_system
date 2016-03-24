@@ -4,6 +4,9 @@
 define(function(require, exports, module) {
     var Tool = require('../tools.js');
 
+
+
+
     function tip(ele, str) {
         var errorLable = ele.find('p');
         errorLable.html(str);

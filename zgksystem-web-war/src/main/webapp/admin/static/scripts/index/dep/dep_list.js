@@ -76,6 +76,7 @@ define(function(require, exports, module) {
                 },
                 dataType: 'json',
                 success: function(data) {
+                    console.log(data)
                     succCallback(data);
 
                 },
@@ -102,36 +103,51 @@ define(function(require, exports, module) {
                                 $("#add_dep").dialog("destroy");
                             },
                             render: function() {
+                                var cookieJson = JSON.parse($.cookie('userInfo'));
+                                var roleType = cookieJson.roleType;
+                                console.log(cookieJson)
 
-                                // 省份
-                                $.getJSON('/system/dataDictionary/findProvinceList?token=' + token,function(res){
-                                    console.log(res)
-                                    for(var i=0;i<res.bizData.length;i++){
-                                        $('#dep_provinces').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].provinceName +'</option>')
-                                    }
-                                });
+                                var  curProvincesCookieId = cookieJson.areaCode;
 
 
-                                $('#dep_provinces').change(function(){
-                                    var selProvincesV = $(this).find("option:selected").val();
-                                    // 市
-                                    $.getJSON('/system/dataDictionary/findCityList?token=' + token + '&provinceId='+selProvincesV,function(res){
-                                        console.log(res)
-                                        for(var i=0;i<res.bizData.length;i++){
-                                            $('#dep_city').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].cityName +'</option>')
-                                        }
-                                    });
-                                });
-                                $('#dep_city').change(function(){
-                                    var selCity = $(this).find("option:selected").val();
-                                    // 市
-                                    $.getJSON('/system/dataDictionary/findCountyList?token=' + token + '&cityId='+selCity,function(res){
-                                        console.log(res)
-                                        for(var i=0;i<res.bizData.length;i++){
-                                            $('#dep_county').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].countyName +'</option>')
-                                        }
-                                    });
-                                });
+                                switch (roleType){
+                                    case 1:
+                                        $('#dep_provinces_from').show();
+                                        $('#dep_city_from,#dep_county_from').hide();
+                                        // 省份
+                                        $.getJSON('/system/dataDictionary/findProvinceList?token=' + token,function(res){
+                                            console.log(res)
+                                            for(var i=0;i<res.bizData.length;i++){
+                                                $('#dep_provinces').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].provinceName +'</option>')
+                                            }
+                                        });
+                                        break;
+                                    case 2:
+                                        curProvincesCookieId = curProvincesCookieId+"0000";
+                                        $('#dep_city_from').show();
+                                        $('#dep_provinces_from,#dep_county_from').hide();
+                                        $.getJSON('/system/dataDictionary/findCityList?token=' + token + '&provinceId='+curProvincesCookieId,function(res){
+                                            console.log(res)
+                                            for(var i=0;i<res.bizData.length;i++){
+                                                $('#dep_city').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].cityName +'</option>')
+                                            }
+                                        });
+                                        break;
+                                    case 3:
+                                        curProvincesCookieId = curProvincesCookieId+"00";
+                                        $('#dep_county_from').show();
+                                        $('#dep_provinces_from,#dep_city_from').hide();
+                                        // 市
+                                        $.getJSON('/system/dataDictionary/findCountyList?token=' + token + '&cityId='+curProvincesCookieId,function(res){
+                                            console.log(res)
+                                            for(var i=0;i<res.bizData.length;i++){
+                                                $('#dep_county').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].countyName +'</option>')
+                                            }
+                                        });
+                                        break;
+                                    default:
+
+                                }
 
                             },
                             buttons: [{
