@@ -146,7 +146,6 @@ define(function(require, exports, module) {
                                         });
                                         break;
                                     default:
-
                                 }
 
                             },
@@ -222,6 +221,63 @@ define(function(require, exports, module) {
                                         $('#dep_telephone').val(data.bizData.departmentPhone);
                                         $('#dep_fax').val(data.bizData.departmentFax);
                                         $('#dep_leading').val(data.bizData.departmentPrincipal);
+
+
+                                        var cookieJson = JSON.parse($.cookie('userInfo'));
+                                        var roleType = cookieJson.roleType;
+                                        console.log(cookieJson)
+
+                                        var  curProvincesCookieId = cookieJson.areaCode;
+
+
+                                        switch (roleType){
+                                            case 1:
+                                                $('#dep_provinces_from').show();
+                                                $('#dep_city_from,#dep_county_from').hide();
+                                                // 省份
+                                                $.getJSON('/system/dataDictionary/findProvinceList?token=' + token,function(res){
+                                                    console.log(res)
+                                                    for(var i=0;i<res.bizData.length;i++){
+                                                        $('#dep_provinces').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].provinceName +'</option>')
+                                                    }
+                                                });
+                                                break;
+                                            case 2:
+                                                curProvincesCookieId = curProvincesCookieId+"0000";
+                                                $('#dep_city_from').show();
+                                                $('#dep_provinces_from,#dep_county_from').hide();
+                                                $.getJSON('/system/dataDictionary/findCityList?token=' + token + '&provinceId='+curProvincesCookieId,function(res){
+                                                    console.log(res)
+                                                    for(var i=0;i<res.bizData.length;i++){
+                                                        $('#dep_city').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].cityName +'</option>')
+                                                    }
+                                                });
+                                                break;
+                                            case 3:
+                                                curProvincesCookieId = curProvincesCookieId+"00";
+                                                $('#dep_county_from').show();
+                                                $('#dep_provinces_from,#dep_city_from').hide();
+                                                // 市
+                                                $.getJSON('/system/dataDictionary/findCountyList?token=' + token + '&cityId='+curProvincesCookieId,function(res){
+                                                    console.log(res)
+                                                    for(var i=0;i<res.bizData.length;i++){
+                                                        $('#dep_county').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].countyName +'</option>')
+                                                    }
+                                                });
+                                                break;
+                                            default:
+                                        }
+
+
+
+
+
+
+
+
+
+
+
                                         //$('#dep_provinces').val(data.bizData.departmentProvince);
                                         //$('#dep_city').val(data.bizData.dep_city);
                                         //$('#dep_county').val(data.bizData.dep_county);
