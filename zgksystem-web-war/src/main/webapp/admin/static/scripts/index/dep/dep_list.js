@@ -21,16 +21,9 @@ define(function(require, exports, module) {
         }, {
             data: 'departmentPrincipal',
             title: '部门负责人'
-        }, {
-            data: 'departmentProvince',
-            title: '选择省份'
-        }, {
-            data: 'departmentCity',
-            title: '选择市'
-        }, {
-            data: 'departmentCounty',
-            title: '选择区/县'
-        }];
+        }
+
+        ];
 
         var columnDefs = [{
             "bVisible": false,
@@ -84,6 +77,7 @@ define(function(require, exports, module) {
                 dataType: 'json',
                 success: function(data) {
                     succCallback(data);
+
                 },
                 beforeSend: function(xhr) {},
                 error: function(data) {
@@ -108,6 +102,37 @@ define(function(require, exports, module) {
                                 $("#add_dep").dialog("destroy");
                             },
                             render: function() {
+
+                                // 省份
+                                $.getJSON('/system/dataDictionary/findProvinceList?token=' + token,function(res){
+                                    console.log(res)
+                                    for(var i=0;i<res.bizData.length;i++){
+                                        $('#dep_provinces').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].provinceName +'</option>')
+                                    }
+                                });
+
+
+                                $('#dep_provinces').change(function(){
+                                    var selProvincesV = $(this).find("option:selected").val();
+                                    // 市
+                                    $.getJSON('/system/dataDictionary/findCityList?token=' + token + '&provinceId='+selProvincesV,function(res){
+                                        console.log(res)
+                                        for(var i=0;i<res.bizData.length;i++){
+                                            $('#dep_city').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].cityName +'</option>')
+                                        }
+                                    });
+                                });
+                                $('#dep_city').change(function(){
+                                    var selCity = $(this).find("option:selected").val();
+                                    // 市
+                                    $.getJSON('/system/dataDictionary/findCountyList?token=' + token + '&cityId='+selCity,function(res){
+                                        console.log(res)
+                                        for(var i=0;i<res.bizData.length;i++){
+                                            $('#dep_county').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].countyName +'</option>')
+                                        }
+                                    });
+                                });
+
                             },
                             buttons: [{
                                 text: "新增",
@@ -166,6 +191,7 @@ define(function(require, exports, module) {
                     var aData = tableObj.fnGetData(anSelected[0]);
                     //console.log(aData)
                     $.get('/system/department/getDepartment?id=' + aData.id + '&token=' + token, function(data) {
+                        console.log(data)
                         if ('0000000' === data.rtnCode) {
                             $.get('../tmpl/dep/dep_form.html', function(tmpl) {
                                 require('dialog');
@@ -180,9 +206,9 @@ define(function(require, exports, module) {
                                         $('#dep_telephone').val(data.bizData.departmentPhone);
                                         $('#dep_fax').val(data.bizData.departmentFax);
                                         $('#dep_leading').val(data.bizData.departmentPrincipal);
-                                        $('#dep_provinces').val(data.bizData.departmentProvince);
-                                        $('#dep_city').val(data.bizData.dep_city);
-                                        $('#dep_county').val(data.bizData.dep_county);
+                                        //$('#dep_provinces').val(data.bizData.departmentProvince);
+                                        //$('#dep_city').val(data.bizData.dep_city);
+                                        //$('#dep_county').val(data.bizData.dep_county);
                                     },
                                     buttons: [{
                                         text: "修改",
@@ -265,7 +291,6 @@ define(function(require, exports, module) {
                 });
             }
         };
-
         require.async('../renderResource', function(resource) {
             resource(ButtonEvent, token);
         });
