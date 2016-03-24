@@ -50,6 +50,8 @@ define(function(require, exports, module) {
             }, 2000);
         };
 
+
+
         var addOrUpdateDepartment = function(formArry, succCallback, id) {
             var departmentJson = {
                 departmentName: formArry[0] || '',
@@ -115,7 +117,6 @@ define(function(require, exports, module) {
                             render: function() {
                                 var cookieJson = JSON.parse($.cookie('userInfo'));
                                 var roleType = cookieJson.roleType;
-                                console.log(cookieJson)
 
                                 var  curProvincesCookieId = cookieJson.areaCode;
 
@@ -232,16 +233,15 @@ define(function(require, exports, module) {
                                         $('#dep_fax').val(data.bizData.departmentFax);
                                         $('#dep_leading').val(data.bizData.departmentPrincipal);
 
+                                        // 修改
+                                        var roleType = data.bizData.roleType;
 
-                                        var cookieJson = JSON.parse($.cookie('userInfo'));
-                                        var roleType = cookieJson.roleType;
-                                        console.log(cookieJson)
+                                        var updateProvincesId = data.bizData.areaCode;
 
-                                        var  curProvincesCookieId = cookieJson.areaCode;
 
 
                                         switch (roleType){
-                                            case 1:
+                                            case "2":
                                                 $('#dep_provinces_from').show();
                                                 $('#dep_city_from,#dep_county_from').hide();
                                                 // 省份
@@ -250,22 +250,23 @@ define(function(require, exports, module) {
                                                     for(var i=0;i<res.bizData.length;i++){
                                                         $('#dep_provinces').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].provinceName +'</option>')
                                                     }
+                                                    $('#dep_provinces').find('option[value="'+ updateProvincesId +'0000"]').attr('selected',true);
                                                 });
-                                                $('#dep_leading').val(data.bizData.areaCode);
                                                 break;
-                                            case 2:
-                                                curProvincesCookieId = curProvincesCookieId+"0000";
+                                            case "3":
+                                                var curProvincesId = updateProvincesId.substring(0,2)+"0000";
                                                 $('#dep_city_from').show();
                                                 $('#dep_provinces_from,#dep_county_from').hide();
-                                                $.getJSON('/system/dataDictionary/findCityList?token=' + token + '&provinceId='+curProvincesCookieId,function(res){
+                                                $.getJSON('/system/dataDictionary/findCityList?token=' + token + '&provinceId='+curProvincesId,function(res){
                                                     console.log(res)
                                                     for(var i=0;i<res.bizData.length;i++){
                                                         $('#dep_city').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].cityName +'</option>')
                                                     }
+                                                    $('#dep_city').find('option[value="'+ updateProvincesId +'00"]').attr('selected',true);
                                                 });
                                                 break;
-                                            case 3:
-                                                curProvincesCookieId = curProvincesCookieId+"00";
+                                            case "4":
+                                                var curProvincesCookieId = curProvincesCookieId+"00";
                                                 $('#dep_county_from').show();
                                                 $('#dep_provinces_from,#dep_city_from').hide();
                                                 // 市
