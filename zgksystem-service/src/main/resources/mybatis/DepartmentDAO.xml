@@ -42,6 +42,8 @@ selectList
         roleType,
         areaCode
     </sql>
+
+
     <insert id="insert" parameterType="Department">
         INSERT INTO k12system_department (
         departmentCode,

@@ -5,11 +5,13 @@ import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.zgk.zgksystem.common.ERRORCODE;
 import cn.thinkjoy.zgk.zgksystem.common.HttpUtil;
 import cn.thinkjoy.zgk.zgksystem.common.Page;
+import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.domain.UserAccount;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserInfoService;
 import cn.thinkjoy.zgk.zgksystem.service.code.IEXCodeService;
+import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
 import cn.thinkjoy.zgk.zgksystem.util.CodeFactoryUtil;
 import cn.thinkjoy.zgk.zgksystem.util.Constants;
 import cn.thinkjoy.zgk.zgksystem.util.IdentityUtil;
@@ -50,6 +52,9 @@ public class UserInfoController {
 
     @Autowired
     private IEXCodeService excodeService;
+
+    @Autowired
+    private IDepartmentService departmentService;
     /**
      * 登录账户验证
      */
@@ -108,6 +113,12 @@ public class UserInfoController {
             u.setPhone(userPojo.getPhone());
             u.setUserCode(maxUserInfoCode);
             u.setId(userPojo.getUserInfoId());
+            Department department = (Department) departmentService.findOne("departmentCode",userPojo.getDepartmentCode());
+            if(null != department)
+            {
+                u.setAreaCode(department.getAreaCode());
+                u.setRoleType(Integer.parseInt(department.getRoleType()));
+            }
             userInfoService.updateOrSave(u, null);
 
             UserAccount account =new UserAccount();
