@@ -9,5 +9,14 @@
     <select id="findSchoolList" resultType="School">
         SELECT id,xxmc as schoolName from microschool.xxjbxx WHERE xzq_id=#{areaId};
     </select>
+    <select id="findProvinceList" resultType="Province">
+        SELECT id,name as provinceName from zgk_province WHERE status=0;
+    </select>
+    <select id="findCityList" resultType="City">
+        SELECT id,name as cityName,provinceId from zgk_city WHERE status=0 and provinceId=#{provinceId};
+    </select>
+    <select id="findCountyList" resultType="County">
+        SELECT id,name as countyName,cityId from zgk_county WHERE status=0 and cityId=#{cityId};
+    </select>
 </mapper>
 

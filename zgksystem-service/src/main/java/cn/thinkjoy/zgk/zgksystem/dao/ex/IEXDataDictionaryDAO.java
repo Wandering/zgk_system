@@ -1,7 +1,6 @@
 package cn.thinkjoy.zgk.zgksystem.dao.ex;
 
-import cn.thinkjoy.zgk.zgksystem.domain.Area;
-import cn.thinkjoy.zgk.zgksystem.domain.School;
+import cn.thinkjoy.zgk.zgksystem.domain.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,4 +21,8 @@ public interface IEXDataDictionaryDAO {
      * @return
      */
     List<School> findSchoolList(@Param("areaId") Long areaId);
+
+    List<Province> findProvinceList();
+    List<City> findCityList(@Param("provinceId") Long provinceId);
+    List<County> findCountyList(@Param("cityId") Long cityId);
 }

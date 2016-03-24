@@ -2,8 +2,7 @@ package cn.thinkjoy.zgk.zgksystem.controller;
 
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.zgk.zgksystem.common.ERRORCODE;
-import cn.thinkjoy.zgk.zgksystem.domain.Area;
-import cn.thinkjoy.zgk.zgksystem.domain.School;
+import cn.thinkjoy.zgk.zgksystem.domain.*;
 import cn.thinkjoy.zgk.zgksystem.service.dataDictionary.IDataDictionaryService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +34,30 @@ public class DataDictionaryController {
     public List<Area> findAreaList(HttpServletRequest request){
         List<Area> areas = iDataDictionaryService.findAreaList();
         return areas;
+    }
+
+    @RequestMapping(value = "findProvinceList",method = RequestMethod.GET)
+    @ResponseBody
+    public List<Province> findProvinceList(){
+        return iDataDictionaryService.findProvinceList();
+    }
+    @RequestMapping(value = "findCityList",method = RequestMethod.GET)
+    @ResponseBody
+    public List<City> findCityList(HttpServletRequest request){
+        String provinceId = request.getParameter("provinceId");
+        if(StringUtils.isBlank(provinceId)){
+            throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(),ERRORCODE.PARAM_ISNULL.getMessage());
+        }
+        return iDataDictionaryService.findCityList(Long.valueOf(provinceId));
+    }
+    @RequestMapping(value = "findCountyList",method = RequestMethod.GET)
+    @ResponseBody
+    public List<County> findCountyList(HttpServletRequest request){
+        String cityId = request.getParameter("cityId");
+        if(StringUtils.isBlank(cityId)){
+            throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(),ERRORCODE.PARAM_ISNULL.getMessage());
+        }
+        return iDataDictionaryService.findCountyList(Long.valueOf(cityId));
     }
 
     /**

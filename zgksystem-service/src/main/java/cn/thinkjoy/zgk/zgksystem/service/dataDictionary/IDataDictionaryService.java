@@ -1,7 +1,6 @@
 package cn.thinkjoy.zgk.zgksystem.service.dataDictionary;
 
-import cn.thinkjoy.zgk.zgksystem.domain.Area;
-import cn.thinkjoy.zgk.zgksystem.domain.School;
+import cn.thinkjoy.zgk.zgksystem.domain.*;
 
 import java.util.List;
 
@@ -20,4 +19,8 @@ public interface IDataDictionaryService {
      * @return
      */
     List<School> findSchoolList(Long areaId);
+
+    List<Province> findProvinceList();
+    List<City> findCityList(Long provinceId);
+    List<County> findCountyList(Long cityId);
 }
