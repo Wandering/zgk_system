@@ -2,6 +2,7 @@ package cn.thinkjoy.zgk.zgksystem.controller;
 
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
+import cn.thinkjoy.zgk.zgksystem.PostApiService;
 import cn.thinkjoy.zgk.zgksystem.common.ERRORCODE;
 import cn.thinkjoy.zgk.zgksystem.common.HttpUtil;
 import cn.thinkjoy.zgk.zgksystem.common.Page;
@@ -69,6 +70,9 @@ public class DepartmentController {
 
     @Autowired
     private IRolePostService rolePostService;
+
+    @Autowired
+    private PostApiService postApiService;
 
     private static Logger LOGGER = LoggerFactory.getLogger(DepartmentController.class);
     /**
@@ -316,7 +320,16 @@ public class DepartmentController {
         rp.setPostCode(rolePost.getPostCode());
         rp.setRoleCode(rolePost.getRoleCode());
         rp.setStatus(Constants.NORMAL_STATUS);
-        rolePostService.updateOrSave(rp,null);
+        rolePostService.updateOrSave(rp, null);
+        if (roleCode.equals("1")||roleCode.equals("2")||roleCode.equals("3")) {
+            distributionSystemCode(rp.getPostCode(), 1L);
+        }
+        distributionSystemCode(rp.getPostCode(),2L);
+        return "ok";
+    }
+
+    private String distributionSystemCode(long postCode,long systemCode){
+        postApiService.postSystemAuthority(postCode,systemCode);
         return "ok";
     }
 
