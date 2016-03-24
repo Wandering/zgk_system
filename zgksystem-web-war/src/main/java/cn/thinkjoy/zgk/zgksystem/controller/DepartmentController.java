@@ -292,10 +292,16 @@ public class DepartmentController {
     }
 
     private String distributionRole(Post post,String roleCode){
-        RolePost rolePost=null;
+        RolePost rolePost=new RolePost();
         rolePost.setPostCode(post.getPostCode());
-        rolePost.setRoleCode(Long.valueOf(roleCode));
-        rolePost =  new RolePost();
+        Long roleCodeLong=0L;
+        switch (roleCode){
+            case "1":roleCodeLong=10L;break;
+            case "2":roleCodeLong=11L;break;
+            case "3":roleCodeLong=12L;break;
+            case "4":roleCodeLong=13L;break;
+        }
+        rolePost.setRoleCode(roleCodeLong);
         Map<String,Object> dataMap = new HashMap<>();
         dataMap.put("postCode",rolePost.getPostCode());
         dataMap.put("status", Constants.NORMAL_STATUS);
