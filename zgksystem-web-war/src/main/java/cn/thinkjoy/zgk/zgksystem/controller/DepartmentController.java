@@ -105,9 +105,18 @@ public class DepartmentController {
             d.setDepartmentPrincipal(department.getDepartmentPrincipal());
             d.setSeqSort(department.getSeqSort());
             d.setStatus(Constants.NORMAL_STATUS);
-            //新增
-            d.setAreaCode(department.getAreaCode());
-//            d.setRoleType(userPojo.getRoleType());
+            String areaCode="";
+            if (userPojo.getRoleType().equals(1)){
+                areaCode=department.getAreaCode().substring(0,2);
+            } else if (userPojo.getRoleType().equals(2)){
+                areaCode=department.getAreaCode().substring(0,4);
+            } else if (userPojo.getRoleType().equals(3)){
+                areaCode=department.getAreaCode().substring(0,6);
+            } else {
+                throw  new BizException(ERRORCODE.INSERT_ERROR.getCode(),ERRORCODE.INSERT_ERROR.getMessage());
+            }
+            d.setAreaCode(areaCode);
+            d.setRoleType(String.valueOf(userPojo.getRoleType()+1));
             Long maxDepartmentCode=excodeService.selectMaxCodeByParent(CodeFactoryUtil.DEPARTMENT_CODE,CodeFactoryUtil.DEPARTMENT_TABLE,CodeFactoryUtil.COMPANY_CODE, temp.getCompanyCode());
             if(maxDepartmentCode==null||maxDepartmentCode==0){
                 maxDepartmentCode= CodeFactoryUtil.getInitDepartment(temp.getCompanyCode());//部门Code初始生成规则 所属公司信息的Code*1000+1
