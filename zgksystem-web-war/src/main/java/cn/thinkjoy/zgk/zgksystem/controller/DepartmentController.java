@@ -1,27 +1,30 @@
 package cn.thinkjoy.zgk.zgksystem.controller;
 
 import cn.thinkjoy.common.exception.BizException;
+import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.zgk.zgksystem.common.ERRORCODE;
 import cn.thinkjoy.zgk.zgksystem.common.HttpUtil;
 import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.common.TreeBean;
-import cn.thinkjoy.zgk.zgksystem.domain.Department;
-import cn.thinkjoy.zgk.zgksystem.domain.Post;
-import cn.thinkjoy.zgk.zgksystem.domain.UserAccount;
-import cn.thinkjoy.zgk.zgksystem.domain.UserInfo;
+import cn.thinkjoy.zgk.zgksystem.domain.*;
 import cn.thinkjoy.zgk.zgksystem.common.TreePojo;
+import cn.thinkjoy.zgk.zgksystem.pojo.PostPojo;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserInfoService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
+import cn.thinkjoy.zgk.zgksystem.service.post.IEXPostDataauthorityService;
+import cn.thinkjoy.zgk.zgksystem.service.post.IPostDataauthorityService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IPostService;
 import cn.thinkjoy.zgk.zgksystem.service.code.IEXCodeService;
+import cn.thinkjoy.zgk.zgksystem.service.role.IRolePostService;
 import cn.thinkjoy.zgk.zgksystem.util.CodeFactoryUtil;
 import cn.thinkjoy.zgk.zgksystem.util.Constants;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.jlusoft.microschool.core.utils.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,6 +61,15 @@ public class DepartmentController {
     @Autowired
     private IEXCodeService excodeService;
 
+    @Autowired
+    private IEXPostDataauthorityService iexPostDataauthorityService;
+
+    @Autowired
+    private IPostDataauthorityService iPostDataauthorityService;
+
+    @Autowired
+    private IRolePostService rolePostService;
+
     private static Logger LOGGER = LoggerFactory.getLogger(DepartmentController.class);
     /**
      * 新增和修改部门
@@ -76,6 +88,8 @@ public class DepartmentController {
             throw  new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
         }
 
+        UserPojo userPojo=(UserPojo)HttpUtil.getSession(request,"user");
+
         Map<String,Object> dataMap = new HashMap<>();
         dataMap.put("departmentCode",department.getParentCode());
         dataMap.put("status", Constants.NORMAL_STATUS);//获取正常
@@ -91,6 +105,18 @@ public class DepartmentController {
             d.setDepartmentPrincipal(department.getDepartmentPrincipal());
             d.setSeqSort(department.getSeqSort());
             d.setStatus(Constants.NORMAL_STATUS);
+            String areaCode="";
+            if (userPojo.getRoleType().equals(1)){
+                areaCode=department.getAreaCode().substring(0,2);
+            } else if (userPojo.getRoleType().equals(2)){
+                areaCode=department.getAreaCode().substring(0,4);
+            } else if (userPojo.getRoleType().equals(3)){
+                areaCode=department.getAreaCode().substring(0,6);
+            } else {
+                throw  new BizException(ERRORCODE.INSERT_ERROR.getCode(),ERRORCODE.INSERT_ERROR.getMessage());
+            }
+            d.setAreaCode(areaCode);
+            d.setRoleType(String.valueOf(userPojo.getRoleType()+1));
             Long maxDepartmentCode=excodeService.selectMaxCodeByParent(CodeFactoryUtil.DEPARTMENT_CODE,CodeFactoryUtil.DEPARTMENT_TABLE,CodeFactoryUtil.COMPANY_CODE, temp.getCompanyCode());
             if(maxDepartmentCode==null||maxDepartmentCode==0){
                 maxDepartmentCode= CodeFactoryUtil.getInitDepartment(temp.getCompanyCode());//部门Code初始生成规则 所属公司信息的Code*1000+1
@@ -100,6 +126,7 @@ public class DepartmentController {
             d.setDepartmentCode(maxDepartmentCode);
 
             departmentService.updateOrSave(d, null);
+            addPost(d);
             return d;
         }else{
             departmentService.updateOrSave(department, department.getId());
@@ -231,6 +258,60 @@ public class DepartmentController {
                 recursionDelDeparment(d.getDepartmentCode());
             }
         }
+    }
+
+    private String addPost(Department department){
+        PostPojo postPojo = new PostPojo();
+        postPojo.setDepartmentCode(department.getDepartmentCode());
+        postPojo.setPostName(department.getDepartmentName());
+        postPojo.setDescription(department.getDescription());
+        postPojo.setSeqSort(department.getSeqSort());
+        postPojo.setStatus(department.getStatus());
+        Post post = new Post();
+        if (postPojo.getId() == null || postPojo.getId() == 0) {
+            post.setDepartmentCode(postPojo.getDepartmentCode());
+            post.setPostName(postPojo.getPostName());
+            post.setDescription(postPojo.getDescription());
+            post.setSeqSort(postPojo.getSeqSort());
+            post.setStatus(Constants.NORMAL_STATUS);
+            Long maxPostCode = excodeService.selectMaxCodeByParent(CodeFactoryUtil.POSITION_CODE,CodeFactoryUtil.POSITION_TABLE,CodeFactoryUtil.DEPARTMENT_CODE,post.getDepartmentCode());
+            if (maxPostCode == null || maxPostCode == 0) {
+                maxPostCode = CodeFactoryUtil.getInitPosition(postPojo.getDepartmentCode()) ;
+            } else {
+                ++maxPostCode;
+            }
+            post.setPostCode(maxPostCode);
+            postService.updateOrSave(post, null);
+            distributionRole(post,department.getRoleType());
+        } else {
+            BeanUtils.copyProperties(postPojo, post);
+            postService.updateOrSave(post, post.getId());
+            iexPostDataauthorityService.deleteByPost(post.getPostCode());
+        }
+        return "ok";
+    }
+
+    private String distributionRole(Post post,String roleCode){
+        RolePost rolePost=null;
+        rolePost.setPostCode(post.getPostCode());
+        rolePost.setRoleCode(Long.valueOf(roleCode));
+        rolePost =  new RolePost();
+        Map<String,Object> dataMap = new HashMap<>();
+        dataMap.put("postCode",rolePost.getPostCode());
+        dataMap.put("status", Constants.NORMAL_STATUS);
+        List<RolePost> rolePosts = rolePostService.queryList(dataMap, CodeFactoryUtil.ORDER_BY_FIELD, SqlOrderEnum.DESC.getAction());
+        if(rolePosts!=null && rolePosts.size()>0){
+            for (RolePost rp: rolePosts){
+                rp.setStatus(Constants.DELETEED_STATUS);//先删除原有的角色，后增加新选择的角色
+                rolePostService.update(rp);
+            }
+        }
+        RolePost rp=new RolePost();
+        rp.setPostCode(rolePost.getPostCode());
+        rp.setRoleCode(rolePost.getRoleCode());
+        rp.setStatus(Constants.NORMAL_STATUS);
+        rolePostService.updateOrSave(rp,null);
+        return "ok";
     }
 
 }
