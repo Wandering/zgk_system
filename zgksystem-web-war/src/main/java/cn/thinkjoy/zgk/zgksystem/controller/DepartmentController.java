@@ -79,7 +79,7 @@ public class DepartmentController {
         dataMap.put("departmentCode",department.getParentCode());
         dataMap.put("status", Constants.NORMAL_STATUS);//获取正常
         Department temp =(Department) departmentService.queryOne(dataMap);
-        if(department.getId()==null || department.getId()==0 ){
+        if(department.getId()==null || department.getId().equals(0) ){
             Department d=new Department();
             d.setCompanyCode(temp.getCompanyCode());
             d.setDepartmentName(department.getDepartmentName());

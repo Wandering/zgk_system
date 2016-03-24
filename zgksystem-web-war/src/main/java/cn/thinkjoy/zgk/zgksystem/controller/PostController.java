@@ -83,7 +83,7 @@ public class PostController {
             throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(), ERRORCODE.PARAM_ISNULL.getMessage());
         }
             Post post = new Post();
-            if (postPojo.getId() == null || postPojo.getId() == 0) {
+            if (postPojo.getId() == null || postPojo.getId().equals(0)) {
                 post.setDepartmentCode(postPojo.getDepartmentCode());
                 post.setPostName(postPojo.getPostName());
                 post.setDescription(postPojo.getDescription());

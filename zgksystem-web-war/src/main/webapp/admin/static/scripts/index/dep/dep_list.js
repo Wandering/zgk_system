@@ -21,6 +21,15 @@ define(function(require, exports, module) {
         }, {
             data: 'departmentPrincipal',
             title: '部门负责人'
+        }, {
+            data: 'departmentProvince',
+            title: '选择省份'
+        }, {
+            data: 'departmentCity',
+            title: '选择市'
+        }, {
+            data: 'departmentCounty',
+            title: '选择区/县'
         }];
 
         var columnDefs = [{
@@ -53,7 +62,10 @@ define(function(require, exports, module) {
                 departmentName: formArry[0] || '',
                 departmentPhone: formArry[1] || '',
                 departmentFax: formArry[2] || '',
-                departmentPrincipal: formArry[3] || ''
+                departmentPrincipal: formArry[3] || '',
+                departmentProvince: formArry[4] || '',
+                departmentCity: formArry[5] || '',
+                departmentCounty: formArry[6] || ''
             };
 
             if (id) {
@@ -168,6 +180,9 @@ define(function(require, exports, module) {
                                         $('#dep_telephone').val(data.bizData.departmentPhone);
                                         $('#dep_fax').val(data.bizData.departmentFax);
                                         $('#dep_leading').val(data.bizData.departmentPrincipal);
+                                        $('#dep_provinces').val(data.bizData.departmentProvince);
+                                        $('#dep_city').val(data.bizData.dep_city);
+                                        $('#dep_county').val(data.bizData.dep_county);
                                     },
                                     buttons: [{
                                         text: "修改",
