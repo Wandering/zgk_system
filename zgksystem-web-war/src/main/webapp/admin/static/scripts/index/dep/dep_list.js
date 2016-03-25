@@ -166,6 +166,7 @@ define(function(require, exports, module) {
                                 text: "新增",
                                 'class': "btn btn-primary",
                                 click: function() {
+                                    alert(5)
                                     var vali = require('./dep_form.js');
                                     vali.validate(function(formArry) {
                                         addOrUpdateDepartment(formArry, function(ret) {
@@ -176,10 +177,11 @@ define(function(require, exports, module) {
                                                     id: ret.bizData.departmentCode,
                                                     name: formArry[0]
                                                 };
-                                                treeCallback({
-                                                    type: 'add',
-                                                    obj: node
-                                                });
+                                                //treeCallback({
+                                                //    type: 'add',
+                                                //    obj: node
+                                                //});
+
                                                 $("#add_dep").dialog("destroy");
                                             } else {
                                                 $("#add_dep").dialog("destroy");

@@ -43,7 +43,7 @@ define(function(require, exports, module) {
                 var node = nodes[0];
                 var selectNode = Tree.treeObj.getNodeByParam('id', node.id, null);
                 Tree.treeObj.selectNode(selectNode);//默认选中第一个节点
-                Tree.treeObj.expandNode(selectNode, true, false, true);//默认打开第一个节点
+                //Tree.treeObj.expandNode(selectNode, true, false, true);//默认打开第一个节点
                 options.listGridModule(node, Tree.treeObj);
             } else {
                 options.err(data);
