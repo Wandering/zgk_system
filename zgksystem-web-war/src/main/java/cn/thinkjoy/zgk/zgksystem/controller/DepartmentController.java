@@ -211,6 +211,7 @@ public class DepartmentController {
         UserPojo userPojo=(UserPojo)HttpUtil.getSession(request,"user");
         Long userDepartmentCode=userPojo.getDepartmentCode();
         String type = request.getParameter("navType");
+        // TODO 这里好像有坑有坑有坑
         if (type!=null&&type.equals("2")){
             return departmentService.recursionTreeAll(userDepartmentCode);
         }

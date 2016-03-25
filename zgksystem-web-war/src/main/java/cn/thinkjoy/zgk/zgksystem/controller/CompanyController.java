@@ -129,12 +129,14 @@ public class CompanyController {
             Long  maxAccountCode= CodeFactoryUtil.getInitCompanyAccount(maxCompanyCode);
             UserInfo userInfo=new UserInfo();
             userInfo.setUserName(company.getUserName());
-            userInfo.setDepartmentCode((long) Constants.MANAGER_CODE);
+            userInfo.setDepartmentCode(department.getDepartmentCode());
             userInfo.setPostCode((long) IdentityUtil.COMPANY_MANAGER_POST);
             userInfo.setEmail(company.getEmail());
             userInfo.setPhone(company.getPhone());
             userInfo.setUserCode(maxAccountCode);
-            userInfoService.updateOrSave(userInfo,null);
+            userInfo.setAreaCode("00");
+            userInfo.setRoleType(1);
+            userInfoService.updateOrSave(userInfo, null);
             //创建产品同时创建公司管理员账户
             UserAccount userAccount=new UserAccount();
             userAccount.setLoginNumber(company.getLoginNumber());
