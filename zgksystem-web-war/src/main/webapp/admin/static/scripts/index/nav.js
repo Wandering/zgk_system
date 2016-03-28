@@ -198,7 +198,7 @@ define(function(require, exports, module) {
 						err: function(ret) {
 							Nav.getTreeDataError(ret, '请联系部门管理员添加岗位信息');
 						},
-						getTreeDataURL: '/system/department/queryTreeDepartmentAll?token=' + token,
+						getTreeDataURL: '/system/department/queryTreeDepartmentAll?token=' + token + "&navType=2",
 						listGridModule: listGridModule
 					};
 					module(options);

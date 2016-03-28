@@ -98,9 +98,9 @@ subprojects{
     }
 
     /** 有时候会报错，但需要执行 */
-    task createREADME(){
-        file("README.md").createNewFile()
-    }
+//    task createREADME(){
+//        file("README.md").createNewFile()
+//    }
 
     configurations {
         provided
