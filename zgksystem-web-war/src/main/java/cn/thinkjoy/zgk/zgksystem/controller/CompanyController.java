@@ -136,7 +136,8 @@ public class CompanyController {
             userInfo.setUserCode(maxAccountCode);
             String areaCode;
             if (userPojo.getRoleType().equals(1)){
-                areaCode=department.getAreaCode().substring(0,2);
+//                areaCode=department.getAreaCode().substring(0,2);
+                areaCode="00";
             } else if (userPojo.getRoleType().equals(2)){
                 areaCode=department.getAreaCode().substring(0,4);
             } else if (userPojo.getRoleType().equals(3)){
