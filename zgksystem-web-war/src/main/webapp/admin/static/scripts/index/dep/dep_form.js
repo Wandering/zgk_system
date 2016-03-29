@@ -35,13 +35,11 @@ define(function(require, exports, module) {
             tip($('#dep_telephone').parent().parent(), '代理商电话输入格式错误');
             return;
         }
-
         var fax = $('#dep_fax').val().trim();
         if (!Tool.isFax(fax)) {
             tip($('#dep_fax').parent().parent(), '代理商传真输入格式错误');
             return;
         }
-
         var leading = $('#dep_leading').val().trim();
         if (!leading) {
             tip($('#dep_leading').parent().parent(), '代理商负责人不能为空');

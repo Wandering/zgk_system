@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.zgk.zgksystem.dao.ex.IEXUserAccountDAO">
+    <select id="queryUserInfo" resultType="java.util.HashMap">
+        select acc.account,info.provinceId,info.cityId,info.countyId
+        from zgk2.zgk_user_account acc
+        left join zgk2.zgk_user_info info on acc.id=info.id
+        where acc.id=#{accountId}
+        limit 1
+    </select>
+</mapper>
+
