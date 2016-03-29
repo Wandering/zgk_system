@@ -132,7 +132,7 @@ public class DepartmentController {
             d.setDepartmentCode(maxDepartmentCode);
 
             departmentService.updateOrSave(d, null);
-            addPost(d);
+            addPost(d,userPojo.getAccountCode());
             return d;
         }else{
             departmentService.updateOrSave(department, department.getId());
@@ -273,7 +273,7 @@ public class DepartmentController {
         }
     }
 
-    private String addPost(Department department){
+    private String addPost(Department department,Long accountCode){
         PostPojo postPojo = new PostPojo();
         postPojo.setDepartmentCode(department.getDepartmentCode());
         postPojo.setPostName(department.getDepartmentName());
@@ -287,6 +287,7 @@ public class DepartmentController {
             post.setDescription(postPojo.getDescription());
             post.setSeqSort(postPojo.getSeqSort());
             post.setStatus(Constants.NORMAL_STATUS);
+            post.setCreator(accountCode);
             Long maxPostCode = excodeService.selectMaxCodeByParent(CodeFactoryUtil.POSITION_CODE,CodeFactoryUtil.POSITION_TABLE,CodeFactoryUtil.DEPARTMENT_CODE,post.getDepartmentCode());
             if (maxPostCode == null || maxPostCode == 0) {
                 maxPostCode = CodeFactoryUtil.getInitPosition(postPojo.getDepartmentCode()) ;

@@ -134,7 +134,17 @@ public class CompanyController {
             userInfo.setEmail(company.getEmail());
             userInfo.setPhone(company.getPhone());
             userInfo.setUserCode(maxAccountCode);
-            userInfo.setAreaCode("00");
+            String areaCode;
+            if (userPojo.getRoleType().equals(1)){
+                areaCode=department.getAreaCode().substring(0,2);
+            } else if (userPojo.getRoleType().equals(2)){
+                areaCode=department.getAreaCode().substring(0,4);
+            } else if (userPojo.getRoleType().equals(3)){
+                areaCode=department.getAreaCode().substring(0,6);
+            } else {
+                throw  new BizException(ERRORCODE.INSERT_ERROR.getCode(),ERRORCODE.INSERT_ERROR.getMessage());
+            }
+            userInfo.setAreaCode(areaCode);
             userInfo.setRoleType(1);
             userInfoService.updateOrSave(userInfo, null);
             //创建产品同时创建公司管理员账户

@@ -3,6 +3,7 @@ package cn.thinkjoy.zgk.zgksystem.interceptor;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.zgk.zgksystem.common.ERRORCODE;
 import cn.thinkjoy.zgk.zgksystem.common.HttpUtil;
+import cn.thinkjoy.zgk.zgksystem.common.ServletPathConst;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
 import cn.thinkjoy.zgk.zgksystem.util.CacheService;
 import org.apache.commons.lang.StringUtils;
@@ -12,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * Created by yhwang on 15-6-23.
@@ -22,7 +22,10 @@ public class WebLoginInterceptior implements HandlerInterceptor {
     CacheService cacheService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HttpSession session = request.getSession(true);
+        String url = request.getServletPath();
+        if(ServletPathConst.MAPPING_URLS.contains(url)){
+            return true;
+        }
         // 从session 里面获取用户名的信息
         UserPojo user = (UserPojo) HttpUtil.getSession(request, "user");
         // 判断如果没有取到用户信息，就跳转到登陆页面，提示用户进行登陆

@@ -15,11 +15,15 @@ public interface IEXPostDAO {
      * @return
      */
     List<Post> queryPostBycomPanyCode(@Param("companyCode") Long companyCode,@Param("offset")Integer offset,@Param("rows")Integer rows);
-
     /**
      * 岗位数量
      * @param companyCode
      * @return
      */
     Integer countPostBycomPanyCode(@Param("companyCode") Long companyCode);
+
+    List<Post> queryPostByCreator(@Param("creator") String creator,@Param("offset")Integer offset,@Param("rows")Integer rows);
+
+    Integer countPostByCreator(@Param("creator") String creator);
+
 }

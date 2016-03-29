@@ -22,4 +22,7 @@ public interface IEXPostService {
      */
     Integer countPostBycomPanyCode(Long companyCode);
 
+    List<Post> queryPostByCreator(String creator,Integer offset,Integer rows);
+    Integer countPostByCreator(String creator);
+
 }
