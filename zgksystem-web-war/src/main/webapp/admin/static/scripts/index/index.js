@@ -210,7 +210,8 @@ define(function(require, exports, module) {
 											that.html(that.attr('data-title'));
 											var newUserInfo = JSON.parse($.cookie('userInfo'));
 											newUserInfo[key] = value;
-											$.cookie('userInfo', JSON.stringify(newUserInfo), {expires: 7});
+											$.cookie('userInfo', JSON.stringify(ret.bizData), {expires: 7, path: '/'});
+											userInfo = JSON.parse(ret.bizData);
 										}
 									});
 								}

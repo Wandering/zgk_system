@@ -12,11 +12,13 @@ import cn.thinkjoy.zgk.zgksystem.service.account.IUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserInfoService;
 import cn.thinkjoy.zgk.zgksystem.service.code.IEXCodeService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
+import cn.thinkjoy.zgk.zgksystem.util.CacheService;
 import cn.thinkjoy.zgk.zgksystem.util.CodeFactoryUtil;
 import cn.thinkjoy.zgk.zgksystem.util.Constants;
 import cn.thinkjoy.zgk.zgksystem.util.IdentityUtil;
 import cn.thinkjoy.zgk.zgksystem.domain.UserInfo;
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.alibaba.fastjson.JSON;
 import com.jlusoft.microschool.core.utils.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +28,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +59,11 @@ public class UserInfoController {
 
     @Autowired
     private IDepartmentService departmentService;
+
+    @Autowired
+    private CacheService cacheService;
+
+    private static  final int COOKIE_EXPIRE_TIME = 7 * 24 * 60 * 60;
     /**
      * 登录账户验证
      */
@@ -154,34 +163,75 @@ public class UserInfoController {
      */
     @ResponseBody
     @RequestMapping(value="updateUserInfo",method=RequestMethod.POST)
-    public Object updateUserInfo(HttpServletRequest request){
-        String userPojoJson = request.getParameter("userPojoJson");
-        if(StringUtils.isBlank(userPojoJson)){
-            throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(),ERRORCODE.PARAM_ISNULL.getMessage());
+    public Object updateUserInfo(HttpServletRequest request, HttpServletResponse response){
+        String token = "";
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if("bizData".equals(cookie.getName()))
+            {
+                token = cookie.getValue();
+            }
+//            if("userInfo".equals(cookie.getName()))
+//            {
+//                cookie.setValue(null);
+//                cookie.setPath("/");
+//                cookie.setMaxAge(0);
+//                response.setContentType("text/html");
+//                response.addCookie(cookie);
+//            }
         }
-        UserPojo userPojo =  null;
+        String oldUserInfo = cacheService.getValue(token);
+        UserPojo oldUserPojo;
         try {
-            userPojo=JsonMapper.buildNormalMapper().fromJson(userPojoJson, UserPojo.class);
+            oldUserPojo=JsonMapper.buildNormalMapper().fromJson(oldUserInfo, UserPojo.class);
         }catch (Exception e){
             LOGGER.error(ERRORCODE.JSONCONVERT_ERROR.getMessage());
             throw new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
         }
-        if(userPojo == null){
+        String userPojoJson = request.getParameter("userPojoJson");
+        if(StringUtils.isBlank(userPojoJson)){
+            throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(),ERRORCODE.PARAM_ISNULL.getMessage());
+        }
+        UserPojo newUserPojo;
+        try {
+            newUserPojo=JsonMapper.buildNormalMapper().fromJson(userPojoJson, UserPojo.class);
+        }catch (Exception e){
+            LOGGER.error(ERRORCODE.JSONCONVERT_ERROR.getMessage());
+            throw new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
+        }
+        if(newUserPojo == null){
             throw  new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
         }
+        if(null != newUserPojo.getPhone())
+        {
+            oldUserPojo.setPhone(newUserPojo.getPhone());
+        }
+        if(null != newUserPojo.getEmail())
+        {
+            oldUserPojo.setEmail(newUserPojo.getEmail());
+        }
+        if(null != newUserPojo.getUserName())
+        {
+            oldUserPojo.setUserName(newUserPojo.getUserName());
+        }
+        if(null != newUserPojo.getPassword())
+        {
+            oldUserPojo.setPassword(newUserPojo.getPassword());
+        }
+        cacheService.addCache(token, JSON.toJSONString(oldUserPojo));
         UserInfo u=new UserInfo();
-        u.setUserName(userPojo.getUserName());
-        u.setEmail(userPojo.getEmail());
-        u.setPhone(userPojo.getPhone());
-        u.setId(userPojo.getUserInfoId());
-        userInfoService.updateOrSave(u, userPojo.getUserInfoId());
-        if(userPojo.getPassword()!=null || !"".equals(userPojo.getPassword())) {
+        u.setUserName(newUserPojo.getUserName());
+        u.setEmail(newUserPojo.getEmail());
+        u.setPhone(newUserPojo.getPhone());
+        u.setId(newUserPojo.getUserInfoId());
+        userInfoService.updateOrSave(u, newUserPojo.getUserInfoId());
+        if(newUserPojo.getPassword()!=null || !"".equals(newUserPojo.getPassword())) {
             UserAccount account = new UserAccount();
-            account.setPassword(userPojo.getPassword());
-            account.setId(userPojo.getAccountId());
+            account.setPassword(newUserPojo.getPassword());
+            account.setId(newUserPojo.getAccountId());
             userAccountService.updateOrSave(account, account.getId());
         }
-        return "ok";
+        return JSON.toJSONString(oldUserPojo);
     }
 
 
