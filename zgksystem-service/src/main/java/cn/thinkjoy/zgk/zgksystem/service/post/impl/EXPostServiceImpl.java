@@ -4,10 +4,14 @@ import cn.thinkjoy.zgk.zgksystem.dao.IK12systemPostDAO;
 import cn.thinkjoy.zgk.zgksystem.dao.ex.IEXPostDAO;
 import cn.thinkjoy.zgk.zgksystem.domain.Post;
 import cn.thinkjoy.zgk.zgksystem.service.post.IEXPostService;
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by yhwang on 15/10/25.
@@ -38,6 +42,16 @@ public class EXPostServiceImpl implements IEXPostService{
     @Override
     public Integer countPostBycomPanyCode(Long companyCode) {
         return iexPostDAO.countPostBycomPanyCode(companyCode);
+    }
+
+    @Override
+    public List<Post> queryPostByCreator(String creator,Integer offset,Integer rows){
+        return iexPostDAO.queryPostByCreator(creator,offset,rows);
+    }
+
+    @Override
+    public Integer countPostByCreator(String creator) {
+        return iexPostDAO.countPostByCreator(creator);
     }
 
 }

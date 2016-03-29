@@ -89,6 +89,7 @@ public class PostController {
             post.setDescription(postPojo.getDescription());
             post.setSeqSort(postPojo.getSeqSort());
             post.setStatus(Constants.NORMAL_STATUS);
+            post.setCreator(user.getAccountCode());
             Long maxPostCode = excodeService.selectMaxCodeByParent(CodeFactoryUtil.POSITION_CODE,CodeFactoryUtil.POSITION_TABLE,CodeFactoryUtil.DEPARTMENT_CODE,post.getDepartmentCode());
             if (maxPostCode == null || maxPostCode == 0) {
                 maxPostCode = CodeFactoryUtil.getInitPosition(postPojo.getDepartmentCode()) ;

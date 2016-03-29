@@ -40,5 +40,7 @@ public interface PostApiService {
      */
     Page<Post> queryPostBycompanyCode(String currentPageNo,String pageSize,Long companyCode);
 
+    Page<Post> queryPostByCreator(String currentPageNo,String pageSize,String companyCode);
+
     K12systemPost queryK12systemPost(Long postCode, Long systemCode);
 }

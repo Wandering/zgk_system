@@ -75,6 +75,14 @@ public class PostApiServiceImpl implements PostApiService {
     }
 
     @Override
+    public Page<Post> queryPostByCreator(String currentPageNo, String pageSize, String creator) {
+        Page<Post> postPage = new Page<>();
+        postPage.setList(iexPostService.queryPostByCreator(creator, (Integer.parseInt(currentPageNo) - 1) * Integer.parseInt(pageSize), Integer.parseInt(pageSize)));
+        postPage.setCount(iexPostService.countPostByCreator(creator));
+        return postPage;
+    }
+
+    @Override
     public K12systemPost queryK12systemPost(Long postCode, Long systemCode){
         Map<String, Object> condition = Maps.newHashMap();
         condition.put("postCode", postCode);
