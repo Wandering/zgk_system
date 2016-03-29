@@ -78,11 +78,10 @@ define(function(require, exports, module) {
 				path: '/'
 			});
 			$.cookie('userInfo', '', {
-				path: '/;domain=dataSys.com'
+				path: '/'
 			});
 			window.location.href = 'login.html';
 		});
-
 		var setTingInfoAjax = function(userPojoJson, action, callback) {
 			$.ajax({
 				type: 'post',
@@ -209,7 +208,6 @@ define(function(require, exports, module) {
 											that.removeClass('save');
 											that.addClass('change');
 											that.html(that.attr('data-title'));
-											console.log($.cookie('userInfo'))
 											var newUserInfo = JSON.parse($.cookie('userInfo'));
 											newUserInfo[key] = value;
 											$.cookie('userInfo', JSON.stringify(newUserInfo), {expires: 7});

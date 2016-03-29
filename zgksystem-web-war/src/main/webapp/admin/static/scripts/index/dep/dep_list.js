@@ -167,18 +167,21 @@ define(function(require, exports, module) {
                                     var vali = require('./dep_form.js');
                                     vali.validate(function(formArry) {
                                         addOrUpdateDepartment(formArry, function(ret) {
+                                            tableObj.fnDraw();
                                             //console.log(ret)
                                             if ('0000000' === ret.rtnCode) {
-                                                tableObj.fnDraw();
-                                                var node = {
-                                                    id: ret.bizData.departmentCode,
-                                                    name: formArry[0]
-                                                };
-                                                //treeCallback({
-                                                //    type: 'add',
-                                                //    obj: node
-                                                //});
+                                                var cookieJson = JSON.parse($.cookie('userInfo'));
+                                                if("-1"==cookieJson.departmentCode){
 
+                                                    var node = {
+                                                        id: ret.bizData.departmentCode,
+                                                        name: formArry[0]
+                                                    };
+                                                    treeCallback({
+                                                        type: 'add',
+                                                        obj: node
+                                                    });
+                                                }
                                                 $("#add_dep").dialog("destroy");
                                             } else {
                                                 $("#add_dep").dialog("destroy");
@@ -280,20 +283,6 @@ define(function(require, exports, module) {
                                                 break;
                                             default:
                                         }
-
-
-
-
-
-
-
-
-
-
-
-                                        //$('#dep_provinces').val(data.bizData.departmentProvince);
-                                        //$('#dep_city').val(data.bizData.dep_city);
-                                        //$('#dep_county').val(data.bizData.dep_county);
                                     },
                                     buttons: [{
                                         text: "修改",
@@ -302,16 +291,19 @@ define(function(require, exports, module) {
                                             var vali = require('./dep_form.js');
                                             vali.validate(function(formArry) {
                                                 addOrUpdateDepartment(formArry, function(ret) {
+                                                    tableObj.fnDraw();
                                                     if ('0000000' === ret.rtnCode) {
-                                                        tableObj.fnDraw();
-                                                        var node = {
-                                                            id: data.bizData.departmentCode,
-                                                            name: formArry[0]
-                                                        };
-                                                        treeCallback({
-                                                            type: 'update',
-                                                            obj: node
-                                                        });
+                                                        var cookieJson = JSON.parse($.cookie('userInfo'));
+                                                        if("-1"==cookieJson.departmentCode){
+                                                            var node = {
+                                                                id: data.bizData.departmentCode,
+                                                                name: formArry[0]
+                                                            };
+                                                            treeCallback({
+                                                                type: 'update',
+                                                                obj: node
+                                                            });
+                                                        }
                                                         $("#add_dep").dialog("destroy");
                                                     } else {
                                                         $("#add_dep").dialog("destroy");

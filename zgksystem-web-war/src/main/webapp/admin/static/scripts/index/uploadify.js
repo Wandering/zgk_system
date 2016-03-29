@@ -6,7 +6,8 @@ define(function(require, exports, module) {
         $("#file_upload").uploadify({
             'swf': "../lib/uploadify/uploadify.swf",
             'fileObjName': 'file',
-            'uploader': "http://10.21.67.16:8080/file/upload/savefile.shtml",
+            'uploader': "http://cs-dev.thinkjoy.com.cn/rest/v1/uploadFile?userId=gk360&dirId=0&productCode=gk360&bizSystem=gk360&spaceName=gk360",
+            //'uploader': "http://10.21.67.16:8080/file/upload/savefile.shtml",
             'auto': true,
             'removeTimeout': 0,
             'width': 300,
@@ -32,11 +33,18 @@ define(function(require, exports, module) {
                     }
                 }
             },
+
             'onFallback': function() {
                 alert("浏览器不能兼容Flash,请下载最新版!");
             },
             'onUploadSuccess': function(file, data, response) {
-                callback(file, data, response);
+                var obj = {
+                    code: 200,
+                    data: {
+                        url: JSON.parse(data).bizData.file.fileUrl
+                    }
+                }
+                callback(file, JSON.stringify(obj), response);
             },
             'onUploadError': function(file, errorCode, errorMsg, errorString) {
             }
