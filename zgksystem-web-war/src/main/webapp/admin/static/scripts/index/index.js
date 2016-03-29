@@ -12,6 +12,7 @@ define(function(require, exports, module) {
 
 	var Tool = require('./tools.js');
 	var token = $.cookie('bizData');
+
 	if (!token) {
 		window.location.href = 'login.html';
 	}
@@ -77,7 +78,7 @@ define(function(require, exports, module) {
 				path: '/'
 			});
 			$.cookie('userInfo', '', {
-				path: '/'
+				path: '/;domain=dataSys.com'
 			});
 			window.location.href = 'login.html';
 		});
@@ -207,6 +208,7 @@ define(function(require, exports, module) {
 											that.removeClass('save');
 											that.addClass('change');
 											that.html(that.attr('data-title'));
+											console.log($.cookie('userInfo'))
 											var newUserInfo = JSON.parse($.cookie('userInfo'));
 											newUserInfo[key] = value;
 											$.cookie('userInfo', JSON.stringify(newUserInfo), {expires: 7});

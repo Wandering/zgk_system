@@ -1,5 +1,4 @@
 define(function(require, exports, module) {
-
     module.exports = function(parentCode, treeCallback) {
         require('bootstrap');
         require('cookie');
@@ -160,13 +159,11 @@ define(function(require, exports, module) {
                                         break;
                                     default:
                                 }
-
                             },
                             buttons: [{
                                 text: "新增",
                                 'class': "btn btn-primary",
                                 click: function() {
-                                    alert(5)
                                     var vali = require('./dep_form.js');
                                     vali.validate(function(formArry) {
                                         addOrUpdateDepartment(formArry, function(ret) {
