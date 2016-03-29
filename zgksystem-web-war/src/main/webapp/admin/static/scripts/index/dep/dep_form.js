@@ -51,7 +51,22 @@ define(function(require, exports, module) {
         var provinces = $("#dep_provinces").find("option:selected").val();
         var city = $("#dep_city").find("option:selected").val();
         var county = $("#dep_county").find("option:selected").val();
-        callback([name, telephone, fax, leading,provinces,city,county]);
+        var salePrice = $('#sale_Price').val().trim();
+        if (!salePrice) {
+            tip($('#sale_Price').parent().parent(), '零售价格不能为空');
+            return;
+        }
+        if(salePrice.length>6 ||isNaN(salePrice))
+        {
+            tip($('#sale_Price').parent().parent(), '零售价格输入长度或格式错误');
+            return;
+        }
+        var goodsAddress = $('#goods_Address').val().trim();
+        if (!goodsAddress) {
+            tip($('#goods_Address').parent().parent(), '取货地址不能为空');
+            return;
+        }
+        callback([name, telephone, fax, leading,provinces,city,county,salePrice,goodsAddress]);
     }
     module.exports = {
         validate: function(callback) {

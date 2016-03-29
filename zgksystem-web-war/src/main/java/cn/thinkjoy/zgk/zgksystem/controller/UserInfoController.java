@@ -127,6 +127,8 @@ public class UserInfoController {
             {
                 u.setAreaCode(department.getAreaCode());
                 u.setRoleType(Integer.parseInt(department.getRoleType()));
+                u.setSalePrice(department.getSalePrice());
+                u.setGoodsAddress(department.getGoodsAddress());
             }
             userInfoService.updateOrSave(u, null);
 

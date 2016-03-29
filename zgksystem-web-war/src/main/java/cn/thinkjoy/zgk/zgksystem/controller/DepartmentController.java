@@ -108,8 +108,10 @@ public class DepartmentController {
             d.setDepartmentPhone(department.getDepartmentPhone());
             d.setDepartmentPrincipal(department.getDepartmentPrincipal());
             d.setSeqSort(department.getSeqSort());
+            d.setGoodsAddress(department.getGoodsAddress());
+            d.setSalePrice(department.getSalePrice());
             d.setStatus(Constants.NORMAL_STATUS);
-            String areaCode="";
+            String areaCode;
             if (userPojo.getRoleType().equals(1)){
                 areaCode=department.getAreaCode().substring(0,2);
             } else if (userPojo.getRoleType().equals(2)){
