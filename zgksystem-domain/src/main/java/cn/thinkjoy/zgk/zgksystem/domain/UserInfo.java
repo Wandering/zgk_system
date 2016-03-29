@@ -30,6 +30,24 @@ public class UserInfo extends CreateBaseDomain<Long>{
     private String description;
     private Integer roleType;
     private String areaCode;
+    private String salePrice;
+    private String goodsAddress;
+
+    public String getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(String salePrice) {
+        this.salePrice = salePrice;
+    }
+
+    public String getGoodsAddress() {
+        return goodsAddress;
+    }
+
+    public void setGoodsAddress(String goodsAddress) {
+        this.goodsAddress = goodsAddress;
+    }
 	public UserInfo(){
 	}
     public void setUserCode(Long value) {

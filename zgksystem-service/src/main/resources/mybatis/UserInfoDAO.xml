@@ -41,7 +41,9 @@ selectList
         lastModDate,
         lastModifier,
         roleType,
-        areaCode
+        areaCode,
+        salePrice,
+        goodsAddress
     </sql>
     <insert id="insert" parameterType="UserInfo">
         INSERT INTO k12system_user_info (
@@ -61,7 +63,9 @@ selectList
         lastModDate,
         lastModifier,
         roleType,
-        areaCode
+        areaCode,
+        salePrice,
+        goodsAddress
         ) VALUES (
         #{userCode},
         #{departmentCode},
@@ -79,7 +83,9 @@ selectList
         #{lastModDate},
         #{lastModifier},
         #{roleType},
-        #{areaCode}
+        #{areaCode},
+        #{salePrice},
+        #{goodsAddress}
         )
         <selectKey resultType="java.lang.Long" keyProperty="id">
         SELECT LAST_INSERT_ID() AS ID
@@ -140,6 +146,12 @@ selectList
             </if>
             <if test="areaCode!=null">
                 areaCode = #{areaCode},
+            </if>
+            <if test="salePrice!=null">
+                salePrice = #{salePrice},
+            </if>
+            <if test="goodsAddress!=null">
+                goodsAddress = #{goodsAddress},
             </if>
         </trim>
         WHERE

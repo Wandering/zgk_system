@@ -56,7 +56,9 @@ define(function(require, exports, module) {
                 departmentName: formArry[0] || '',
                 departmentPhone: formArry[1] || '',
                 departmentFax: formArry[2] || '',
-                departmentPrincipal: formArry[3] || ''
+                departmentPrincipal: formArry[3] || '',
+                salePrice: formArry[7] || '',
+                goodsAddress: formArry[8] || ''
             };
 
             if (id) {
@@ -221,7 +223,6 @@ define(function(require, exports, module) {
                     var aData = tableObj.fnGetData(anSelected[0]);
                     //console.log(aData)
                     $.get('/system/department/getDepartment?id=' + aData.id + '&token=' + token, function(data) {
-                        console.log(data)
                         if ('0000000' === data.rtnCode) {
                             $.get('../tmpl/dep/dep_form.html', function(tmpl) {
                                 require('dialog');
@@ -236,6 +237,8 @@ define(function(require, exports, module) {
                                         $('#dep_telephone').val(data.bizData.departmentPhone);
                                         $('#dep_fax').val(data.bizData.departmentFax);
                                         $('#dep_leading').val(data.bizData.departmentPrincipal);
+                                        $('#sale_Price').val(data.bizData.salePrice);
+                                        $('#goods_Address').val(data.bizData.goodsAddress);
 
                                         // 修改
                                         var roleType = data.bizData.roleType;
@@ -373,3 +376,5 @@ define(function(require, exports, module) {
         });
     };
 });
+
+

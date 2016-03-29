@@ -62,6 +62,8 @@ public class UserInfoController {
 
     @Autowired
     private CacheService cacheService;
+
+    private static  final int COOKIE_EXPIRE_TIME = 7 * 24 * 60 * 60;
     /**
      * 登录账户验证
      */
@@ -125,6 +127,8 @@ public class UserInfoController {
             {
                 u.setAreaCode(department.getAreaCode());
                 u.setRoleType(Integer.parseInt(department.getRoleType()));
+                u.setSalePrice(department.getSalePrice());
+                u.setGoodsAddress(department.getGoodsAddress());
             }
             userInfoService.updateOrSave(u, null);
 
@@ -161,65 +165,75 @@ public class UserInfoController {
      */
     @ResponseBody
     @RequestMapping(value="updateUserInfo",method=RequestMethod.POST)
-    public Object updateUserInfo(HttpServletRequest request,HttpServletResponse response){
-        Cookie[] cookies=request.getCookies();
-        String token="";
-        for (Cookie cookie:cookies){
-            if (cookie.getName().equals("bizData")){
-                token=cookie.getValue();
+    public Object updateUserInfo(HttpServletRequest request, HttpServletResponse response){
+        String token = "";
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if("bizData".equals(cookie.getName()))
+            {
+                token = cookie.getValue();
             }
+//            if("userInfo".equals(cookie.getName()))
+//            {
+//                cookie.setValue(null);
+//                cookie.setPath("/");
+//                cookie.setMaxAge(0);
+//                response.setContentType("text/html");
+//                response.addCookie(cookie);
+//            }
+        }
+        String oldUserInfo = cacheService.getValue(token);
+        UserPojo oldUserPojo;
+        try {
+            oldUserPojo=JsonMapper.buildNormalMapper().fromJson(oldUserInfo, UserPojo.class);
+        }catch (Exception e){
+            LOGGER.error(ERRORCODE.JSONCONVERT_ERROR.getMessage());
+            throw new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
         }
         String userPojoJson = request.getParameter("userPojoJson");
         if(StringUtils.isBlank(userPojoJson)){
             throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(),ERRORCODE.PARAM_ISNULL.getMessage());
         }
-        UserPojo userPojo =  null;
+        UserPojo newUserPojo;
         try {
-            userPojo=JsonMapper.buildNormalMapper().fromJson(userPojoJson, UserPojo.class);
+            newUserPojo=JsonMapper.buildNormalMapper().fromJson(userPojoJson, UserPojo.class);
         }catch (Exception e){
             LOGGER.error(ERRORCODE.JSONCONVERT_ERROR.getMessage());
             throw new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
         }
-        if(userPojo == null){
+        if(newUserPojo == null){
             throw  new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
         }
-        String cacheUserPojoJson=cacheService.getValue(token);
-        UserPojo cacheUserPojo =  null;
-        cacheUserPojo=JsonMapper.buildNormalMapper().fromJson(cacheUserPojoJson, UserPojo.class);
+        if(null != newUserPojo.getPhone())
+        {
+            oldUserPojo.setPhone(newUserPojo.getPhone());
+        }
+        if(null != newUserPojo.getEmail())
+        {
+            oldUserPojo.setEmail(newUserPojo.getEmail());
+        }
+        if(null != newUserPojo.getUserName())
+        {
+            oldUserPojo.setUserName(newUserPojo.getUserName());
+        }
+        if(null != newUserPojo.getPassword())
+        {
+            oldUserPojo.setPassword(newUserPojo.getPassword());
+        }
+        cacheService.addCache(token, JSON.toJSONString(oldUserPojo));
         UserInfo u=new UserInfo();
-        if (!StringUtils.isBlank(userPojo.getUserName())) {
-            u.setUserName(userPojo.getUserName());
-            cacheUserPojo.setUserName(u.getUserName());
-        }
-        if (!StringUtils.isBlank(userPojo.getEmail())) {
-            u.setEmail(userPojo.getEmail());
-            cacheUserPojo.setEmail(userPojo.getEmail());
-        }
-        if (!StringUtils.isBlank(userPojo.getPhone())) {
-            u.setPhone(userPojo.getPhone());
-            cacheUserPojo.setPhone(userPojo.getPhone());
-        }
-        if (userPojo.getUserInfoId()!=null) {
-            u.setId(userPojo.getUserInfoId());
-            cacheUserPojo.setUserInfoId(userPojo.getUserInfoId());
-        }
-        cacheService.addCache(token, JSON.toJSONString(cacheUserPojo));
-//        Cookie[] cookies=request.getCookies();
-        for (Cookie cookie:cookies){
-            if (cookie.getName().equals("userInfo")){
-                cookie.setValue(JSON.toJSONString(cacheUserPojo));
-                cookie.setPath("/");
-                response.addCookie(cookie);
-            }
-        }
-        userInfoService.updateOrSave(u, userPojo.getUserInfoId());
-        if(userPojo.getPassword()!=null || !"".equals(userPojo.getPassword())) {
+        u.setUserName(newUserPojo.getUserName());
+        u.setEmail(newUserPojo.getEmail());
+        u.setPhone(newUserPojo.getPhone());
+        u.setId(newUserPojo.getUserInfoId());
+        userInfoService.updateOrSave(u, newUserPojo.getUserInfoId());
+        if(newUserPojo.getPassword()!=null || !"".equals(newUserPojo.getPassword())) {
             UserAccount account = new UserAccount();
-            account.setPassword(userPojo.getPassword());
-            account.setId(userPojo.getAccountId());
+            account.setPassword(newUserPojo.getPassword());
+            account.setId(newUserPojo.getAccountId());
             userAccountService.updateOrSave(account, account.getId());
         }
-        return "ok";
+        return JSON.toJSONString(oldUserPojo);
     }
 
 

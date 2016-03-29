@@ -27,6 +27,24 @@ public class Department extends CreateBaseDomain{
     private String description;
     private String areaCode;
     private String roleType;
+    private String salePrice;
+    private String goodsAddress;
+
+    public String getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(String salePrice) {
+        this.salePrice = salePrice;
+    }
+
+    public String getGoodsAddress() {
+        return goodsAddress;
+    }
+
+    public void setGoodsAddress(String goodsAddress) {
+        this.goodsAddress = goodsAddress;
+    }
 
     public String getRoleType() {
         return roleType;

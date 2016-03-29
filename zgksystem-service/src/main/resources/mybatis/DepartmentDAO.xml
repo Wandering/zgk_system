@@ -40,7 +40,9 @@ selectList
         lastModDate,
         lastModifier,
         roleType,
-        areaCode
+        areaCode,
+        salePrice,
+        goodsAddress
     </sql>
 
 
@@ -61,7 +63,9 @@ selectList
         lastModDate,
         lastModifier,
         roleType,
-        areaCode
+        areaCode,
+        salePrice,
+        goodsAddress
         ) VALUES (
         #{departmentCode},
         #{companyCode},
@@ -78,7 +82,9 @@ selectList
         #{lastModDate},
         #{lastModifier},
         #{roleType},
-        #{areaCode}
+        #{areaCode},
+        #{salePrice},
+        #{goodsAddress}
         )
         <selectKey resultType="java.lang.Long" keyProperty="id">
         SELECT LAST_INSERT_ID() AS ID
@@ -136,6 +142,12 @@ selectList
             </if>
             <if test="areaCode!=null">
                 areaCode = #{areaCode},
+            </if>
+            <if test="salePrice!=null">
+                salePrice = #{salePrice},
+            </if>
+            <if test="goodsAddress!=null">
+                goodsAddress = #{goodsAddress},
             </if>
         </trim>
         WHERE
