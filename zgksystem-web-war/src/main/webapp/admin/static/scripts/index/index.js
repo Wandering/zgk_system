@@ -200,6 +200,7 @@ define(function(require, exports, module) {
 										return;
 									}
 									userPojoJson[key] = value;
+									userPojoJson.token= JSON.parse($.cookie('userInfo')).token;
 									setTingInfoAjax(userPojoJson, 'updateUserInfo', function(ret) {
 										if ('0000000' === ret.rtnCode) {
 											input.hide();
