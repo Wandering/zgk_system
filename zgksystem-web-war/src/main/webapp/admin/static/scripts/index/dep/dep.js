@@ -26,6 +26,7 @@ define(function(require, exports, module) {
                 } else if ('update' === options.type) {
                     //修改节点
                     var updateNode = Tree.treeObj.getNodeByParam('id', options.obj.id, null);
+                    console.log(options.obj)
                     updateNode.name = options.obj.name;
                     Tree.treeObj.updateNode(updateNode);
                 } else if ('delete' === options.type) {

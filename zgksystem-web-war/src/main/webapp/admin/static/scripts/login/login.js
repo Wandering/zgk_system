@@ -26,7 +26,7 @@ define(function(require, exports, module) {
 			dataType: 'json',
 			success: function(data) {
 				$('#login').removeAttr("disabled");
-				//console.log(data);
+				console.log(data);
 				if ('0000000' === data.rtnCode) {
 					require('cookie');
 					$.cookie('bizData', data.bizData.token, {expires: 7,path:'/'});

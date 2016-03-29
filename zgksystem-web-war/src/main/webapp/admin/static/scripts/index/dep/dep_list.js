@@ -1,5 +1,4 @@
 define(function(require, exports, module) {
-
     module.exports = function(parentCode, treeCallback) {
         require('bootstrap');
         require('cookie');
@@ -57,7 +56,9 @@ define(function(require, exports, module) {
                 departmentName: formArry[0] || '',
                 departmentPhone: formArry[1] || '',
                 departmentFax: formArry[2] || '',
-                departmentPrincipal: formArry[3] || ''
+                departmentPrincipal: formArry[3] || '',
+                salePrice: formArry[7] || '',
+                goodsAddress: formArry[8] || ''
             };
 
             if (id) {
@@ -160,28 +161,29 @@ define(function(require, exports, module) {
                                         break;
                                     default:
                                 }
-
                             },
                             buttons: [{
                                 text: "新增",
                                 'class': "btn btn-primary",
                                 click: function() {
-                                    alert(5)
                                     var vali = require('./dep_form.js');
                                     vali.validate(function(formArry) {
                                         addOrUpdateDepartment(formArry, function(ret) {
+                                            tableObj.fnDraw();
                                             //console.log(ret)
                                             if ('0000000' === ret.rtnCode) {
-                                                tableObj.fnDraw();
-                                                var node = {
-                                                    id: ret.bizData.departmentCode,
-                                                    name: formArry[0]
-                                                };
-                                                //treeCallback({
-                                                //    type: 'add',
-                                                //    obj: node
-                                                //});
+                                                var cookieJson = JSON.parse($.cookie('userInfo'));
+                                                if("-1"==cookieJson.departmentCode){
 
+                                                    var node = {
+                                                        id: ret.bizData.departmentCode,
+                                                        name: formArry[0]
+                                                    };
+                                                    treeCallback({
+                                                        type: 'add',
+                                                        obj: node
+                                                    });
+                                                }
                                                 $("#add_dep").dialog("destroy");
                                             } else {
                                                 $("#add_dep").dialog("destroy");
@@ -221,7 +223,6 @@ define(function(require, exports, module) {
                     var aData = tableObj.fnGetData(anSelected[0]);
                     //console.log(aData)
                     $.get('/system/department/getDepartment?id=' + aData.id + '&token=' + token, function(data) {
-                        console.log(data)
                         if ('0000000' === data.rtnCode) {
                             $.get('../tmpl/dep/dep_form.html', function(tmpl) {
                                 require('dialog');
@@ -236,6 +237,8 @@ define(function(require, exports, module) {
                                         $('#dep_telephone').val(data.bizData.departmentPhone);
                                         $('#dep_fax').val(data.bizData.departmentFax);
                                         $('#dep_leading').val(data.bizData.departmentPrincipal);
+                                        $('#sale_Price').val(data.bizData.salePrice);
+                                        $('#goods_Address').val(data.bizData.goodsAddress);
 
                                         // 修改
                                         var roleType = data.bizData.roleType;
@@ -283,20 +286,6 @@ define(function(require, exports, module) {
                                                 break;
                                             default:
                                         }
-
-
-
-
-
-
-
-
-
-
-
-                                        //$('#dep_provinces').val(data.bizData.departmentProvince);
-                                        //$('#dep_city').val(data.bizData.dep_city);
-                                        //$('#dep_county').val(data.bizData.dep_county);
                                     },
                                     buttons: [{
                                         text: "修改",
@@ -305,16 +294,19 @@ define(function(require, exports, module) {
                                             var vali = require('./dep_form.js');
                                             vali.validate(function(formArry) {
                                                 addOrUpdateDepartment(formArry, function(ret) {
+                                                    tableObj.fnDraw();
                                                     if ('0000000' === ret.rtnCode) {
-                                                        tableObj.fnDraw();
-                                                        var node = {
-                                                            id: data.bizData.departmentCode,
-                                                            name: formArry[0]
-                                                        };
-                                                        treeCallback({
-                                                            type: 'update',
-                                                            obj: node
-                                                        });
+                                                        var cookieJson = JSON.parse($.cookie('userInfo'));
+                                                        if("-1"==cookieJson.departmentCode){
+                                                            var node = {
+                                                                id: data.bizData.departmentCode,
+                                                                name: formArry[0]
+                                                            };
+                                                            treeCallback({
+                                                                type: 'update',
+                                                                obj: node
+                                                            });
+                                                        }
                                                         $("#add_dep").dialog("destroy");
                                                     } else {
                                                         $("#add_dep").dialog("destroy");
@@ -384,3 +376,5 @@ define(function(require, exports, module) {
         });
     };
 });
+
+
