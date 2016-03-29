@@ -73,10 +73,12 @@ define(function(require, exports, module) {
 		});
 
 		$('#logout').on('click', function() {
-			$.cookie('bizData', '', {
+			$.cookie('bizData', null, {
+				expires: 0,
 				path: '/'
 			});
-			$.cookie('userInfo', '', {
+			$.cookie('userInfo', null, {
+				expires: 0,
 				path: '/'
 			});
 			window.location.href = 'login.html';
