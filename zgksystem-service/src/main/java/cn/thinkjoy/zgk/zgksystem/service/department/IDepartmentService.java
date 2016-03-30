@@ -50,5 +50,5 @@ public interface IDepartmentService<D extends IBaseDAO<T>, T extends BaseDomain>
 
     List<TreeBean> recursionTreeAll(Long parentCode);
 
-
+    List<TreeBean> recursionSubTree(Long parentCode);
 }

@@ -73,7 +73,7 @@ public class UserInfoController {
         String loginNumber = request.getParameter("loginNumber");
         Map<String,Object> condition=new HashMap<>();
         condition.put("loginNumber",loginNumber);
-        condition.put("status",0);
+        condition.put("status", 0);
         UserAccount userAccount = (UserAccount)userAccountService.queryOne(condition);
         if (userAccount!=null){
             return "0";
@@ -101,6 +101,24 @@ public class UserInfoController {
             LOGGER.error(ERRORCODE.JSONCONVERT_ERROR.getMessage());
             throw new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
         }
+        UserInfo userInfo =  null;
+        try {
+            userInfo=JsonMapper.buildNormalMapper().fromJson(userPojoJson, UserInfo.class);
+        }catch (Exception e){
+            LOGGER.error(ERRORCODE.JSONCONVERT_ERROR.getMessage());
+            throw new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
+        }
+        //修改用户信息
+        if (userInfo!=null&&userInfo.getId()!=null){
+            UserInfo u=new UserInfo();
+            u.setUserName(userInfo.getUserName());
+            u.setDescription(userInfo.getDescription());
+            u.setEmail(userInfo.getEmail());
+            u.setPhone(userInfo.getPhone());
+            u.setId(userInfo.getId());
+            userInfoService.updateOrSave(u, u.getId());
+            return "ok";
+        }
         UserAccount userAccount = (UserAccount)userAccountService.findOne("loginNumber",userPojo.getLoginNumber());
         if (userAccount!=null){
             throw new BizException(ERRORCODE.ACCOUNT_ISEXIST.getCode(),ERRORCODE.ACCOUNT_ISEXIST.getMessage());
@@ -109,6 +127,7 @@ public class UserInfoController {
             throw  new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
         }
 
+        //添加用户账户及信息
         if(userPojo.getUserInfoId()==null || userPojo.getUserInfoId()==0){
             Long maxUserInfoCode=excodeService.selectMaxCodeByScope(CodeFactoryUtil.USERINFO_CODE, CodeFactoryUtil.USERINFO_TABLE,CodeFactoryUtil.getMinUserInfoCode(userPojo.getDepartmentCode()),CodeFactoryUtil.getMaxUserInfoCode(userPojo.getDepartmentCode()));
             if(maxUserInfoCode==null||maxUserInfoCode==0){
@@ -149,14 +168,14 @@ public class UserInfoController {
             }
             account.setAccountCode(maxAccountCode);
             userAccountService.updateOrSave(account,null);
-        }else{
-            UserInfo u=new UserInfo();
-            u.setUserName(userPojo.getUserName());
-            u.setDescription(userPojo.getDescription());
-            u.setEmail(userPojo.getEmail());
-            u.setPhone(userPojo.getPhone());
-            u.setId(userPojo.getUserInfoId());
-            userInfoService.updateOrSave(u, userPojo.getUserInfoId());
+//        }else{
+//            UserInfo u=new UserInfo();
+//            u.setUserName(userPojo.getUserName());
+//            u.setDescription(userPojo.getDescription());
+//            u.setEmail(userPojo.getEmail());
+//            u.setPhone(userPojo.getPhone());
+//            u.setId(userPojo.getUserInfoId());
+//            userInfoService.updateOrSave(u, userPojo.getUserInfoId());
         }
         return "ok";
 
