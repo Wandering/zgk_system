@@ -25,4 +25,8 @@ public interface IEXDataDictionaryDAO {
     List<Province> findProvinceList();
     List<City> findCityList(@Param("provinceId") Long provinceId);
     List<County> findCountyList(@Param("cityId") Long cityId);
+
+    void updateProvince(@Param("provinceId") String provinceId);
+    void updateCity(@Param("cityId") String cityId);
+    void updateCounty(@Param("countyId") String countyId);
 }

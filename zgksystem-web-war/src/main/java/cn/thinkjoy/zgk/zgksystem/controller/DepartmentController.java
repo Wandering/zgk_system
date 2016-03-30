@@ -13,6 +13,7 @@ import cn.thinkjoy.zgk.zgksystem.pojo.PostPojo;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserInfoService;
+import cn.thinkjoy.zgk.zgksystem.service.dataDictionary.IDataDictionaryService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IEXPostDataauthorityService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IPostDataauthorityService;
@@ -74,6 +75,9 @@ public class DepartmentController {
     @Autowired
     private PostApiService postApiService;
 
+    @Autowired
+    private IDataDictionaryService dataDictionaryService;
+
     private static Logger LOGGER = LoggerFactory.getLogger(DepartmentController.class);
     /**
      * 新增和修改部门
@@ -114,10 +118,13 @@ public class DepartmentController {
             String areaCode;
             if (userPojo.getRoleType().equals(1)){
                 areaCode=department.getAreaCode().substring(0,2);
+                dataDictionaryService.updateProvince(areaCode+"0000");
             } else if (userPojo.getRoleType().equals(2)){
                 areaCode=department.getAreaCode().substring(0,4);
+                dataDictionaryService.updateCity(areaCode+"00");
             } else if (userPojo.getRoleType().equals(3)){
                 areaCode=department.getAreaCode().substring(0,6);
+                dataDictionaryService.updateCounty(areaCode);
             } else {
                 throw  new BizException(ERRORCODE.INSERT_ERROR.getCode(),ERRORCODE.INSERT_ERROR.getMessage());
             }
@@ -136,6 +143,7 @@ public class DepartmentController {
             return d;
         }else{
             departmentService.updateOrSave(department, department.getId());
+//            updatePost(department,userPojo.getAccountCode());
             return "ok";
         }
 
@@ -302,6 +310,18 @@ public class DepartmentController {
             postService.updateOrSave(post, post.getId());
             iexPostDataauthorityService.deleteByPost(post.getPostCode());
         }
+        return "ok";
+    }
+
+    private String updatePost(Department department,Long accountCode){
+        PostPojo postPojo = new PostPojo();
+        postPojo.setDepartmentCode(department.getDepartmentCode());
+        postPojo.setPostName(department.getDepartmentName());
+        postPojo.setDescription(department.getDescription());
+        postPojo.setSeqSort(department.getSeqSort());
+        postPojo.setStatus(department.getStatus());
+        postService.updateOrSave(postPojo, postPojo.getId());
+        iexPostDataauthorityService.deleteByPost(postPojo.getPostCode());
         return "ok";
     }
 

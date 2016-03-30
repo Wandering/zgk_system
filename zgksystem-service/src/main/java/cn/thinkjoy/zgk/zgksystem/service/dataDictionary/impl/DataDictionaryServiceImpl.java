@@ -39,6 +39,21 @@ public class DataDictionaryServiceImpl implements IDataDictionaryService{
         return iDataDictionaryDAO.findCountyList(countyId);
     }
 
+    @Override
+    public void updateProvince(String provinceId) {
+        iDataDictionaryDAO.updateProvince(provinceId);
+    }
+
+    @Override
+    public void updateCity(String cityId) {
+        iDataDictionaryDAO.updateCity(cityId);
+    }
+
+    @Override
+    public void updateCounty(String countyId) {
+        iDataDictionaryDAO.updateCounty(countyId);
+    }
+
     /**
      * 根据区域ID获取区域下的所有学校
      *
