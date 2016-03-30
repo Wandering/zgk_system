@@ -4,10 +4,10 @@ import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.service.account.impl.EXUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
-import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,6 +25,11 @@ public class AgentController {
     @Autowired
     private IDepartmentService departmentService;
 
+    /**
+     * 下订单时获取离用户最近的取货代理商信息
+     * @param accountId
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value="getAgentInfo")
     public Department getAgentInfo(@RequestParam(value = "accountId")String accountId)
@@ -88,6 +93,18 @@ public class AgentController {
         throw new BizException("100001", "未查找到相关代理商,用户区域信息有误!");
     }
 
+    /**
+     * 获取单个部门
+     * @param  departmentId 部门ID
+     * @return Department
+     */
+    @ResponseBody
+    @RequestMapping(value = "getDepartment",method = RequestMethod.GET)
+    public Department getDepartment(@RequestParam(value = "departmentId")String departmentId){
+        return fixReturnValue(departmentService.getDepartment(departmentId));
+    }
+
+
     private Department fixReturnValue(Department countyDepartment) {
         countyDepartment.setCompanyCode(null);
         countyDepartment.setDepartmentCode(null);
@@ -99,7 +116,6 @@ public class AgentController {
         countyDepartment.setRoleType(null);
         countyDepartment.setCreateDate(null);
         countyDepartment.setCreatorName(null);
-        countyDepartment.setId(null);
         countyDepartment.setLastModDate(null);
         countyDepartment.setLastModifier(null);
         countyDepartment.setLastModifierName(null);
