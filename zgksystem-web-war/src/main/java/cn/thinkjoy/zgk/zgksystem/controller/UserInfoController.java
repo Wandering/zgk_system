@@ -119,7 +119,10 @@ public class UserInfoController {
             userInfoService.updateOrSave(u, u.getId());
             return "ok";
         }
-        UserAccount userAccount = (UserAccount)userAccountService.findOne("loginNumber",userPojo.getLoginNumber());
+        Map<String,Object> map=new HashMap<>();
+        map.put("loginNumber",userPojo.getLoginNumber());
+        map.put("status",0);
+        UserAccount userAccount = (UserAccount)userAccountService.queryOne(map);
         if (userAccount!=null){
             throw new BizException(ERRORCODE.ACCOUNT_ISEXIST.getCode(),ERRORCODE.ACCOUNT_ISEXIST.getMessage());
         }
