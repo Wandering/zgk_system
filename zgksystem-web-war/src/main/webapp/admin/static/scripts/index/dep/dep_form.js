@@ -1,28 +1,27 @@
 /**
  * Created by kepeng on 15/9/9.
  */
-define(function(require, exports, module) {
+define(function (require, exports, module) {
     var Tool = require('../tools.js');
-
-
 
 
     function tip(ele, str) {
         var errorLable = ele.find('p');
         errorLable.html(str);
         errorLable.show(500);
-        setTimeout(function() {
+        setTimeout(function () {
             errorLable.hide(500);
         }, 2000)
     }
 
     if (typeof String.prototype.trim !== 'function') {
-        String.prototype.trim = function() {
-            return this.replace(/(^\s*)|(\s*$)/g,'');
+        String.prototype.trim = function () {
+            return this.replace(/(^\s*)|(\s*$)/g, '');
         };
     }
     //验证用户账号是否存在
     var token = $.cookie('bizData');
+
     function checkLoginNameIsExist(userName) {
         $.ajax({
             type: 'post',
@@ -34,7 +33,6 @@ define(function(require, exports, module) {
             dataType: 'json',
             success: function (data) {
                 if ('0000000' === data.rtnCode) {
-                    console.info(data);
                     if ('0' == data.bizData) {
                         tip($('#dep_name').parent().parent(), '账户已存在');
                         $('#dep_name').focus();
@@ -52,19 +50,14 @@ define(function(require, exports, module) {
         });
     }
 
-
-
     function validateForm(callback) {
         var name = $('#dep_name').val().trim();
         var reg = /^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{1,10}$/;
-
-        alert(name);
-        checkLoginNameIsExist(name);
-
         if (!reg.test(name)) {
             tip($('#dep_name').parent().parent(), '代理商名称输入格式错误');
             return;
         }
+        checkLoginNameIsExist(name);
         var telephone = $('#dep_telephone').val().trim();
         if (!Tool.isMobile(telephone) && !Tool.isTelephone(telephone)) {
             tip($('#dep_telephone').parent().parent(), '代理商电话输入格式错误');
@@ -89,8 +82,7 @@ define(function(require, exports, module) {
             tip($('#sale_Price').parent().parent(), '零售价格不能为空');
             return;
         }
-        if(salePrice.length>6 ||isNaN(salePrice))
-        {
+        if (salePrice.length > 6 || isNaN(salePrice)) {
             tip($('#sale_Price').parent().parent(), '零售价格输入长度或格式错误');
             return;
         }
@@ -99,10 +91,11 @@ define(function(require, exports, module) {
             tip($('#goods_Address').parent().parent(), '取货地址不能为空');
             return;
         }
-        callback([name, telephone, fax, leading,provinces,city,county,salePrice,goodsAddress]);
+        callback([name, telephone, fax, leading, provinces, city, county, salePrice, goodsAddress]);
     }
+
     module.exports = {
-        validate: function(callback) {
+        validate: function (callback) {
             validateForm(callback);
         }
     }
