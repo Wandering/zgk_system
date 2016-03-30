@@ -1,9 +1,9 @@
 /**
  * Created by kepeng on 15/9/9.
  */
-define(function(require, exports, module) {
+define(function (require, exports, module) {
 
-    module.exports = function(parentCode, treeObj) {
+    module.exports = function (parentCode, treeObj) {
         require('bootstrap');
         require('cookie');
         var token = $.cookie('bizData');
@@ -31,7 +31,7 @@ define(function(require, exports, module) {
             "aTargets": [0]
         }, {
             "aTargets": [3],
-            "render": function(data, type, row) {
+            "render": function (data, type, row) {
                 return '<a style="color:#fff" href="Mailto:' + data + '">' + data + '</a>';
             }
         }];
@@ -46,7 +46,7 @@ define(function(require, exports, module) {
 
         var tableObj = Table.dataTable;
 
-        var addOrUpdateDepartment = function(formArry, succCallback, id) {
+        var addOrUpdateDepartment = function (formArry, succCallback, id) {
             var postJson = {
                 postCode: formArry[0] || '',
                 userName: formArry[1] || '',
@@ -75,11 +75,16 @@ define(function(require, exports, module) {
                     userPojoJson: JSON.stringify(postJson)
                 },
                 dataType: 'json',
-                success: function(data) {
+                success: function (data) {
                     succCallback(data);
                 },
-                beforeSend: function(xhr) {},
-                error: function(data) {
+                beforeSend: function (xhr) {
+                    $('.single-buttons').attr('disabled', 'disabled');
+                },
+                complete: function () {
+                    $('.single-buttons').removeAttr('disabled');
+                },
+                error: function (data) {
 
                 }
             });
@@ -89,7 +94,7 @@ define(function(require, exports, module) {
             var errorLable = ele.find('p');
             errorLable.html(str);
             errorLable.fadeIn(500);
-            setTimeout(function() {
+            setTimeout(function () {
                 errorLable.fadeOut(500);
             }, 2000)
         }
@@ -103,45 +108,46 @@ define(function(require, exports, module) {
                     loginNumber: userName
                 },
                 dataType: 'json',
-                success: function(data) {
-                   if ('0000000' === data.rtnCode) {
+                success: function (data) {
+                    if ('0000000' === data.rtnCode) {
                         if ('0' == data.bizData) {
                             tip($('#login_name').parent().parent(), '账户已存在');
                             $('#login_name').focus();
                             $('#login_name').attr('data-flag', 'isExist');
                             return;
                         }
-                   }
+                    }
                     $('#login_name').attr('data-flag', '');
                 },
-                beforeSend: function(xhr) {},
-                error: function(data) {
+                beforeSend: function (xhr) {
+                },
+                error: function (data) {
                     $('#login_name').attr('data-flag', '');
                 }
             });
         }
 
         var ButtonEvent = {
-            add: function(elementId) {
+            add: function (elementId) {
                 $('#' + elementId).off('click');
-                $('#' + elementId).on('click', function(e) {
+                $('#' + elementId).on('click', function (e) {
                     if (!tableObj) {
                         return;
                     }
-                    $.get('/system/post/queryComboxPost?departmentCode=' + parentCode.id + '&token=' + token, function(data) {
+                    $.get('/system/post/queryComboxPost?departmentCode=' + parentCode.id + '&token=' + token, function (data) {
                         if ('0000000' === data.rtnCode) {
                             var comboxData = data.bizData;
 
                             if (comboxData) {
-                                $.get('../tmpl/employee/employee_form.html', function(tmpl) {
+                                $.get('../tmpl/employee/employee_form.html', function (tmpl) {
                                     require('dialog');
                                     $("#add_employee").dialog({
                                         title: "新增账号",
                                         tmpl: tmpl,
-                                        onClose: function() {
+                                        onClose: function () {
                                             $("#add_employee").dialog("destroy");
                                         },
-                                        render: function() {
+                                        render: function () {
                                             var str = [];
                                             str.push('<option>请选择代理商...</option>');
                                             for (var key in comboxData) {
@@ -150,17 +156,17 @@ define(function(require, exports, module) {
                                             $('#position_name').html(str.join(''));
                                             //验证用户账号是否存在
                                             $('#login_name').off('blur');
-                                            $('#login_name').on('blur', function(e) {
+                                            $('#login_name').on('blur', function (e) {
                                                 checkLoginNameIsExist($(this).val());
                                             });
                                         },
                                         buttons: [{
                                             text: "新增",
-                                            'class': "btn btn-primary",
-                                            click: function() {
+                                            'class': "btn btn-primary single-buttons",
+                                            click: function () {
                                                 var vali = require('./employee_form.js');
-                                                vali.validate(function(formArry) {
-                                                    addOrUpdateDepartment(formArry, function(data) {
+                                                vali.validate(function (formArry) {
+                                                    addOrUpdateDepartment(formArry, function (data) {
                                                         if ('0000000' === data.rtnCode) {
                                                             tableObj.fnDraw();
                                                             $("#add_employee").dialog("destroy");
@@ -170,7 +176,7 @@ define(function(require, exports, module) {
                                                                 title: '温馨提示',
                                                                 msg: data.msg,
                                                                 type: 'alert',
-                                                                clickHandle: function() {
+                                                                clickHandle: function () {
                                                                     //window.location.href = 'login.html';
                                                                 }
                                                             });
@@ -181,7 +187,7 @@ define(function(require, exports, module) {
                                         }, {
                                             text: "取消",
                                             'class': "btn btn-primary",
-                                            click: function() {
+                                            click: function () {
                                                 $("#add_employee").dialog("destroy");
                                             }
                                         }]
@@ -190,25 +196,25 @@ define(function(require, exports, module) {
                             } else {
                                 var tipOne = '代理商【' + parentCode.name + '】下没有岗位，请先添加该代理商下的岗位信息';
                                 message({
-                                    title:'温馨提示',
-                                    msg:tipOne,
-                                    type:'alert'
+                                    title: '温馨提示',
+                                    msg: tipOne,
+                                    type: 'alert'
                                 });
                             }
                         } else {
                             var tipOne = '代理商【' + parentCode.name + '】下没有岗位，请先添加该代理商下的岗位信息';
                             message({
-                                title:'温馨提示',
-                                msg:tipOne,
-                                type:'alert'
+                                title: '温馨提示',
+                                msg: tipOne,
+                                type: 'alert'
                             });
                         }
                     });
                 });
             },
-            update: function(elementId) {
+            update: function (elementId) {
                 $('#' + elementId).off('click');
-                $('#' + elementId).on('click', function(e) {
+                $('#' + elementId).on('click', function (e) {
                     if (!tableObj) {
                         return;
                     }
@@ -217,25 +223,26 @@ define(function(require, exports, module) {
                         return;
                     }
                     var aData = tableObj.fnGetData(anSelected[0]);
-                    $.get('/system/userInfo/getUserInfo?id=' + aData.id + '&token=' + token, function(data) {
+                    $.get('/system/userInfo/getUserInfo?id=' + aData.id + '&token=' + token, function (data) {
                         if ('0000000' === data.rtnCode) {
-                            $.get('../tmpl/employee/employee_form.html', function(tmpl) {
+                            $.get('../tmpl/employee/employee_form.html', function (tmpl) {
                                 require('dialog');
                                 $("#add_employee").dialog({
                                     title: "修改账号",
                                     tmpl: tmpl,
-                                    onClose: function() {
+                                    onClose: function () {
                                         $("#add_employee").dialog("destroy");
                                     },
-                                    render: function() {
-                                        $.get('/system/post/queryComboxPost?departmentCode=' + parentCode.id + '&token=' + token, function(ret) {
+                                    render: function () {
+                                        $.get('/system/post/queryComboxPost?departmentCode=' + parentCode.id + '&token=' + token, function (ret) {
                                             if ('0000000' === ret.rtnCode) {
                                                 var comboxData = ret.bizData;
                                                 var str = [];
                                                 str.push('<option>请选择岗位...</option>');
                                                 for (var key in comboxData) {
                                                     str.push('<option value="' + key + '">' + comboxData[key] + '</option>');
-                                                };
+                                                }
+                                                ;
                                                 $('#position_name').html(str.join(''));
                                                 $('#position_name').val(data.bizData.postCode);
                                             }
@@ -252,10 +259,10 @@ define(function(require, exports, module) {
                                     buttons: [{
                                         text: "修改",
                                         'class': "btn btn-primary",
-                                        click: function() {
+                                        click: function () {
                                             var vali = require('./employee_form.js');
-                                            vali.validate(function(formArry) {
-                                                addOrUpdateDepartment(formArry, function(data) {
+                                            vali.validate(function (formArry) {
+                                                addOrUpdateDepartment(formArry, function (data) {
                                                     if ('0000000' === data.rtnCode) {
                                                         tableObj.fnDraw();
                                                         $("#add_employee").dialog("destroy");
@@ -265,7 +272,7 @@ define(function(require, exports, module) {
                                                             title: '温馨提示',
                                                             msg: data.msg,
                                                             type: 'alert',
-                                                            clickHandle: function() {
+                                                            clickHandle: function () {
                                                                 window.location.href = 'login.html';
                                                             }
                                                         });
@@ -276,7 +283,7 @@ define(function(require, exports, module) {
                                     }, {
                                         text: "取消",
                                         'class': "btn btn-primary",
-                                        click: function() {
+                                        click: function () {
                                             $("#add_employee").dialog("destroy");
                                         }
                                     }]
@@ -286,9 +293,9 @@ define(function(require, exports, module) {
                     });
                 });
             },
-            delete: function(elementId) {
+            delete: function (elementId) {
                 $('#' + elementId).off('click');
-                $('#' + elementId).on('click', function(e) {
+                $('#' + elementId).on('click', function (e) {
                     if (!tableObj) {
                         return;
                     }
@@ -298,18 +305,18 @@ define(function(require, exports, module) {
                         //console.log(aData);
                         var str = '确认删除账号' + aData.userName;
                         message({
-                            title:'温馨提示',
-                            msg:str,
-                            type:'alert',
-                            clickHandle: function() {
-                                $.get('/system/userInfo/delUserInfo?id=' + aData.id + '&token=' + token, function(data) {
+                            title: '温馨提示',
+                            msg: str,
+                            type: 'alert',
+                            clickHandle: function () {
+                                $.get('/system/userInfo/delUserInfo?id=' + aData.id + '&token=' + token, function (data) {
                                     if ('0000000' === data.rtnCode) {
                                         tableObj.fnDraw();
                                     } else {
                                         message({
-                                            title:'错误提示',
-                                            msg:data.msg,
-                                            type:'alert'
+                                            title: '错误提示',
+                                            msg: data.msg,
+                                            type: 'alert'
                                         });
                                     }
                                 });
@@ -320,7 +327,7 @@ define(function(require, exports, module) {
             }
         };
 
-        require.async('../renderResource', function(resource) {
+        require.async('../renderResource', function (resource) {
             resource(ButtonEvent, token);
         });
     };

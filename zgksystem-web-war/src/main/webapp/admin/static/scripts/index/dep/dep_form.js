@@ -21,15 +21,50 @@ define(function(require, exports, module) {
             return this.replace(/(^\s*)|(\s*$)/g,'');
         };
     }
+    //验证用户账号是否存在
+    var token = $.cookie('bizData');
+    function checkLoginNameIsExist(userName) {
+        $.ajax({
+            type: 'post',
+            url: '/system/department/checkDepartmentNameIsExist?token=' + token,
+            contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+            data: {
+                departmentName: userName
+            },
+            dataType: 'json',
+            success: function (data) {
+                if ('0000000' === data.rtnCode) {
+                    console.info(data);
+                    if ('0' == data.bizData) {
+                        tip($('#dep_name').parent().parent(), '账户已存在');
+                        $('#dep_name').focus();
+                        $('#dep_name').attr('data-flag', 'isExist');
+                        return;
+                    }
+                }
+                $('#dep_name').attr('data-flag', '');
+            },
+            beforeSend: function (xhr) {
+            },
+            error: function (data) {
+                $('#dep_name').attr('data-flag', '');
+            }
+        });
+    }
+
+
 
     function validateForm(callback) {
         var name = $('#dep_name').val().trim();
         var reg = /^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{1,10}$/;
+
+        alert(name);
+        checkLoginNameIsExist(name);
+
         if (!reg.test(name)) {
             tip($('#dep_name').parent().parent(), '代理商名称输入格式错误');
             return;
         }
-
         var telephone = $('#dep_telephone').val().trim();
         if (!Tool.isMobile(telephone) && !Tool.isTelephone(telephone)) {
             tip($('#dep_telephone').parent().parent(), '代理商电话输入格式错误');
