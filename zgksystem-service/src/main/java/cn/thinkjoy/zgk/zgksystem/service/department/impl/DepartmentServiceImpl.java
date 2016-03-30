@@ -128,6 +128,23 @@ public class DepartmentServiceImpl extends AbstractPageService<IBaseDAO<Departme
         return resultTree;
     }
 
+    public  List<TreeBean> recursionSubTree(Long parentCode){
+        if(parentCode==null || parentCode==0){
+            parentCode=-1L;
+        }
+        List<TreeBean>  resultTree=new ArrayList<>();
+        Map<String,Object> dataMap = new HashMap<>();
+        dataMap.put("parentCode",parentCode);
+        dataMap.put("status",Constants.NORMAL_STATUS);
+        List<Department> departmentList=this.queryList(dataMap, CodeFactoryUtil.ORDER_BY_FIELD, SqlOrderEnum.DESC.getAction());
+        if(departmentList!=null && departmentList.size()>0){
+            for (Department d:departmentList) {
+                resultTree.add(new TreeBean(d.getDepartmentCode(), d.getDepartmentName(), new ArrayList<TreeBean>()));
+            }
+        }
+        return resultTree;
+    }
+
     public  List<TreeBean> recursionTree(Long parentCode){
         if(parentCode==null || parentCode==0){
             parentCode=-1L;

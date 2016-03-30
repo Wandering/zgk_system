@@ -224,7 +224,7 @@ public class DepartmentController {
         String type = request.getParameter("navType");
         // TODO 这里好像有坑有坑有坑
         if (type!=null&&type.equals("2")){
-            return departmentService.recursionTreeAll(userDepartmentCode);
+            return departmentService.recursionSubTree(userDepartmentCode);
         }
         if (userDepartmentCode==-1){
             return departmentService.recursionTreeAll(userDepartmentCode);
