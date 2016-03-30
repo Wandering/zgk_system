@@ -128,7 +128,6 @@ define(function(require, exports, module) {
                     if (!tableObj) {
                         return;
                     }
-
                     $.get('/system/post/queryComboxPost?departmentCode=' + parentCode.id + '&token=' + token, function(data) {
                         if ('0000000' === data.rtnCode) {
                             var comboxData = data.bizData;

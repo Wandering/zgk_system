@@ -246,7 +246,7 @@ define(function(require, exports, module) {
                                         var updateProvincesId = data.bizData.areaCode;
 
 
-
+                                        
 
                                         switch (roleType){
                                             case "2":
