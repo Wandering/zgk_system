@@ -71,7 +71,10 @@ public class UserInfoController {
     @RequestMapping(value = "checkLoginNumberIsExist",method = RequestMethod.POST)
     public String checkLoginNumberIsExist(HttpServletRequest request){
         String loginNumber = request.getParameter("loginNumber");
-        UserAccount userAccount = (UserAccount)userAccountService.findOne("loginNumber",loginNumber);
+        Map<String,Object> condition=new HashMap<>();
+        condition.put("loginNumber",loginNumber);
+        condition.put("status",0);
+        UserAccount userAccount = (UserAccount)userAccountService.queryOne(condition);
         if (userAccount!=null){
             return "0";
         }
