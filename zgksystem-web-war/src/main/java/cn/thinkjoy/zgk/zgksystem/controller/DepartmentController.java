@@ -79,6 +79,20 @@ public class DepartmentController {
     private IDataDictionaryService dataDictionaryService;
 
     private static Logger LOGGER = LoggerFactory.getLogger(DepartmentController.class);
+
+    @ResponseBody
+    @RequestMapping(value = "checkDepartmentNameIsExist",method = RequestMethod.POST)
+    public String checkDepartmentNameIsExist(HttpServletRequest request){
+        String departmentName = request.getParameter("departmentName");
+        Map<String,Object> condition=new HashMap<>();
+        condition.put("departmentName",departmentName);
+        condition.put("status", 0);
+        Department department = (Department)departmentService.queryOne(condition);
+        if (department!=null){
+            return "0";
+        }
+        return "1";
+    }
     /**
      * 新增和修改部门
      * @return String
@@ -103,6 +117,12 @@ public class DepartmentController {
         dataMap.put("status", Constants.NORMAL_STATUS);//获取正常
         Department temp =(Department) departmentService.queryOne(dataMap);
         if(department.getId()==null || department.getId().equals(0) ){
+            Map<String,Object> condition=new HashMap<>();
+            condition.put("departmentName",department.getDepartmentName());
+            condition.put("status", 0);
+            if(departmentService.queryOne(condition)!=null){
+                throw  new BizException(ERRORCODE.ALREADY_EXIST_ERROR.getCode(),ERRORCODE.ALREADY_EXIST_ERROR.getMessage());
+            }
             Department d=new Department();
             d.setCompanyCode(temp.getCompanyCode());
             d.setDepartmentName(department.getDepartmentName());
