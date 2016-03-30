@@ -93,7 +93,12 @@ define(function(require, exports, module) {
                     succCallback(data);
 
                 },
-                beforeSend: function(xhr) {},
+                beforeSend: function(xhr) {
+                    $('.single-buttons').attr('disabled','disabled');
+                },
+                complete:function(){
+                    $('.single-buttons').removeAttr('disabled');
+                },
                 error: function(data) {
 
                 }
@@ -164,7 +169,7 @@ define(function(require, exports, module) {
                             },
                             buttons: [{
                                 text: "新增",
-                                'class': "btn btn-primary",
+                                'class': "btn btn-primary single-buttons",
                                 click: function() {
                                     var vali = require('./dep_form.js');
                                     vali.validate(function(formArry) {
