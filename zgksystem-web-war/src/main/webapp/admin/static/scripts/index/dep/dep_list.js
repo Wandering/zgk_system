@@ -247,6 +247,7 @@ define(function(require, exports, module) {
 
 
 
+
                                         switch (roleType){
                                             case "2":
                                                 $('#dep_provinces_from').show();
@@ -273,7 +274,7 @@ define(function(require, exports, module) {
                                                 });
                                                 break;
                                             case "4":
-                                                var curProvincesCookieId = curProvincesCookieId+"00";
+                                                var curProvincesCookieId = updateProvincesId.substring(0,4)+"00";
                                                 $('#dep_county_from').show();
                                                 $('#dep_provinces_from,#dep_city_from').hide();
                                                 // 市
