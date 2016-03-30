@@ -13,6 +13,7 @@ import cn.thinkjoy.zgk.zgksystem.pojo.PostPojo;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserInfoService;
+import cn.thinkjoy.zgk.zgksystem.service.dataDictionary.IDataDictionaryService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IEXPostDataauthorityService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IPostDataauthorityService;
@@ -74,7 +75,24 @@ public class DepartmentController {
     @Autowired
     private PostApiService postApiService;
 
+    @Autowired
+    private IDataDictionaryService dataDictionaryService;
+
     private static Logger LOGGER = LoggerFactory.getLogger(DepartmentController.class);
+
+    @ResponseBody
+    @RequestMapping(value = "checkDepartmentNameIsExist",method = RequestMethod.POST)
+    public String checkDepartmentNameIsExist(HttpServletRequest request){
+        String departmentName = request.getParameter("departmentName");
+        Map<String,Object> condition=new HashMap<>();
+        condition.put("departmentName",departmentName);
+        condition.put("status", 0);
+        Department department = (Department)departmentService.queryOne(condition);
+        if (department!=null){
+            return "0";
+        }
+        return "1";
+    }
     /**
      * 新增和修改部门
      * @return String
@@ -99,6 +117,12 @@ public class DepartmentController {
         dataMap.put("status", Constants.NORMAL_STATUS);//获取正常
         Department temp =(Department) departmentService.queryOne(dataMap);
         if(department.getId()==null || department.getId().equals(0) ){
+            Map<String,Object> condition=new HashMap<>();
+            condition.put("departmentName",department.getDepartmentName());
+            condition.put("status", 0);
+            if(departmentService.queryOne(condition)!=null){
+                throw  new BizException(ERRORCODE.ALREADY_EXIST_ERROR.getCode(),ERRORCODE.ALREADY_EXIST_ERROR.getMessage());
+            }
             Department d=new Department();
             d.setCompanyCode(temp.getCompanyCode());
             d.setDepartmentName(department.getDepartmentName());
@@ -114,10 +138,13 @@ public class DepartmentController {
             String areaCode;
             if (userPojo.getRoleType().equals(1)){
                 areaCode=department.getAreaCode().substring(0,2);
+                dataDictionaryService.updateProvince(areaCode+"0000");
             } else if (userPojo.getRoleType().equals(2)){
                 areaCode=department.getAreaCode().substring(0,4);
+                dataDictionaryService.updateCity(areaCode+"00");
             } else if (userPojo.getRoleType().equals(3)){
                 areaCode=department.getAreaCode().substring(0,6);
+                dataDictionaryService.updateCounty(areaCode);
             } else {
                 throw  new BizException(ERRORCODE.INSERT_ERROR.getCode(),ERRORCODE.INSERT_ERROR.getMessage());
             }
@@ -136,6 +163,15 @@ public class DepartmentController {
             return d;
         }else{
             departmentService.updateOrSave(department, department.getId());
+            Map<String, Object> queryMap = new HashMap<>();
+            queryMap.put("id", department.getId());
+            Department depart = (Department) departmentService.queryOne(queryMap);
+            dataMap.put("departmentCode",String.valueOf(depart.getDepartmentCode()));
+            List<Post> postList = postService.queryList(dataMap, CodeFactoryUtil.ORDER_BY_FIELD, SqlOrderEnum.DESC.getAction());
+            for(Post p :postList){
+                p.setPostName(department.getDepartmentName());
+                postService.update(p);
+            }
             return "ok";
         }
 
@@ -154,7 +190,7 @@ public class DepartmentController {
         if(StringUtils.isBlank(departmentId)){
             throw  new BizException(ERRORCODE.PARAM_ISNULL.getCode(), ERRORCODE.PARAM_ISNULL.getMessage());
         }
-        Department d = (Department)departmentService.findOne("id", departmentId);
+        Department d = (Department) departmentService.findOne("id", departmentId);
         d.setStatus(Constants.DELETEED_STATUS);
         departmentService.update(d);
         //递归删除部门下的部门
@@ -215,7 +251,7 @@ public class DepartmentController {
         String type = request.getParameter("navType");
         // TODO 这里好像有坑有坑有坑
         if (type!=null&&type.equals("2")){
-            return departmentService.recursionTreeAll(userDepartmentCode);
+            return departmentService.recursionSubTree(userDepartmentCode);
         }
         if (userDepartmentCode==-1){
             return departmentService.recursionTreeAll(userDepartmentCode);

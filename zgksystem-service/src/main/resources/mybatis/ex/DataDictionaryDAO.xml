@@ -18,5 +18,14 @@
     <select id="findCountyList" resultType="County">
         SELECT id,name as countyName,cityId from zgk_county WHERE status=0 and cityId=#{cityId};
     </select>
+    <update id="updateProvince" >
+        UPDATE zgk_province SET status=-1 WHERE id=#{provinceId}
+    </update>
+    <update id="updateCity" >
+        UPDATE zgk_city SET status=-1 WHERE id=#{cityId}
+    </update>
+    <update id="updateCounty">
+        UPDATE zgk_county SET status=-1 WHERE id=#{countyId}
+    </update>
 </mapper>
 
