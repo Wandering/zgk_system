@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by liusven on 16/3/31.
  */
-@Service
+@Service("AgentServiceImpl")
 public class AgentServiceImpl implements AgentService {
 
     @Autowired
