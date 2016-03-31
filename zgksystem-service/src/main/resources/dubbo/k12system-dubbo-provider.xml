@@ -24,4 +24,5 @@
     <dubbo:service id="userInfoApiService" interface="cn.thinkjoy.zgk.zgksystem.UserInfoApiService" ref="UserInfoApiServiceImpl" executes="100" timeout="600000" retries="0"/>
     <dubbo:service id="userAccountApiService" interface="cn.thinkjoy.zgk.zgksystem.UserAccountApiService" ref="UserAccountApiServiceImpl" executes="100" timeout="600000" retries="0"/>
     <dubbo:service id="eXCodeApiService" interface="cn.thinkjoy.zgk.zgksystem.EXCodeApiService" ref="EXCodeApiServiceImpl" executes="100" timeout="600000" retries="0"/>
+    <dubbo:service id="agentService" interface="cn.thinkjoy.zgk.zgksystem.AgentService" ref="AgentService" executes="100" timeout="600000" retries="0"/>
 </beans>
