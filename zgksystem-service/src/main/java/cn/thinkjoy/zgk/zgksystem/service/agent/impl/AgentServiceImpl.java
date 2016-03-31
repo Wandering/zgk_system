@@ -1,9 +1,9 @@
 package cn.thinkjoy.zgk.zgksystem.service.agent.impl;
 
 import cn.thinkjoy.common.exception.BizException;
+import cn.thinkjoy.zgk.zgksystem.AgentService;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.service.account.impl.EXUserAccountService;
-import cn.thinkjoy.zgk.zgksystem.service.agent.IAgentService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by liusven on 16/3/31.
  */
-public class AgentServiceImpl implements IAgentService {
+public class AgentServiceImpl implements AgentService {
 
     @Autowired
     private EXUserAccountService exUserAccountService;
