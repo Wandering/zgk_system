@@ -6,6 +6,7 @@ import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.service.account.impl.EXUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
 /**
  * Created by liusven on 16/3/31.
  */
+@Service
 public class AgentServiceImpl implements AgentService {
 
     @Autowired
