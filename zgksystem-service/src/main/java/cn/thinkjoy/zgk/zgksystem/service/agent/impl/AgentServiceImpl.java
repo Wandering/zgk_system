@@ -5,7 +5,7 @@ import cn.thinkjoy.zgk.zgksystem.AgentService;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.domain.MarketParmas;
 import cn.thinkjoy.zgk.zgksystem.domain.SplitPrice;
-import cn.thinkjoy.zgk.zgksystem.pojo.SplitPricePojo;
+import cn.thinkjoy.zgk.zgksystem.domain.SplitPricePojo;
 import cn.thinkjoy.zgk.zgksystem.service.account.impl.EXUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
 import cn.thinkjoy.zgk.zgksystem.service.market.IMarketParmasService;

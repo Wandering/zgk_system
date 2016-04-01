@@ -1,4 +1,4 @@
-package cn.thinkjoy.zgk.zgksystem.pojo;
+package cn.thinkjoy.zgk.zgksystem.domain;
 
 /**
  * Created by douzy on 16/3/31.
