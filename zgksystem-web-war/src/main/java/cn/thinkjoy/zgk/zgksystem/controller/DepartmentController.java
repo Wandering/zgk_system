@@ -138,13 +138,13 @@ public class DepartmentController {
             String areaCode;
             if (userPojo.getRoleType().equals(1)){
                 areaCode=department.getAreaCode().substring(0,2);
-                dataDictionaryService.updateProvince(areaCode+"0000");
+                dataDictionaryService.updateProvince(areaCode+"0000","-1");
             } else if (userPojo.getRoleType().equals(2)){
                 areaCode=department.getAreaCode().substring(0,4);
-                dataDictionaryService.updateCity(areaCode+"00");
+                dataDictionaryService.updateCity(areaCode+"00","-1");
             } else if (userPojo.getRoleType().equals(3)){
                 areaCode=department.getAreaCode().substring(0,6);
-                dataDictionaryService.updateCounty(areaCode);
+                dataDictionaryService.updateCounty(areaCode,"-1");
             } else {
                 throw  new BizException(ERRORCODE.INSERT_ERROR.getCode(),ERRORCODE.INSERT_ERROR.getMessage());
             }
@@ -192,7 +192,10 @@ public class DepartmentController {
         }
         Department d = (Department) departmentService.findOne("id", departmentId);
         d.setStatus(Constants.DELETEED_STATUS);
+        updateAreaCode(d,"0");
         departmentService.update(d);
+        deleteDepartmentPost(d.getDepartmentCode().toString());
+        deleteDepartmentUser(d.getDepartmentCode().toString());
         //递归删除部门下的部门
         recursionDelDeparment(d.getDepartmentCode());
         //删除部门下的岗位
@@ -272,7 +275,10 @@ public class DepartmentController {
         if(departmentList!=null&& departmentList.size()>0){
             for (Department d: departmentList){
                 d.setStatus(Constants.DELETEED_STATUS);
+                updateAreaCode(d,"0");
                 departmentService.update(d);
+                deleteDepartmentPost(d.getId().toString());
+                deleteDepartmentUser(d.getId().toString());
                 Map<String,Object> dataPostMap=new HashMap<>();
                 dataPostMap.put("departmentCode", d.getDepartmentCode());
                 dataPostMap.put("status", Constants.NORMAL_STATUS);
@@ -377,6 +383,49 @@ public class DepartmentController {
     private String distributionSystemCode(long postCode,long systemCode){
         postApiService.postSystemAuthority(postCode,systemCode);
         return "ok";
+    }
+
+    private void updateAreaCode(Department d,String status){
+        String areaCode=null;
+        if (d.getRoleType()==null||d.getRoleType().equals("")){
+
+        } else if (d.getRoleType().equals("2")){
+            areaCode=d.getAreaCode()+"0000";
+            dataDictionaryService.updateProvince(areaCode+"0000",status);
+        } else if (d.getRoleType().equals("3")){
+            areaCode=d.getAreaCode()+"00";
+            dataDictionaryService.updateCity(areaCode+"00",status);
+        } else if (d.getRoleType().equals("4")){
+            areaCode=d.getAreaCode();
+            dataDictionaryService.updateCounty(areaCode,status);
+        }
+    }
+
+    /**
+     * 删除部门下的人员
+     * @param departmentId
+     */
+    private void deleteDepartmentUser(String departmentId){
+        UserInfo userInfo = (UserInfo) userInfoService.findOne("departmentCode", departmentId);
+        if (userInfo!=null) {
+            userInfo.setStatus(Constants.DELETEED_STATUS);
+            userInfoService.update(userInfo);
+            UserAccount userAccount=(UserAccount)userAccountService.findOne("userCode", userInfo.getUserCode());
+            userAccount.setStatus(Constants.DELETEED_STATUS);
+            userAccountService.update(userAccount);
+        }
+    }
+
+    /**
+     * 删除部门下的岗位
+     * @param departmentId
+     */
+    private void deleteDepartmentPost(String departmentId){
+        Post post = (Post) postService.findOne("departmentCode", departmentId);
+        if (post!=null) {
+            post.setStatus(Constants.DELETEED_STATUS);
+            postService.update(post);
+        }
     }
 
 }

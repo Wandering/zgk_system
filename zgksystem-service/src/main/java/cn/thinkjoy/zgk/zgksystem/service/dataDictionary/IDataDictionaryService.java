@@ -23,7 +23,7 @@ public interface IDataDictionaryService {
     List<Province> findProvinceList();
     List<City> findCityList(Long provinceId);
     List<County> findCountyList(Long cityId);
-    void updateProvince(String provinceId);
-    void updateCity(String cityId);
-    void updateCounty(String countyId);
+    void updateProvince(String provinceId,String status);
+    void updateCity(String cityId,String status);
+    void updateCounty(String countyId,String status);
 }

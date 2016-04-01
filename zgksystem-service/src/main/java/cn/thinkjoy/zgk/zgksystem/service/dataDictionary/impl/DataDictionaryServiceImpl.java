@@ -40,18 +40,18 @@ public class DataDictionaryServiceImpl implements IDataDictionaryService{
     }
 
     @Override
-    public void updateProvince(String provinceId) {
-        iDataDictionaryDAO.updateProvince(provinceId);
+    public void updateProvince(String provinceId,String status) {
+        iDataDictionaryDAO.updateProvince(provinceId,status);
     }
 
     @Override
-    public void updateCity(String cityId) {
-        iDataDictionaryDAO.updateCity(cityId);
+    public void updateCity(String cityId,String status) {
+        iDataDictionaryDAO.updateCity(cityId,status);
     }
 
     @Override
-    public void updateCounty(String countyId) {
-        iDataDictionaryDAO.updateCounty(countyId);
+    public void updateCounty(String countyId,String status) {
+        iDataDictionaryDAO.updateCounty(countyId,status);
     }
 
     /**
