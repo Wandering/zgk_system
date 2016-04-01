@@ -109,6 +109,14 @@ public class AgentServiceImpl implements AgentService {
      */
     @Override
     public boolean SplitPriceExec(List<SplitPricePojo> splitPricePojoList,Integer payPrice,String orderNo) {
+
+        Map map=new HashMap();
+        map.put("orderNo",orderNo);
+
+        List<SplitPrice> splitPrices=iSplitPriceService.getSplitPriceList(map);
+        if(splitPrices.size()>0)
+            throw new BizException("100001", "该笔订单已经分成!");
+
         boolean result = false;
         if (splitPricePojoList == null)
             throw new BizException("100001", "未输入关系链数据!");
