@@ -14,6 +14,7 @@ import cn.thinkjoy.zgk.zgksystem.common.ERRORCODE;
 import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.dao.IPostDAO;
 import cn.thinkjoy.zgk.zgksystem.domain.Post;
+import cn.thinkjoy.zgk.zgksystem.service.account.IUserInfoService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IPostService;
 import cn.thinkjoy.zgk.zgksystem.util.CodeFactoryUtil;
 import cn.thinkjoy.zgk.zgksystem.util.Constants;
@@ -32,6 +33,9 @@ import java.util.Map;
 public class PostServiceImpl extends AbstractPageService<IBaseDAO<Post>, Post> implements IPostService<IBaseDAO<Post>,Post>{
     @Autowired
     private IPostDAO postDAO;
+
+    @Autowired
+    private IUserInfoService userInfoService;
 
     @Override
     public IBaseDAO<Post> getDao() {
@@ -90,7 +94,12 @@ public class PostServiceImpl extends AbstractPageService<IBaseDAO<Post>, Post> i
         dataMap.put("departmentCode",departmentCode);
         List<Post> postList = this.queryList(dataMap, CodeFactoryUtil.ORDER_BY_FIELD, SqlOrderEnum.DESC.getAction());
         for(Post p :postList){
-            resultMap.put(p.getPostCode() + "", p.getPostName());
+            Map<String,Object> dataMap1 = new HashMap<>();
+            dataMap1.put("status",Constants.NORMAL_STATUS);
+            dataMap1.put("postCode",p.getPostCode());
+            if(userInfoService.queryOne(dataMap1)==null) {
+                resultMap.put(p.getPostCode() + "", p.getPostName());
+            }
         }
         if(resultMap.size()==0) {
             throw new BizException(ERRORCODE.NO_MESSAGE.getCode(),ERRORCODE.NO_MESSAGE.getMessage());

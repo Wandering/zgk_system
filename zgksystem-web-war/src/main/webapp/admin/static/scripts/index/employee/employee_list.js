@@ -194,7 +194,7 @@ define(function (require, exports, module) {
                                     });
                                 })
                             } else {
-                                var tipOne = '代理商【' + parentCode.name + '】下没有岗位，请先添加该代理商下的岗位信息';
+                                var tipOne = '代理商【' + parentCode.name + '】下只能存在一个代理商';
                                 message({
                                     title: '温馨提示',
                                     msg: tipOne,
@@ -202,7 +202,7 @@ define(function (require, exports, module) {
                                 });
                             }
                         } else {
-                            var tipOne = '代理商【' + parentCode.name + '】下没有岗位，请先添加该代理商下的岗位信息';
+                            var tipOne = '代理商【' + parentCode.name + '】下只能存在一个代理商';
                             message({
                                 title: '温馨提示',
                                 msg: tipOne,
