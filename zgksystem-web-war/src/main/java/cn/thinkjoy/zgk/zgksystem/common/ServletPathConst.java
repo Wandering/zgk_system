@@ -13,5 +13,8 @@ public class ServletPathConst {
     static{
         MAPPING_URLS.add("/system/agent/getAgentInfo.do");
         MAPPING_URLS.add("/system/agent/getDepartment.do");
+        MAPPING_URLS.add("/system/agent/getSplitPrices.do");
+
+//        MAPPING_URLS.add("/system/system/agentTest.do");
     }
 }

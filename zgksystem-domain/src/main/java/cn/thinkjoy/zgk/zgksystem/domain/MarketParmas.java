@@ -2,8 +2,6 @@ package cn.thinkjoy.zgk.zgksystem.domain;
 
 import cn.thinkjoy.common.domain.CreateBaseDomain;
 
-import java.math.BigDecimal;
-
 /**
  * Created by douzy on 16/3/31.
  */
@@ -11,7 +9,7 @@ public class MarketParmas extends CreateBaseDomain {
     /**
      * 成本价
      */
-    private BigDecimal costPrice;
+    private Integer costPrice;
     /**
      * 分成比例 购买用户的前两级
      */
@@ -21,11 +19,11 @@ public class MarketParmas extends CreateBaseDomain {
      */
     private String levelProfits;
 
-    public BigDecimal getCostPrice() {
+    public Integer getCostPrice() {
         return costPrice;
     }
 
-    public void setCostPrice(BigDecimal costPrice) {
+    public void setCostPrice(Integer costPrice) {
         this.costPrice = costPrice;
     }
 

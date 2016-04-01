@@ -2,8 +2,10 @@ package cn.thinkjoy.zgk.zgksystem.controller;
 
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
+import cn.thinkjoy.zgk.zgksystem.domain.SplitPrice;
 import cn.thinkjoy.zgk.zgksystem.service.account.impl.EXUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
+import cn.thinkjoy.zgk.zgksystem.service.market.ISplitPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +28,8 @@ public class AgentController {
     private EXUserAccountService exUserAccountService;
     @Autowired
     private IDepartmentService departmentService;
-
+    @Resource
+    private ISplitPriceService iSplitPriceService;
     /**
      * 下订单时获取离用户最近的取货代理商信息
      * @param accountId
@@ -104,6 +109,15 @@ public class AgentController {
         return fixReturnValue(departmentService.getDepartment(departmentId));
     }
 
+    /**
+     * 层级分成列表
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getSplitPrices",method =RequestMethod.GET)
+    public List<SplitPrice> getSplitPrices() {
+        return iSplitPriceService.getSplitPriceList(null);
+    }
 
     private Department fixReturnValue(Department countyDepartment) {
         countyDepartment.setCompanyCode(null);

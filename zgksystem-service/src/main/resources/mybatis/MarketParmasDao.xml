@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.zgk.zgksystem.dao.IMarketParmasDao">
+    <sql id="Base_Column_List">
+       cost_price,split_percentage,level_profits
+    </sql>
+    <resultMap id="BaseResultMap" type="cn.thinkjoy.zgk.zgksystem.domain.MarketParmas">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="cost_price" property="costPrice" jdbcType="INTEGER"/>
+        <result column="split_percentage" property="splitPercentage" jdbcType="INTEGER"/>
+        <result column="level_profits" property="levelProfits" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="selectModel" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk2.zgk_market_parmas
+        LIMIT 0,1
+    </select>
+</mapper>

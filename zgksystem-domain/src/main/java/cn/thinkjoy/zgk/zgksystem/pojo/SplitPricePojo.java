@@ -13,6 +13,8 @@ public class SplitPricePojo implements Comparable<SplitPricePojo> {
      */
     private Integer agentLevel;
 
+    private String accountPhone;
+
     public Integer getAccountId() {
         return accountId;
     }
@@ -27,6 +29,14 @@ public class SplitPricePojo implements Comparable<SplitPricePojo> {
 
     public void setAgentLevel(Integer agentLevel) {
         this.agentLevel = agentLevel;
+    }
+
+    public String getAccountPhone() {
+        return accountPhone;
+    }
+
+    public void setAccountPhone(String accountPhone) {
+        this.accountPhone = accountPhone;
     }
 
     @Override

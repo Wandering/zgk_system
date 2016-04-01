@@ -14,5 +14,5 @@ public interface AgentService {
 
     Department getDepartment(String departmentId);
 
-    boolean SplitPrice(List<SplitPricePojo> splitPricePojoList,Integer payPrice);
+    boolean SplitPriceExec(List<SplitPricePojo> splitPricePojoList,Integer payPrice,String orderNo);
 }
