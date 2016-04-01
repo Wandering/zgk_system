@@ -391,10 +391,10 @@ public class DepartmentController {
 
         } else if (d.getRoleType().equals("2")){
             areaCode=d.getAreaCode()+"0000";
-            dataDictionaryService.updateProvince(areaCode+"0000",status);
+            dataDictionaryService.updateProvince(areaCode,status);
         } else if (d.getRoleType().equals("3")){
             areaCode=d.getAreaCode()+"00";
-            dataDictionaryService.updateCity(areaCode+"00",status);
+            dataDictionaryService.updateCity(areaCode,status);
         } else if (d.getRoleType().equals("4")){
             areaCode=d.getAreaCode();
             dataDictionaryService.updateCounty(areaCode,status);
