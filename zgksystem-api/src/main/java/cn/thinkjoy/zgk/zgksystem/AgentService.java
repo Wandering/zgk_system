@@ -1,7 +1,7 @@
 package cn.thinkjoy.zgk.zgksystem;
 
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
-import cn.thinkjoy.zgk.zgksystem.pojo.SplitPricePojo;
+import cn.thinkjoy.zgk.zgksystem.domain.SplitPricePojo;
 
 import java.util.List;
 
