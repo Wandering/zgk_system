@@ -10,7 +10,7 @@
         SELECT count(*) FROM k12system_post where postCode like   CONCAT(#{companyCode} , '%')
     </select>
     <select id="queryPostByCreator" resultType="Post">
-        SELECT * FROM k12system_post where creator = #{creator}
+        SELECT * FROM k12system_post where creator = #{creator} AND status = 0
         limit ${offset}, ${rows}
     </select>
     <select id="countPostByCreator" resultType="java.lang.Integer">
