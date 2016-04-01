@@ -8,6 +8,8 @@ import cn.thinkjoy.zgk.zgksystem.service.market.ISplitPriceService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by douzy on 16/3/31.
@@ -21,5 +23,10 @@ public class SplitPriceServiceImpl extends AbstractPageService<IBaseDAO<SplitPri
     @Override
     public IBaseDAO<SplitPrice> getDao() {
         return iSplitPriceDAO;
+    }
+
+    @Override
+    public List<SplitPrice> getSplitPriceList(Map map){
+         return  iSplitPriceDAO.selectSplitPriceList(map);
     }
 }
