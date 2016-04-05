@@ -200,7 +200,7 @@ public class AgentServiceImpl implements AgentService {
         splitPrice.setCreateTime(System.currentTimeMillis());
         splitPrice.setUserId(Long.valueOf(splitPricePojo.getAccountId()));
         splitPrice.setUserPhone(splitPricePojo.getAccountPhone());
-        splitPrice.setPrice(profitPrice);
+        splitPrice.setPrice(Double.parseDouble(profitPrice+""));
         Integer result = iSplitPriceService.insert(splitPrice);
 
         return result > 0 ? true : false;
@@ -220,7 +220,7 @@ public class AgentServiceImpl implements AgentService {
         splitPrice.setCreateTime(System.currentTimeMillis());
         splitPrice.setUserId(Long.valueOf(department.getId().toString()));
         splitPrice.setUserPhone(department.getDepartmentPhone());
-        splitPrice.setPrice(profitPrice);
+        splitPrice.setPrice(Double.parseDouble(profitPrice+""));
         Integer result = iSplitPriceService.insert(splitPrice);
         return result > 0 ? true : false;
     }
