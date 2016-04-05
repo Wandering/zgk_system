@@ -178,7 +178,8 @@ public class AgentServiceImpl implements AgentService {
     @Override
     public List<SplitPrice> getSplitPriceInfo(String accountId) {
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("user_id", accountId);
+        paramMap.put("userId", accountId);
+        paramMap.put("type", "1");
         return iSplitPriceService.getSplitPriceList(paramMap);
     }
 
