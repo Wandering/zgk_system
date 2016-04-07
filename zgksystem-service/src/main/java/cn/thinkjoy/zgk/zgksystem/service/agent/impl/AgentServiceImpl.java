@@ -5,7 +5,7 @@ import cn.thinkjoy.zgk.zgksystem.AgentService;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.domain.MarketParmas;
 import cn.thinkjoy.zgk.zgksystem.domain.SplitPrice;
-import cn.thinkjoy.zgk.zgksystem.pojo.SplitPricePojo;
+import cn.thinkjoy.zgk.zgksystem.domain.SplitPricePojo;
 import cn.thinkjoy.zgk.zgksystem.service.account.impl.EXUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
 import cn.thinkjoy.zgk.zgksystem.service.market.IMarketParmasService;
@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -33,10 +32,10 @@ public class AgentServiceImpl implements AgentService {
     @Autowired
     private IDepartmentService departmentService;
 
-    @Resource
+    @Autowired
     private IMarketParmasService iMarketParmasService;
 
-    @Resource
+    @Autowired
     private ISplitPriceService iSplitPriceService;
 
     @Override
@@ -177,6 +176,14 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
+    public List<SplitPrice> getSplitPriceInfo(String accountId) {
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("userId", accountId);
+        paramMap.put("type", "1");
+        return iSplitPriceService.getSplitPriceList(paramMap);
+    }
+
+    @Override
     public Department getDepartment(String departmentId) {
         return fixReturnValue(departmentService.getDepartment(departmentId));
     }
@@ -193,7 +200,7 @@ public class AgentServiceImpl implements AgentService {
         splitPrice.setCreateTime(System.currentTimeMillis());
         splitPrice.setUserId(Long.valueOf(splitPricePojo.getAccountId()));
         splitPrice.setUserPhone(splitPricePojo.getAccountPhone());
-        splitPrice.setPrice(profitPrice);
+        splitPrice.setPrice(Double.parseDouble(profitPrice+""));
         Integer result = iSplitPriceService.insert(splitPrice);
 
         return result > 0 ? true : false;
@@ -213,7 +220,7 @@ public class AgentServiceImpl implements AgentService {
         splitPrice.setCreateTime(System.currentTimeMillis());
         splitPrice.setUserId(Long.valueOf(department.getId().toString()));
         splitPrice.setUserPhone(department.getDepartmentPhone());
-        splitPrice.setPrice(profitPrice);
+        splitPrice.setPrice(Double.parseDouble(profitPrice+""));
         Integer result = iSplitPriceService.insert(splitPrice);
         return result > 0 ? true : false;
     }
@@ -228,7 +235,7 @@ public class AgentServiceImpl implements AgentService {
         LOGGER.info("成交价:"+payPrice);
 
 
-        ArrayList<Integer> levelSplitPriceArr=new ArrayList<>();
+        ArrayList<Integer> levelSplitPriceArr=new ArrayList<Integer>();
         Integer splitPercent=marketParmas.getSplitPercentage();
         Integer costPrice=marketParmas.getCostPrice();
         LOGGER.info("层级分成比例:"+splitPercent);
