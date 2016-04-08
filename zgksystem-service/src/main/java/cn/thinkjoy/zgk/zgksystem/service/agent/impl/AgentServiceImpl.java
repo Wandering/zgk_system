@@ -108,12 +108,14 @@ public class AgentServiceImpl implements AgentService {
      */
     @Override
     public boolean SplitPriceExec(List<SplitPricePojo> splitPricePojoList,Integer payPrice,String orderNo) {
+        LOGGER.info("***********************分成 Start***********************");
+        Map map = new HashMap();
+        map.put("orderNo", orderNo);
+        LOGGER.info("订单号[orderNo]:" + orderNo);
+        LOGGER.info("售价[payPrice]:" + payPrice);
 
-        Map map=new HashMap();
-        map.put("orderNo",orderNo);
-
-        List<SplitPrice> splitPrices=iSplitPriceService.getSplitPriceList(map);
-        if(splitPrices.size()>0)
+        List<SplitPrice> splitPrices = iSplitPriceService.getSplitPriceList(map);
+        if (splitPrices.size() > 0)
             throw new BizException("100001", "该笔订单已经分成!");
 
         boolean result = false;
@@ -129,13 +131,15 @@ public class AgentServiceImpl implements AgentService {
 
         //分转元
 //        double pPrice = new BigDecimal(payPrice).divide(maxBigDecimal).doubleValue();
-
+        LOGGER.info("成本价[costPrice]:" + marketParmas.getCostPrice());
         //成交价>=成本价
         if (payPrice >= marketParmas.getCostPrice()) {
 
             Collections.sort(splitPricePojoList); //按层级排序
 
             Integer len = splitPricePojoList.size() - 1;
+
+            LOGGER.info("层级数[splitPricePojoList.size()]:" + len);
 
             SplitPricePojo splitPricePojo = splitPricePojoList.get(len);
 
@@ -149,6 +153,7 @@ public class AgentServiceImpl implements AgentService {
             ArrayList<Integer> splitPriceArr = getLevelSplitPrice(len, payPrice, marketParmas);
             switch (len) {
                 case 0:
+                    LOGGER.info("层级数为:" + len + "供货商:" + department.getId() + "分成总额为:" + payPrice);
                     result = insertDepartmentSplitPrice(department, orderNo, payPrice);
                     break;
                 case 1:
@@ -159,6 +164,8 @@ public class AgentServiceImpl implements AgentService {
                     result = insertUserSplitPrice(splitPrice, orderNo, splitPriceArr.get(0));
                     //供货商分成
                     result = insertDepartmentSplitPrice(department, orderNo, splitPriceArr.get(1));
+                    LOGGER.info("层级数为:" + len + "用户:" + splitPrice.getAccountId() + "分成总额为:" + splitPriceArr.get(0));
+                    LOGGER.info("层级数为:" + len + "供货商:" + department.getId() + "分成总额为:" + splitPriceArr.get(1));
                     break;
                 case 2:
                     SplitPricePojo splitPri0 = splitPricePojoList.get(0);
@@ -167,11 +174,17 @@ public class AgentServiceImpl implements AgentService {
                     result = insertUserSplitPrice(splitPri1, orderNo, splitPriceArr.get(1));
 
                     result = insertDepartmentSplitPrice(department, orderNo, splitPriceArr.get(2));
+
+                    LOGGER.info("层级数为:" + len + "用户:" + splitPri0.getAccountId() + "分成总额为:" + splitPriceArr.get(0));
+                    LOGGER.info("层级数为:" + len + "用户:" + splitPri1.getAccountId() + "分成总额为:" + splitPriceArr.get(1));
+                    LOGGER.info("层级数为:" + len + "供货商:" + department.getId() + "分成总额为:" + splitPriceArr.get(2));
+
                     break;
             }
         } else
             throw new BizException("100001", "成交价必须大于成本价!");
 
+        LOGGER.info("***********************分成 End***********************");
         return result;
     }
 
