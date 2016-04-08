@@ -1,9 +1,11 @@
 package cn.thinkjoy.zgk.zgksystem.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by douzy on 16/3/31.
  */
-public class SplitPricePojo implements Comparable<SplitPricePojo> {
+public class SplitPricePojo implements Comparable<SplitPricePojo>, Serializable {
     /**
      * 用户ID
      */

@@ -22,7 +22,7 @@ buildscript{
 /** 此闭包内的声明子类皆可使用 */
 allprojects {
     group = 'cn.thinkjoy.zgk.zgksystem'
-    version = '0.0.5-SNAPSHOT'
+    version = '0.0.10-SNAPSHOT'
 
     apply plugin: 'java'
     apply plugin: 'idea'

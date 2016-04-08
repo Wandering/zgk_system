@@ -189,6 +189,14 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
+    public List<SplitPrice> getSplitPriceInfo(String accountId) {
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("userId", accountId);
+        paramMap.put("type", "1");
+        return iSplitPriceService.getSplitPriceList(paramMap);
+    }
+
+    @Override
     public Department getDepartment(String departmentId) {
         return fixReturnValue(departmentService.getDepartment(departmentId));
     }
@@ -205,7 +213,7 @@ public class AgentServiceImpl implements AgentService {
         splitPrice.setCreateTime(System.currentTimeMillis());
         splitPrice.setUserId(Long.valueOf(splitPricePojo.getAccountId()));
         splitPrice.setUserPhone(splitPricePojo.getAccountPhone());
-        splitPrice.setPrice(profitPrice);
+        splitPrice.setPrice(Double.parseDouble(profitPrice+""));
         Integer result = iSplitPriceService.insert(splitPrice);
 
         return result > 0 ? true : false;
@@ -225,7 +233,7 @@ public class AgentServiceImpl implements AgentService {
         splitPrice.setCreateTime(System.currentTimeMillis());
         splitPrice.setUserId(Long.valueOf(department.getId().toString()));
         splitPrice.setUserPhone(department.getDepartmentPhone());
-        splitPrice.setPrice(profitPrice);
+        splitPrice.setPrice(Double.parseDouble(profitPrice+""));
         Integer result = iSplitPriceService.insert(splitPrice);
         return result > 0 ? true : false;
     }

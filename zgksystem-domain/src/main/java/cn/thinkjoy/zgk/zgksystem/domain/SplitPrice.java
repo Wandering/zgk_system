@@ -18,7 +18,7 @@ public class SplitPrice extends BaseDomain {
     /**
      * 分成价格
      */
-    private Integer price;
+    private Double price;
     /**
      * 订单号
      */
@@ -61,11 +61,11 @@ public class SplitPrice extends BaseDomain {
         this.userPhone = userPhone;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

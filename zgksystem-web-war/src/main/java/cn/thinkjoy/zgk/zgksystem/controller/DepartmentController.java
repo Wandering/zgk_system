@@ -162,6 +162,7 @@ public class DepartmentController {
             addPost(d,userPojo.getAccountCode());
             return d;
         }else{
+            department.setAreaCode(null);
             departmentService.updateOrSave(department, department.getId());
             Map<String, Object> queryMap = new HashMap<>();
             queryMap.put("id", department.getId());
