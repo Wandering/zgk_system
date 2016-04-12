@@ -5,7 +5,7 @@ import cn.thinkjoy.zgk.zgksystem.AgentService;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.domain.MarketParmas;
 import cn.thinkjoy.zgk.zgksystem.domain.SplitPrice;
-import cn.thinkjoy.zgk.zgksystem.domain.SplitPricePojo;
+import cn.thinkjoy.zgk.zgksystem.pojo.SplitPricePojo;
 import cn.thinkjoy.zgk.zgksystem.service.account.impl.EXUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
 import cn.thinkjoy.zgk.zgksystem.service.market.IMarketParmasService;
@@ -122,7 +122,12 @@ public class AgentServiceImpl implements AgentService {
         if (splitPricePojoList == null)
             throw new BizException("100001", "未输入关系链数据!");
 
-        MarketParmas marketParmas = iMarketParmasService.getMarketParmas(null);
+        Integer len = splitPricePojoList.size() - 1;
+
+        Map splitPriceRoleMap=new HashMap();
+        splitPriceRoleMap.put("splitLevel",len);
+
+        MarketParmas marketParmas = iMarketParmasService.getMarketParmas(splitPriceRoleMap);
 
         if (marketParmas == null)
             throw new BizException("100001", "系统参数获取失败!");
@@ -133,11 +138,11 @@ public class AgentServiceImpl implements AgentService {
 //        double pPrice = new BigDecimal(payPrice).divide(maxBigDecimal).doubleValue();
         LOGGER.info("成本价[costPrice]:" + marketParmas.getCostPrice());
         //成交价>=成本价
-        if (payPrice >= marketParmas.getCostPrice()) {
+//        if (payPrice >= marketParmas.getCostPrice()) {
 
             Collections.sort(splitPricePojoList); //按层级排序
 
-            Integer len = splitPricePojoList.size() - 1;
+
 
             LOGGER.info("层级数[splitPricePojoList.size()]:" + len);
 
@@ -181,8 +186,8 @@ public class AgentServiceImpl implements AgentService {
 
                     break;
             }
-        } else
-            throw new BizException("100001", "成交价必须大于成本价!");
+//        } else
+//            throw new BizException("100001", "成交价必须大于成本价!");
 
         LOGGER.info("***********************分成 End***********************");
         return result;
@@ -249,40 +254,62 @@ public class AgentServiceImpl implements AgentService {
 
 
         ArrayList<Integer> levelSplitPriceArr=new ArrayList<Integer>();
-        Integer splitPercent=marketParmas.getSplitPercentage();
-        Integer costPrice=marketParmas.getCostPrice();
-        LOGGER.info("层级分成比例:"+splitPercent);
-        LOGGER.info("成本价:"+ costPrice);
+//        Integer splitPercent=marketParmas.getSplitPercentage();
+//        Integer costPrice=marketParmas.getCostPrice();
+//        LOGGER.info("层级分成比例:"+splitPercent);
+//        LOGGER.info("成本价:"+ costPrice);
 
         BigDecimal bigDecimal = new BigDecimal(100);
+
+        String userPercent=marketParmas.getLevelProfits();
+
+        //供货商分成比例
+        Integer supplyPercent=Integer.valueOf(marketParmas.getSplitPercentage());
+
+
+        LOGGER.info("用户分成规则:"+userPercent);
+        LOGGER.info("供货商分成比例:"+supplyPercent);
         switch (level) {
             case 0:
-                LOGGER.info("供货商分成:" + payPrice);
-                levelSplitPriceArr.add(payPrice);
+                Integer suppPrice0 = new BigDecimal(payPrice).multiply(new BigDecimal(supplyPercent).divide(bigDecimal)).intValue();
+                LOGGER.info("供货商分成:" + suppPrice0);
+                levelSplitPriceArr.add(suppPrice0);
                 break;
             case 1:
-                Integer price0 = new BigDecimal(payPrice - costPrice).multiply(new BigDecimal(splitPercent).divide(bigDecimal)).intValue();
+                Integer splitPercent= Integer.valueOf(userPercent);
+
+                Integer price0 = new BigDecimal(payPrice).multiply(new BigDecimal(splitPercent).divide(bigDecimal)).intValue();
+                Integer price1 = new BigDecimal(payPrice).multiply(new BigDecimal(supplyPercent).divide(bigDecimal)).intValue();
 
                 levelSplitPriceArr.add(price0);//用户分成
-                levelSplitPriceArr.add(payPrice - price0);  //供货商分成
+                levelSplitPriceArr.add(price1);  //供货商分成
 
                 LOGGER.info("用户分成:" + price0);
-                LOGGER.info("供货商分成:" + (payPrice - price0));
+                LOGGER.info("供货商分成:" + price1);
                 break;
             case 2:
-                Integer profit = payPrice - costPrice;
-                //(成交价-成本价)*分成比例*30%
-                double p0 = new BigDecimal(profit).multiply(new BigDecimal(splitPercent).divide(bigDecimal)).multiply(new BigDecimal(0.3)).doubleValue();
-
-                Integer pr0 = new BigDecimal(p0).intValue();
+                 ArrayList<Integer> splitRole= getSplitArr(userPercent);
+                Integer pr0 = new BigDecimal(payPrice).multiply(new BigDecimal(splitRole.get(0)).divide(bigDecimal)).intValue();
                 LOGGER.info("用户分成0:" + pr0);
-                //(成交价-成本价)*分成比例*70%
-                double p1 = new BigDecimal(profit).multiply(new BigDecimal(splitPercent).divide(bigDecimal)).multiply(new BigDecimal(0.7)).doubleValue();
-
-                Integer pr1 = new BigDecimal(p1).intValue();
+                Integer pr1 = new BigDecimal(payPrice).multiply(new BigDecimal(splitRole.get(1)).divide(bigDecimal)).intValue();
                 LOGGER.info("用户分成1:" + pr1);
+                Integer pr2=new BigDecimal(payPrice).multiply(new BigDecimal(supplyPercent).divide(bigDecimal)).intValue();
+                LOGGER.info("供货商分成2:" + pr2);
+//
+//                Integer profit = payPrice;
+//                //(成交价-成本价)*分成比例*30%
+//                double p0 = new BigDecimal(profit).multiply(new BigDecimal(splitPercent).divide(bigDecimal)).multiply(new BigDecimal(0.3)).doubleValue();
+//
+//                Integer pr0 = new BigDecimal(p0).intValue();
+//                LOGGER.info("用户分成0:" + pr0);
+//                //(成交价-成本价)*分成比例*70%
+//                double p1 = new BigDecimal(profit).multiply(new BigDecimal(splitPercent).divide(bigDecimal)).multiply(new BigDecimal(0.7)).doubleValue();
+//
+//                Integer pr1 = new BigDecimal(p1).intValue();
+//                LOGGER.info("用户分成1:" + pr1);
+
                 //成交价-B-C
-                Integer pr2 = payPrice - pr0 - pr1;
+//                Integer pr2 = payPrice - pr0 - pr1;
                 LOGGER.info("供货商分成2:" + pr2);
                 levelSplitPriceArr.add(pr0);
                 levelSplitPriceArr.add(pr1);
@@ -292,6 +319,23 @@ public class AgentServiceImpl implements AgentService {
         LOGGER.info("***********************获取各层级分成利润 End***********************");
         return levelSplitPriceArr;
     }
+
+    /**
+     * 转换规则串为Int数组
+     * @param str
+     * @return
+     */
+    private ArrayList<Integer> getSplitArr(String str) {
+        ArrayList<Integer> splitArr = new ArrayList<>();
+
+        String[] splits = str.split("-");
+        for (String s : splits) {
+            splitArr.add(Integer.valueOf(s));
+        }
+
+        return splitArr;
+    }
+
 //    private ArrayList<Integer>
     private Department fixReturnValue(Department countyDepartment) {
         countyDepartment.setCompanyCode(null);

@@ -334,22 +334,22 @@ public class SystemController {
 //        splitPricePojo.setAccountId(134);
 //        splitPricePojo.setAccountPhone("13679136748");
 //        splitPricePojo.setAgentLevel(0);
-//
+
 //        SplitPricePojo splitPricePojo1 = new SplitPricePojo();
-//        splitPricePojo1.setAccountId(123);
+//        splitPricePojo1.setAccountId(13);
 //        splitPricePojo1.setAccountPhone("13679136748");
-//        splitPricePojo1.setAgentLevel(1);
+//        splitPricePojo1.setAgentLevel(0);
 //
 //        SplitPricePojo splitPricePojo2 = new SplitPricePojo();
 //        splitPricePojo2.setAccountId(13);
 //        splitPricePojo2.setAccountPhone("13679136748");
 //        splitPricePojo2.setAgentLevel(2);
 //        List<SplitPricePojo> splitPricePojoList = new ArrayList<>();
-//
+
 //        splitPricePojoList.add(splitPricePojo);
 //        splitPricePojoList.add(splitPricePojo1);
 //        splitPricePojoList.add(splitPricePojo2);
-//
+
 //        Integer payPrice = 20000;
 //        String orderNo = "134019310358103571083571035";
 //        boolean result = agentService.SplitPriceExec(splitPricePojoList, payPrice, orderNo);

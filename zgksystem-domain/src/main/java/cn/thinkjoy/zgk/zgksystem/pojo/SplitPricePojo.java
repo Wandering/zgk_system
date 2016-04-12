@@ -1,4 +1,4 @@
-package cn.thinkjoy.zgk.zgksystem.domain;
+package cn.thinkjoy.zgk.zgksystem.pojo;
 
 import java.io.Serializable;
 
