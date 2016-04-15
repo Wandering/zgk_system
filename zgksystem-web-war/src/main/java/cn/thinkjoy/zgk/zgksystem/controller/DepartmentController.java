@@ -22,6 +22,7 @@ import cn.thinkjoy.zgk.zgksystem.service.code.IEXCodeService;
 import cn.thinkjoy.zgk.zgksystem.service.role.IRolePostService;
 import cn.thinkjoy.zgk.zgksystem.util.CodeFactoryUtil;
 import cn.thinkjoy.zgk.zgksystem.util.Constants;
+import cn.thinkjoy.zgk.zgksystem.util.ModelUtil;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.jlusoft.microschool.core.utils.JsonMapper;
 import org.slf4j.Logger;
@@ -67,9 +68,6 @@ public class DepartmentController {
     private IEXPostDataauthorityService iexPostDataauthorityService;
 
     @Autowired
-    private IPostDataauthorityService iPostDataauthorityService;
-
-    @Autowired
     private IRolePostService rolePostService;
 
     @Autowired
@@ -93,6 +91,7 @@ public class DepartmentController {
         }
         return "1";
     }
+
     /**
      * 新增和修改部门
      * @return String
@@ -103,11 +102,11 @@ public class DepartmentController {
 
         String departmentJson = request.getParameter("departmentJson");
         if(StringUtils.isBlank(departmentJson)){
-            throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(),ERRORCODE.PARAM_ISNULL.getMessage());
+            ModelUtil.throwException(ERRORCODE.PARAM_ISNULL);
         }
         Department department =  JsonMapper.buildNormalMapper().fromJson(departmentJson, Department.class);
         if(department == null){
-            throw  new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
+            ModelUtil.throwException(ERRORCODE.JSONCONVERT_ERROR);
         }
 
         UserPojo userPojo=(UserPojo)HttpUtil.getSession(request,"user");
@@ -116,12 +115,12 @@ public class DepartmentController {
         dataMap.put("departmentCode",department.getParentCode());
         dataMap.put("status", Constants.NORMAL_STATUS);//获取正常
         Department temp =(Department) departmentService.queryOne(dataMap);
-        if(department.getId()==null || department.getId().equals(0) ){
+        if(department.getId()==null || department.getId().equals(0)){
             Map<String,Object> condition=new HashMap<>();
             condition.put("departmentName",department.getDepartmentName());
             condition.put("status", 0);
             if(departmentService.queryOne(condition)!=null){
-                throw  new BizException(ERRORCODE.ALREADY_EXIST_ERROR.getCode(),ERRORCODE.ALREADY_EXIST_ERROR.getMessage());
+                ModelUtil.throwException(ERRORCODE.ALREADY_EXIST_ERROR);
             }
             Department d=new Department();
             d.setCompanyCode(temp.getCompanyCode());
@@ -135,7 +134,7 @@ public class DepartmentController {
             d.setGoodsAddress(department.getGoodsAddress());
             d.setSalePrice(department.getSalePrice());
             d.setStatus(Constants.NORMAL_STATUS);
-            String areaCode;
+            String areaCode = "";
             if (userPojo.getRoleType().equals(1)){
                 areaCode=department.getAreaCode().substring(0,2);
                 dataDictionaryService.updateProvince(areaCode+"0000","-1");
@@ -146,7 +145,7 @@ public class DepartmentController {
                 areaCode=department.getAreaCode().substring(0,6);
                 dataDictionaryService.updateCounty(areaCode,"-1");
             } else {
-                throw  new BizException(ERRORCODE.INSERT_ERROR.getCode(),ERRORCODE.INSERT_ERROR.getMessage());
+                ModelUtil.throwException(ERRORCODE.INSERT_ERROR);
             }
             d.setAreaCode(areaCode);
             d.setRoleType(String.valueOf(userPojo.getRoleType()+1));
@@ -158,18 +157,19 @@ public class DepartmentController {
             }
             d.setDepartmentCode(maxDepartmentCode);
 
-            departmentService.updateOrSave(d, null);
+            departmentService.insert(d);
             addPost(d,userPojo.getAccountCode());
             return d;
         }else{
             department.setAreaCode(null);
-            departmentService.updateOrSave(department, department.getId());
+            departmentService.update(department);
+            // TODO 待优化,去掉for循环,用sql执行
             Map<String, Object> queryMap = new HashMap<>();
             queryMap.put("id", department.getId());
             Department depart = (Department) departmentService.queryOne(queryMap);
             dataMap.put("departmentCode",String.valueOf(depart.getDepartmentCode()));
             List<Post> postList = postService.queryList(dataMap, CodeFactoryUtil.ORDER_BY_FIELD, SqlOrderEnum.DESC.getAction());
-            for(Post p :postList){
+            for(Post p : postList){
                 p.setPostName(department.getDepartmentName());
                 postService.update(p);
             }
