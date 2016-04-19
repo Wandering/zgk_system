@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="cn.thinkjoy.zgk.zgksystem.dao.IDepartmentDAO">
+<mapper namespace="cn.thinkjoy.system.dao.IDepartmentDAO">
 <!--
 insert
 update
@@ -25,6 +25,12 @@ selectList
 -->
     <sql id="Base_Column_List">
         id,
+        areaCode,
+        roleType,
+        wechatPrice,
+        webPrice,
+        salePrice,
+        goodsAddress,
         departmentCode,
         companyCode,
         parentCode,
@@ -38,16 +44,16 @@ selectList
         creator,
         createDate,
         lastModDate,
-        lastModifier,
-        roleType,
-        areaCode,
-        salePrice,
-        goodsAddress
+        lastModifier
     </sql>
-
-
     <insert id="insert" parameterType="Department">
         INSERT INTO k12system_department (
+        areaCode,
+        roleType,
+        wechatPrice,
+        webPrice,
+        salePrice,
+        goodsAddress,
         departmentCode,
         companyCode,
         parentCode,
@@ -61,12 +67,14 @@ selectList
         creator,
         createDate,
         lastModDate,
-        lastModifier,
-        roleType,
-        areaCode,
-        salePrice,
-        goodsAddress
+        lastModifier
         ) VALUES (
+        #{areaCode},
+        #{roleType},
+        #{wechatPrice},
+        #{webPrice},
+        #{salePrice},
+        #{goodsAddress},
         #{departmentCode},
         #{companyCode},
         #{parentCode},
@@ -80,11 +88,7 @@ selectList
         #{creator},
         #{createDate},
         #{lastModDate},
-        #{lastModifier},
-        #{roleType},
-        #{areaCode},
-        #{salePrice},
-        #{goodsAddress}
+        #{lastModifier}
         )
         <selectKey resultType="java.lang.Long" keyProperty="id">
         SELECT LAST_INSERT_ID() AS ID
@@ -95,6 +99,24 @@ selectList
     <update id="update" parameterType="Department">
         UPDATE k12system_department
         <trim prefix="SET" suffixOverrides=",">
+            <if test="areaCode!=null">
+                areaCode = #{areaCode},
+            </if>
+            <if test="roleType!=null">
+                roleType = #{roleType},
+            </if>
+            <if test="wechatPrice!=null">
+                wechatPrice = #{wechatPrice},
+            </if>
+            <if test="webPrice!=null">
+                webPrice = #{webPrice},
+            </if>
+            <if test="salePrice!=null">
+                salePrice = #{salePrice},
+            </if>
+            <if test="goodsAddress!=null">
+                goodsAddress = #{goodsAddress},
+            </if>
             <if test="departmentCode!=null">
                 departmentCode = #{departmentCode},
             </if>
@@ -137,18 +159,6 @@ selectList
             <if test="lastModifier!=null">
                 lastModifier = #{lastModifier},
             </if>
-            <if test="roleType!=null">
-                roleType = #{roleType},
-            </if>
-            <if test="areaCode!=null">
-                areaCode = #{areaCode},
-            </if>
-            <if test="salePrice!=null">
-                salePrice = #{salePrice},
-            </if>
-            <if test="goodsAddress!=null">
-                goodsAddress = #{goodsAddress},
-            </if>
         </trim>
         WHERE
         id = #{id}
@@ -157,6 +167,24 @@ selectList
     <update id="updateMap">
         UPDATE k12system_department
         <trim prefix="SET" suffixOverrides=",">
+            <if test="map.areaCode!=null">
+                areaCode = #{map.areaCode},
+            </if>
+            <if test="map.roleType!=null">
+                roleType = #{map.roleType},
+            </if>
+            <if test="map.wechatPrice!=null">
+                wechatPrice = #{map.wechatPrice},
+            </if>
+            <if test="map.webPrice!=null">
+                webPrice = #{map.webPrice},
+            </if>
+            <if test="map.salePrice!=null">
+                salePrice = #{map.salePrice},
+            </if>
+            <if test="map.goodsAddress!=null">
+                goodsAddress = #{map.goodsAddress},
+            </if>
             <if test="map.departmentCode!=null">
                 departmentCode = #{map.departmentCode},
             </if>
@@ -207,6 +235,24 @@ selectList
     <update id="updateByCondition">
         UPDATE k12system_department
         <trim prefix="SET" suffixOverrides=",">
+            <if test="update.areaCode!=null">
+                areaCode = #{update.areaCode},
+            </if>
+            <if test="update.roleType!=null">
+                roleType = #{update.roleType},
+            </if>
+            <if test="update.wechatPrice!=null">
+                wechatPrice = #{update.wechatPrice},
+            </if>
+            <if test="update.webPrice!=null">
+                webPrice = #{update.webPrice},
+            </if>
+            <if test="update.salePrice!=null">
+                salePrice = #{update.salePrice},
+            </if>
+            <if test="update.goodsAddress!=null">
+                goodsAddress = #{update.goodsAddress},
+            </if>
             <if test="update.departmentCode!=null">
                 departmentCode = #{update.departmentCode},
             </if>
@@ -255,6 +301,24 @@ selectList
             <if test="condition.id!=null">
                 AND id = #{condition.id}
             </if>
+            <if test="condition.areaCode!=null">
+                AND areaCode = #{condition.areaCode}
+            </if>
+            <if test="condition.roleType!=null">
+                AND roleType = #{condition.roleType}
+            </if>
+            <if test="condition.wechatPrice!=null">
+                AND wechatPrice = #{condition.wechatPrice}
+            </if>
+            <if test="condition.webPrice!=null">
+                AND webPrice = #{condition.webPrice}
+            </if>
+            <if test="condition.salePrice!=null">
+                AND salePrice = #{condition.salePrice}
+            </if>
+            <if test="condition.goodsAddress!=null">
+                AND goodsAddress = #{condition.goodsAddress}
+            </if>
             <if test="condition.departmentCode!=null">
                 AND departmentCode = #{condition.departmentCode}
             </if>
@@ -302,6 +366,12 @@ selectList
 
     <insert id="insertMap" >
         INSERT INTO k12system_department (
+                areaCode,
+                roleType,
+                wechatPrice,
+                webPrice,
+                salePrice,
+                goodsAddress,
                 departmentCode,
                 companyCode,
                 parentCode,
@@ -317,6 +387,12 @@ selectList
                 lastModDate,
                 lastModifier
         ) VALUES (
+                    #{map.areaCode},
+                    #{map.roleType},
+                    #{map.wechatPrice},
+                    #{map.webPrice},
+                    #{map.salePrice},
+                    #{map.goodsAddress},
                     #{map.departmentCode},
                     #{map.companyCode},
                     #{map.parentCode},
@@ -338,6 +414,12 @@ selectList
     <update id="updateNull" parameterType="Department">
         UPDATE k12system_department
         <trim prefix="SET" suffixOverrides=",">
+            areaCode = #{areaCode},
+            roleType = #{roleType},
+            wechatPrice = #{wechatPrice},
+            webPrice = #{webPrice},
+            salePrice = #{salePrice},
+            goodsAddress = #{goodsAddress},
             departmentCode = #{departmentCode},
             companyCode = #{companyCode},
             parentCode = #{parentCode},
@@ -371,6 +453,24 @@ selectList
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <if test="id!=null">
                 AND id = #{id}
+            </if>
+            <if test="areaCode!=null">
+                AND areaCode = #{areaCode}
+            </if>
+            <if test="roleType!=null">
+                AND roleType = #{roleType}
+            </if>
+            <if test="wechatPrice!=null">
+                AND wechatPrice = #{wechatPrice}
+            </if>
+            <if test="webPrice!=null">
+                AND webPrice = #{webPrice}
+            </if>
+            <if test="salePrice!=null">
+                AND salePrice = #{salePrice}
+            </if>
+            <if test="goodsAddress!=null">
+                AND goodsAddress = #{goodsAddress}
             </if>
             <if test="departmentCode!=null">
                 AND departmentCode = #{departmentCode}
@@ -474,6 +574,24 @@ selectList
             <if test="condition.id!=null">
                 ${condition.groupOp}   id  ${condition.id.op}  #{condition.id.data}
             </if>
+            <if test="condition.areaCode!=null">
+                ${condition.groupOp}   areaCode  ${condition.areaCode.op}  #{condition.areaCode.data}
+            </if>
+            <if test="condition.roleType!=null">
+                ${condition.groupOp}   roleType  ${condition.roleType.op}  #{condition.roleType.data}
+            </if>
+            <if test="condition.wechatPrice!=null">
+                ${condition.groupOp}   wechatPrice  ${condition.wechatPrice.op}  #{condition.wechatPrice.data}
+            </if>
+            <if test="condition.webPrice!=null">
+                ${condition.groupOp}   webPrice  ${condition.webPrice.op}  #{condition.webPrice.data}
+            </if>
+            <if test="condition.salePrice!=null">
+                ${condition.groupOp}   salePrice  ${condition.salePrice.op}  #{condition.salePrice.data}
+            </if>
+            <if test="condition.goodsAddress!=null">
+                ${condition.groupOp}   goodsAddress  ${condition.goodsAddress.op}  #{condition.goodsAddress.data}
+            </if>
             <if test="condition.departmentCode!=null">
                 ${condition.groupOp}   departmentCode  ${condition.departmentCode.op}  #{condition.departmentCode.data}
             </if>
@@ -536,6 +654,24 @@ selectList
             <if test="id!=null">
                 AND id like CONCAT('%', #{id} , '%')
             </if>
+            <if test="areaCode!=null">
+                AND areaCode like CONCAT('%', #{areaCode} , '%')
+            </if>
+            <if test="roleType!=null">
+                AND roleType like CONCAT('%', #{roleType} , '%')
+            </if>
+            <if test="wechatPrice!=null">
+                AND wechatPrice like CONCAT('%', #{wechatPrice} , '%')
+            </if>
+            <if test="webPrice!=null">
+                AND webPrice like CONCAT('%', #{webPrice} , '%')
+            </if>
+            <if test="salePrice!=null">
+                AND salePrice like CONCAT('%', #{salePrice} , '%')
+            </if>
+            <if test="goodsAddress!=null">
+                AND goodsAddress like CONCAT('%', #{goodsAddress} , '%')
+            </if>
             <if test="departmentCode!=null">
                 AND departmentCode like CONCAT('%', #{departmentCode} , '%')
             </if>
@@ -593,6 +729,24 @@ selectList
             <if test="condition.id!=null">
                 AND id = #{condition.id}
             </if>
+            <if test="condition.areaCode!=null">
+                AND areaCode = #{condition.areaCode}
+            </if>
+            <if test="condition.roleType!=null">
+                AND roleType = #{condition.roleType}
+            </if>
+            <if test="condition.wechatPrice!=null">
+                AND wechatPrice = #{condition.wechatPrice}
+            </if>
+            <if test="condition.webPrice!=null">
+                AND webPrice = #{condition.webPrice}
+            </if>
+            <if test="condition.salePrice!=null">
+                AND salePrice = #{condition.salePrice}
+            </if>
+            <if test="condition.goodsAddress!=null">
+                AND goodsAddress = #{condition.goodsAddress}
+            </if>
             <if test="condition.departmentCode!=null">
                 AND departmentCode = #{condition.departmentCode}
             </if>
@@ -649,6 +803,24 @@ selectList
             <if test="condition.id!=null">
                 AND id = #{condition.id}
             </if>
+            <if test="condition.areaCode!=null">
+                AND areaCode = #{condition.areaCode}
+            </if>
+            <if test="condition.roleType!=null">
+                AND roleType = #{condition.roleType}
+            </if>
+            <if test="condition.wechatPrice!=null">
+                AND wechatPrice = #{condition.wechatPrice}
+            </if>
+            <if test="condition.webPrice!=null">
+                AND webPrice = #{condition.webPrice}
+            </if>
+            <if test="condition.salePrice!=null">
+                AND salePrice = #{condition.salePrice}
+            </if>
+            <if test="condition.goodsAddress!=null">
+                AND goodsAddress = #{condition.goodsAddress}
+            </if>
             <if test="condition.departmentCode!=null">
                 AND departmentCode = #{condition.departmentCode}
             </if>
@@ -700,6 +872,24 @@ selectList
        <where>
            <if test="id!=null">
                ${groupOp} id ${id.op}  #{id.data}
+           </if>
+           <if test="areaCode!=null">
+               ${groupOp} areaCode ${areaCode.op}  #{areaCode.data}
+           </if>
+           <if test="roleType!=null">
+               ${groupOp} roleType ${roleType.op}  #{roleType.data}
+           </if>
+           <if test="wechatPrice!=null">
+               ${groupOp} wechatPrice ${wechatPrice.op}  #{wechatPrice.data}
+           </if>
+           <if test="webPrice!=null">
+               ${groupOp} webPrice ${webPrice.op}  #{webPrice.data}
+           </if>
+           <if test="salePrice!=null">
+               ${groupOp} salePrice ${salePrice.op}  #{salePrice.data}
+           </if>
+           <if test="goodsAddress!=null">
+               ${groupOp} goodsAddress ${goodsAddress.op}  #{goodsAddress.data}
            </if>
            <if test="departmentCode!=null">
                ${groupOp} departmentCode ${departmentCode.op}  #{departmentCode.data}

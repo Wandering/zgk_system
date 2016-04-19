@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.zgk.zgksystem.dao.ex.IEXDepartmentDAO">
+
+    <sql id="Base_Column_List">
+        id,
+        areaCode,
+        roleType,
+        wechatPrice,
+        webPrice,
+        salePrice,
+        goodsAddress,
+        departmentCode,
+        companyCode,
+        parentCode,
+        departmentPhone,
+        departmentFax,
+        departmentPrincipal,
+        departmentName,
+        status,
+        seqSort,
+        description,
+        creator,
+        createDate,
+        lastModDate,
+        lastModifier
+    </sql>
+
+    <select id="queryDepartmentsByAreaCode" parameterType="map" resultType="Department">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM k12system_department WHERE
+        areaCode like CONCAT(#{areaCode} , '%')
+        LIMIT #{index},#{pageSize}
+    </select>
+
+</mapper>
+

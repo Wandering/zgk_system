@@ -1,6 +1,7 @@
 package cn.thinkjoy.zgk.zgksystem.controller;
 
 import cn.thinkjoy.common.exception.BizException;
+import cn.thinkjoy.common.utils.ObjectFactory;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.zgk.zgksystem.PostApiService;
 import cn.thinkjoy.zgk.zgksystem.common.ERRORCODE;
@@ -9,6 +10,7 @@ import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.common.TreeBean;
 import cn.thinkjoy.zgk.zgksystem.domain.*;
 import cn.thinkjoy.zgk.zgksystem.common.TreePojo;
+import cn.thinkjoy.zgk.zgksystem.edomain.UserRoleEnum;
 import cn.thinkjoy.zgk.zgksystem.pojo.PostPojo;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserAccountService;
@@ -122,7 +124,7 @@ public class DepartmentController {
             if(departmentService.queryOne(condition)!=null){
                 ModelUtil.throwException(ERRORCODE.ALREADY_EXIST_ERROR);
             }
-            Department d=new Department();
+            Department d = new Department();
             d.setCompanyCode(temp.getCompanyCode());
             d.setDepartmentName(department.getDepartmentName());
             d.setParentCode(department.getParentCode());
@@ -135,20 +137,30 @@ public class DepartmentController {
             d.setSalePrice(department.getSalePrice());
             d.setStatus(Constants.NORMAL_STATUS);
             String areaCode = "";
-            if (userPojo.getRoleType().equals(1)){
-                areaCode=department.getAreaCode().substring(0,2);
-                dataDictionaryService.updateProvince(areaCode+"0000","-1");
-            } else if (userPojo.getRoleType().equals(2)){
-                areaCode=department.getAreaCode().substring(0,4);
-                dataDictionaryService.updateCity(areaCode+"00","-1");
-            } else if (userPojo.getRoleType().equals(3)){
+            if (userPojo.getRoleType().equals(UserRoleEnum.PROVICE_AGENT.getValue())){
+                areaCode=department.getAreaCode().substring(0,2)+"0000";
+                dataDictionaryService.updateProvince(areaCode,"-1");
+            } else if (userPojo.getRoleType().equals(UserRoleEnum.CITY_AGENT.getValue())){
+                areaCode=department.getAreaCode().substring(0,4)+"00";
+                dataDictionaryService.updateCity(areaCode,"-1");
+            } else if (userPojo.getRoleType().equals(UserRoleEnum.COUNTY_AGENT.getValue())){
                 areaCode=department.getAreaCode().substring(0,6);
                 dataDictionaryService.updateCounty(areaCode,"-1");
             } else {
                 ModelUtil.throwException(ERRORCODE.INSERT_ERROR);
             }
+
+            if(userPojo.getRoleType().equals(UserRoleEnum.PROVICE_AGENT.getValue())){
+                d.setWebPrice(department.getWebPrice());
+                d.setWechatPrice(department.getWechatPrice());
+            }else {
+                Department tempDepartment = (Department) departmentService.findOne("areaCode",areaCode);
+                d.setWebPrice(tempDepartment.getWebPrice());
+                d.setWechatPrice(tempDepartment.getWechatPrice());
+            }
+
             d.setAreaCode(areaCode);
-            d.setRoleType(String.valueOf(userPojo.getRoleType()+1));
+            d.setRoleType(userPojo.getRoleType()+1);
             Long maxDepartmentCode=excodeService.selectMaxCodeByParent(CodeFactoryUtil.DEPARTMENT_CODE,CodeFactoryUtil.DEPARTMENT_TABLE,CodeFactoryUtil.COMPANY_CODE, temp.getCompanyCode());
             if(maxDepartmentCode==null||maxDepartmentCode==0){
                 maxDepartmentCode= CodeFactoryUtil.getInitDepartment(temp.getCompanyCode());//部门Code初始生成规则 所属公司信息的Code*1000+1
@@ -173,7 +185,7 @@ public class DepartmentController {
                 p.setPostName(department.getDepartmentName());
                 postService.update(p);
             }
-            return "ok";
+            return ObjectFactory.getSingle();
         }
 
 
@@ -348,15 +360,15 @@ public class DepartmentController {
         return "ok";
     }
 
-    private String distributionRole(Post post,String roleCode){
+    private String distributionRole(Post post,int roleCode){
         RolePost rolePost=new RolePost();
         rolePost.setPostCode(post.getPostCode());
         Long roleCodeLong=0L;
         switch (roleCode){
-            case "1":roleCodeLong=10L;break;
-            case "2":roleCodeLong=11L;break;
-            case "3":roleCodeLong=12L;break;
-            case "4":roleCodeLong=13L;break;
+            case 1:roleCodeLong=10L;break;
+            case 2:roleCodeLong=11L;break;
+            case 3:roleCodeLong=12L;break;
+            case 4:roleCodeLong=13L;break;
         }
         rolePost.setRoleCode(roleCodeLong);
         Map<String,Object> dataMap = new HashMap<>();
@@ -374,7 +386,7 @@ public class DepartmentController {
         rp.setRoleCode(rolePost.getRoleCode());
         rp.setStatus(Constants.NORMAL_STATUS);
         rolePostService.updateOrSave(rp, null);
-        if (roleCode.equals("1")||roleCode.equals("2")||roleCode.equals("3")) {
+        if (roleCode == 1||roleCode == 2||roleCode == 3) {
             distributionSystemCode(rp.getPostCode(), 1L);
         }
         distributionSystemCode(rp.getPostCode(),2L);
