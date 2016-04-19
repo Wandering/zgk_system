@@ -4,7 +4,6 @@ define(function (require, exports, module) {
         require('cookie');
         var token = $.cookie('bizData');
         var message = require('../message.js');
-
         var Table = require('../datatable.js');
         var col = [{
             data: 'id'
@@ -12,23 +11,38 @@ define(function (require, exports, module) {
             data: 'departmentName',
             title: '代理商名称'
         }, {
-            data: 'departmentPhone',
-            title: '代理商电话'
+            data: 'roleType',
+            title: '代理商类型'
         }, {
-            data: 'departmentFax',
-            title: '代理商传真'
+            data: 'wechatPrice',
+            title: '微信售价'
+        }, {
+            data: 'webPrice',
+            title: 'web售价'
+        }, {
+            data: 'salePrice',
+            title: '拿货价'
         }, {
             data: 'departmentPrincipal',
             title: '代理商负责人'
+        }, {
+            data: 'departmentPhone',
+            title: '代理商电话'
+        }, {
+            data: 'goodsAddress',
+            title: '联系地址'
         }
-
         ];
-
         var columnDefs = [{
             "bVisible": false,
             "aTargets": [0]
+        },{
+            "aTargets": [2],
+            "render": function (data, type, row) {
+                var  dataTxt = ['管理员','省级代理','市级代理','区县级代理'];
+                return dataTxt[data-1];
+            },
         }];
-
         Table.initTable({
             columns: col,
             tableContentId: 'menu_table_content',
@@ -49,21 +63,22 @@ define(function (require, exports, module) {
             }, 2000);
         };
 
-
         var addOrUpdateDepartment = function (formArry, succCallback, id) {
             var departmentJson = {
-                departmentName: formArry[0] || '',
-                departmentPhone: formArry[1] || '',
-                departmentFax: formArry[2] || '',
-                departmentPrincipal: formArry[3] || '',
-                salePrice: formArry[7] || '',
-                goodsAddress: formArry[8] || ''
+                departmentName: formArry[0] || '', // 部门名称
+                departmentPhone: formArry[1] || '', // 联系电话
+                departmentFax: formArry[2] || '',  // 传真
+                departmentPrincipal: formArry[3] || '', // 部门负责人
+                salePrice: formArry[7] || '',    // 拿货价
+                goodsAddress: formArry[8] || '',  // 取货地址
+                webPrice: formArry[9] || '',  // web售价
+                wechatPrice: formArry[10] || ''  // 微信售价
             };
 
             if (id) {
-                departmentJson.id = id;
+                departmentJson.id = id;    // 修改
             } else {
-                departmentJson.parentCode = parentCode;
+                departmentJson.parentCode = parentCode;  // 添加节点
             }
             var cookieJson = JSON.parse($.cookie('userInfo'));
             var roleType = cookieJson.roleType;
@@ -91,7 +106,6 @@ define(function (require, exports, module) {
                 success: function (data) {
                     console.log(data)
                     succCallback(data);
-
                 },
                 beforeSend: function (xhr) {
                     $('.single-buttons').attr('disabled', 'disabled');
