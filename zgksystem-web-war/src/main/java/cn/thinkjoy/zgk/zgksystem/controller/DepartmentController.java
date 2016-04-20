@@ -136,20 +136,20 @@ public class DepartmentController {
             d.setSalePrice(department.getSalePrice());
             d.setStatus(Constants.NORMAL_STATUS);
             String areaCode = "";
-            if (userPojo.getRoleType().equals(UserRoleEnum.PROVICE_AGENT.getValue())){
+            if (userPojo.getRoleType().equals(UserRoleEnum.SUPER_MANAGE.getValue())){
                 areaCode=department.getAreaCode().substring(0,2)+"0000";
                 dataDictionaryService.updateProvince(areaCode,"-1");
-            } else if (userPojo.getRoleType().equals(UserRoleEnum.CITY_AGENT.getValue())){
+            } else if (userPojo.getRoleType().equals(UserRoleEnum.PROVICE_AGENT.getValue())){
                 areaCode=department.getAreaCode().substring(0,4)+"00";
                 dataDictionaryService.updateCity(areaCode,"-1");
-            } else if (userPojo.getRoleType().equals(UserRoleEnum.COUNTY_AGENT.getValue())){
+            } else if (userPojo.getRoleType().equals(UserRoleEnum.CITY_AGENT.getValue())){
                 areaCode=department.getAreaCode().substring(0,6);
                 dataDictionaryService.updateCounty(areaCode,"-1");
             } else {
                 ModelUtil.throwException(ERRORCODE.INSERT_ERROR);
             }
 
-            if(userPojo.getRoleType().equals(UserRoleEnum.PROVICE_AGENT.getValue())){
+            if(userPojo.getRoleType().equals(UserRoleEnum.SUPER_MANAGE.getValue())){
                 d.setWebPrice(department.getWebPrice());
                 d.setWechatPrice(department.getWechatPrice());
             }else {
