@@ -18,7 +18,6 @@ import cn.thinkjoy.zgk.zgksystem.service.account.IUserInfoService;
 import cn.thinkjoy.zgk.zgksystem.service.dataDictionary.IDataDictionaryService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IEXPostDataauthorityService;
-import cn.thinkjoy.zgk.zgksystem.service.post.IPostDataauthorityService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IPostService;
 import cn.thinkjoy.zgk.zgksystem.service.code.IEXCodeService;
 import cn.thinkjoy.zgk.zgksystem.service.role.IRolePostService;

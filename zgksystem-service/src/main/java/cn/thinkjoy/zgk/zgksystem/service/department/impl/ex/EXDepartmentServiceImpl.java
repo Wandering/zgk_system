@@ -21,4 +21,10 @@ public class EXDepartmentServiceImpl implements IEXDeparmentService{
     public List<Department> queryDepartmentsByAreaCode(String areaCode, int currentPage, int pageSize) {
         return exDepartmentDAO.queryDepartmentsByAreaCode(areaCode,currentPage*pageSize,pageSize);
     }
+
+    @Override
+    public int getDepartmentCountByAreaCode(String areaCode) {
+        Integer count = exDepartmentDAO.getDepartmentCountByAreaCode(areaCode);
+        return count == null ? 0:count;
+    }
 }

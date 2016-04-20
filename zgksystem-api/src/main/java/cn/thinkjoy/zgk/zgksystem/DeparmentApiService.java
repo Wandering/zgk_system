@@ -19,11 +19,28 @@ public interface DeparmentApiService {
      * 根据地区编码查询部门集合
      *
      * @param areaCode
-     * @param roleType
+     * @param areaType 类型  1:省 2：市  3：区县
      * @param currentPage
      * @param pageSize
      * @return
      */
-    List<Department> queryDepartmentsByAreaCode(String areaCode,int roleType,int currentPage,int pageSize);
+    List<Department> queryDepartmentsByAreaCode(String areaCode,int areaType,int currentPage,int pageSize);
+
+    /**
+     * 根据地区编码查询部门个数
+     *
+     * @param areaCode
+     * @param areaType
+     * @return
+     */
+    int getDepartmentCountByAreaCode(String areaCode,int areaType);
+
+    /**
+     * 根据部门编号查询部门信息
+     *
+     * @param departmentCode
+     * @return
+     */
+    Department quertDepartmentInfoByCode(long departmentCode);
 
 }

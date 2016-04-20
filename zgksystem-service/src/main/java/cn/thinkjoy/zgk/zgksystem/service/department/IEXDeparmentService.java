@@ -18,4 +18,12 @@ public interface IEXDeparmentService {
      * @return
      */
     List<Department> queryDepartmentsByAreaCode(String areaCode,int currentPage,int pageSize);
+
+    /**
+     * 根据地区编码查询部门个数
+     *
+     * @param areaCode
+     * @return
+     */
+    int getDepartmentCountByAreaCode(String areaCode);
 }

@@ -3,7 +3,6 @@ package cn.thinkjoy.zgk.zgksystem.service.apiImpl;
 import cn.thinkjoy.zgk.zgksystem.DeparmentApiService;
 import cn.thinkjoy.zgk.zgksystem.common.TreeBean;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
-import cn.thinkjoy.zgk.zgksystem.edomain.UserRoleEnum;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IEXDeparmentService;
 import org.apache.commons.lang3.StringUtils;
@@ -36,17 +35,11 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
     }
 
     @Override
-    public List<Department> queryDepartmentsByAreaCode(String areaCode,int roleType,int currentPage,int pageSize) {
+    public List<Department> queryDepartmentsByAreaCode(String areaCode,int areaType,int currentPage,int pageSize) {
+
         String tmpAreaCode = "";
-//        if(roleType == UserRoleEnum.SUPER_MANAGE.getValue()){
-//            tmpAreaCode = "";
-//        }else
-        if (roleType == UserRoleEnum.PROVICE_AGENT.getValue()){
-            tmpAreaCode = StringUtils.substring(areaCode,0,2);
-        }else if (roleType == UserRoleEnum.CITY_AGENT.getValue()){
-            tmpAreaCode = StringUtils.substring(areaCode,0,4);
-        }else if (roleType == UserRoleEnum.COUNTY_AGENT.getValue()){
-            tmpAreaCode = StringUtils.substring(areaCode,0,6);
+        if(areaType != -1){
+            tmpAreaCode = StringUtils.substring(areaCode,0,2*areaType);
         }
 
         List<Department> departments = exDeparmentService.queryDepartmentsByAreaCode(
@@ -55,5 +48,19 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
                 pageSize);
 
         return departments;
+    }
+
+    @Override
+    public int getDepartmentCountByAreaCode(String areaCode, int areaType) {
+        String tmpAreaCode = "";
+        if(areaType != -1){
+            tmpAreaCode = StringUtils.substring(areaCode,0,2*areaType);
+        }
+        return exDeparmentService.getDepartmentCountByAreaCode(tmpAreaCode);
+    }
+
+    @Override
+    public Department quertDepartmentInfoByCode(long departmentCode) {
+        return (Department) iDepartmentService.findOne("departmentCode",departmentCode);
     }
 }

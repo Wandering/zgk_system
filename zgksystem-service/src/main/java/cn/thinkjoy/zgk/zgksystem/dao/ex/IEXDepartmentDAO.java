@@ -21,4 +21,12 @@ public interface IEXDepartmentDAO {
     List<Department> queryDepartmentsByAreaCode(@Param("areaCode") String areaCode,
                                                 @Param("index") int index,
                                                 @Param("pageSize") int pageSize);
+
+    /**
+     * 根据地区编码查询部门个数
+     *
+     * @param areaCode
+     * @return
+     */
+    Integer getDepartmentCountByAreaCode(@Param("areaCode") String areaCode);
 }
