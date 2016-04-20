@@ -218,7 +218,8 @@ public class AgentServiceImpl implements AgentService {
         splitPrice.setCreateTime(System.currentTimeMillis());
         splitPrice.setUserId(Long.valueOf(splitPricePojo.getAccountId()));
         splitPrice.setUserPhone(splitPricePojo.getAccountPhone());
-        splitPrice.setPrice(Double.parseDouble(profitPrice+""));
+        splitPrice.setPrice(Double.parseDouble(profitPrice + ""));
+        splitPrice.setRewardLevel(splitPricePojo.getAgentLevel().byteValue());
         Integer result = iSplitPriceService.insert(splitPrice);
 
         return result > 0 ? true : false;
