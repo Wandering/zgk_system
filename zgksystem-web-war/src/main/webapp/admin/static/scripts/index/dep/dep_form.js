@@ -77,7 +77,9 @@ define(function (require, exports, module) {
         var provinces = $("#dep_provinces").find("option:selected").val();
         var city = $("#dep_city").find("option:selected").val();
         var county = $("#dep_county").find("option:selected").val();
-        var salePrice = $('#sale_Price').val().trim();
+        var salePrice = $.trim($('#sale_Price').val());
+        var webPrice = $.trim($('#webPrice').val());
+        var wechatPrice = $.trim($('#wechatPrice').val());
         if (!salePrice) {
             tip($('#sale_Price').parent().parent(), '零售价格不能为空');
             return;
@@ -91,7 +93,37 @@ define(function (require, exports, module) {
             tip($('#goods_Address').parent().parent(), '取货地址不能为空');
             return;
         }
-        callback([name, telephone, fax, leading, provinces, city, county, salePrice, goodsAddress]);
+        if (!webPrice) {
+            tip($('#webPrice').parent().parent(), 'web售价不能为空');
+            return;
+        }
+        if (webPrice.length > 6 || isNaN(webPrice)) {
+            tip($('#webPrice').parent().parent(), 'web售价输入长度或格式错误');
+            return;
+        }
+        if (!wechatPrice) {
+            tip($('#wechatPrice').parent().parent(), '微信售价不能为空');
+            return;
+        }
+        if (wechatPrice.length > 6 || isNaN(wechatPrice)) {
+            tip($('#wechatPrice').parent().parent(), '微信售价输入长度或格式错误');
+            return;
+        }
+
+        callback(
+            [
+                name,    // 部门名称
+                telephone, // 联系电话
+                fax,  // 传真
+                leading, //
+                provinces, // 省份
+                city,   // 市
+                county, // 城市
+                salePrice, // 拿货价
+                goodsAddress, // 取货地址
+                webPrice,  // web售价
+                wechatPrice // 微信售价
+            ]);
     }
 
     module.exports = {
