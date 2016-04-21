@@ -14,7 +14,6 @@ import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.common.TreeBean;
 import cn.thinkjoy.zgk.zgksystem.dao.ex.IEXCompanyDAO;
 import cn.thinkjoy.zgk.zgksystem.domain.Company;
-import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.domain.UserAccount;
 import cn.thinkjoy.zgk.zgksystem.domain.UserInfo;
 import cn.thinkjoy.zgk.zgksystem.pojo.CompanyPojo;

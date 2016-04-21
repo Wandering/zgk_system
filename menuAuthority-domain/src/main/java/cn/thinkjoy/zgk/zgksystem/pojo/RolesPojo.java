@@ -1,6 +1,7 @@
 package cn.thinkjoy.zgk.zgksystem.pojo;
 
 import cn.thinkjoy.zgk.zgksystem.common.TreeBean;
+
 import java.util.List;
 
 import java.io.Serializable;
