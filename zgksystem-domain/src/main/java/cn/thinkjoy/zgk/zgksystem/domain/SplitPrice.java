@@ -35,6 +35,10 @@ public class SplitPrice extends BaseDomain {
      * 创建时间
      */
     private Long createTime;
+    /**
+     * 奖励等级
+     */
+    private byte rewardLevel;
 
     @Override
     public Long getId() {
@@ -99,5 +103,13 @@ public class SplitPrice extends BaseDomain {
 
     public void setCreateTime(Long createTime) {
         this.createTime = createTime;
+    }
+
+    public byte getRewardLevel() {
+        return rewardLevel;
+    }
+
+    public void setRewardLevel(byte rewardLevel) {
+        this.rewardLevel = rewardLevel;
     }
 }
