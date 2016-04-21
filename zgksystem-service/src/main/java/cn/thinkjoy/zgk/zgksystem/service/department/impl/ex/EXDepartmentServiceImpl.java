@@ -19,7 +19,7 @@ public class EXDepartmentServiceImpl implements IEXDeparmentService{
 
     @Override
     public List<Department> queryDepartmentsByAreaCode(String areaCode, int currentPage, int pageSize) {
-        return exDepartmentDAO.queryDepartmentsByAreaCode(areaCode,currentPage*pageSize,pageSize);
+        return exDepartmentDAO.queryDepartmentsByAreaCode(areaCode,(currentPage-1)*pageSize,pageSize);
     }
 
     @Override
