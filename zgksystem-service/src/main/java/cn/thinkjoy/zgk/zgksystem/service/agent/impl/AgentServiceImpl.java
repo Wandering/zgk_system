@@ -2,6 +2,7 @@ package cn.thinkjoy.zgk.zgksystem.service.agent.impl;
 
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.zgk.zgksystem.AgentService;
+import cn.thinkjoy.zgk.zgksystem.common.ERRORCODE;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.domain.MarketParmas;
 import cn.thinkjoy.zgk.zgksystem.domain.SplitPrice;
@@ -10,6 +11,7 @@ import cn.thinkjoy.zgk.zgksystem.service.account.impl.EXUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
 import cn.thinkjoy.zgk.zgksystem.service.market.IMarketParmasService;
 import cn.thinkjoy.zgk.zgksystem.service.market.ISplitPriceService;
+import cn.thinkjoy.zgk.zgksystem.util.ModelUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,7 @@ public class AgentServiceImpl implements AgentService {
         Map<String, Object> userAccountMap =  exUserAccountService.findUserInfo(paramMap);
         if(null == userAccountMap)
         {
-            throw new BizException("100001", "帐号ID错误!");
+            ModelUtil.throwException(ERRORCODE.USER_NOT_EXIST);
         }
         Object countyId = userAccountMap.get("countyId");
         Object cityId = userAccountMap.get("cityId");
@@ -71,7 +73,7 @@ public class AgentServiceImpl implements AgentService {
             {
                 return fixReturnValue(provinceDepartment);
             }
-            throw new BizException("100001", "未查找到相关代理商!");
+            ModelUtil.throwException(ERRORCODE.AGENT_NOT_EXIST);
         }else if(isValideAreaId(cityId))
         {
             String cityIdStr = String.valueOf(cityId);
@@ -85,7 +87,7 @@ public class AgentServiceImpl implements AgentService {
             {
                 return fixReturnValue(provinceDepartment);
             }
-            throw new BizException("100001", "未查找到相关代理商!");
+            ModelUtil.throwException(ERRORCODE.AGENT_NOT_EXIST);
         }else if(isValideAreaId(provinceId))
         {
             String provinceIdStr = String.valueOf(provinceId);
@@ -94,7 +96,7 @@ public class AgentServiceImpl implements AgentService {
             {
                 return fixReturnValue(provinceDepartment);
             }
-            throw new BizException("100001", "未查找到相关代理商!");
+            ModelUtil.throwException(ERRORCODE.AGENT_NOT_EXIST);
         }
         throw new BizException("100001", "未查找到相关代理商,用户区域信息有误!");
     }

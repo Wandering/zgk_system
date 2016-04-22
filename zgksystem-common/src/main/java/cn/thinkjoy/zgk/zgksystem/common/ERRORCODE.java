@@ -30,7 +30,11 @@ public enum ERRORCODE {
 	UPDATE_ERROR("0100020","修改失败"),
 	TREEBEAN_ISNULL("0100021","菜单树为空"),
 	PASSWD_OR_ACCOUNT_ERROR("0100022","用户名或密码错误!"),
-	ACCOUNT_ISEXIST("0100023","用户名已存在!");
+	ACCOUNT_ISEXIST("0100023","用户名已存在!"),
+
+
+	USER_NOT_EXIST("0100024", "用户信息不存在"),
+	AGENT_NOT_EXIST("0100025", "未查找到相关代理商!");
 	/** The code. */
 	private final String code;
 
