@@ -1,5 +1,7 @@
 define(function (require, exports, module) {
     module.exports = function (parentCode, treeCallback) {
+
+            alert(77)
         require('bootstrap');
         require('cookie');
         var token = $.cookie('bizData');
@@ -127,6 +129,7 @@ define(function (require, exports, module) {
                     if (!tableObj) {
                         return;
                     }
+                    alert(8)
                     $.get('../tmpl/dep/dep_form.html', function (tmpl) {
                         require('dialog');
                         $("#add_dep").dialog({
@@ -135,6 +138,7 @@ define(function (require, exports, module) {
                             onClose: function () {
                                 $("#add_dep").dialog("destroy");
                             },
+
                             render: function () {
                                 var cookieJson = JSON.parse($.cookie('userInfo'));
                                 var roleType = cookieJson.roleType;
@@ -239,9 +243,12 @@ define(function (require, exports, module) {
                     if (anSelected.length === 0) {
                         return;
                     }
+
+                    alert(22)
                     var aData = tableObj.fnGetData(anSelected[0]);
                     //console.log(aData)
                     $.get('/system/department/getDepartment?id=' + aData.id + '&token=' + token, function (data) {
+                        console.log(data)
                         if ('0000000' === data.rtnCode) {
                             $.get('../tmpl/dep/dep_form.html', function (tmpl) {
                                 require('dialog');
@@ -265,8 +272,12 @@ define(function (require, exports, module) {
                                         var updateProvincesId = data.bizData.areaCode;
 
 
+                                        console.log("roleType:"+roleType);
+
+
                                         switch (roleType) {
                                             case "2":
+
                                                 $('#dep_provinces_from').show();
                                                 $('#dep_city_from,#dep_county_from').hide();
                                                 // 省份
