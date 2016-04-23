@@ -33,6 +33,7 @@
         <include refid="Base_Column_List" />
         FROM k12system_department WHERE
         areaCode like CONCAT(#{areaCode} , '%')
+        and roleType > 1
         LIMIT #{index},#{pageSize}
     </select>
 
@@ -43,6 +44,7 @@
         FROM k12system_department
         WHERE
           areaCode like CONCAT(#{areaCode} , '%')
+          and roleType > 1
     </select>
 
 </mapper>
