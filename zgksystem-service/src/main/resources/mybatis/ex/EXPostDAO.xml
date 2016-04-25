@@ -16,5 +16,16 @@
     <select id="countPostByCreator" resultType="java.lang.Integer">
         SELECT count(*) FROM k12system_post where creator = #{creator}
     </select>
+
+    <!-- 根据代理商ID修改部门名称 -->
+    <update id="updatePostNameByDeparntmentId" parameterType="map">
+        update
+            k12system_department t0 ,
+            k12system_post t1
+        set t1.postName = #{departmentName}
+        where
+            t0.departmentCode = t1.departmentCode
+        and t0.id = #{departmentId}
+    </update>
 </mapper>
 

@@ -47,5 +47,14 @@
           and roleType > 1
     </select>
 
+    <!-- 根据区域编码修改部门信息 -->
+    <update id="updateDepartmentInfoByAreaCode" parameterType="map">
+        update k12system_department
+        set webPrice = #{webPrice},
+         wechatPrice = #{wechatPrice}
+        where
+            areaCode like CONCAT(#{areaCode} , '%')
+    </update>
+
 </mapper>
 

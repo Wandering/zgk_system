@@ -14,6 +14,7 @@ import cn.thinkjoy.zgk.zgksystem.service.account.IUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserInfoService;
 import cn.thinkjoy.zgk.zgksystem.service.code.IEXCodeService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IEXPostDataauthorityService;
+import cn.thinkjoy.zgk.zgksystem.service.post.IEXPostService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IPostDataauthorityService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IPostService;
 import cn.thinkjoy.zgk.zgksystem.util.CodeFactoryUtil;
@@ -40,9 +41,12 @@ import java.util.Map;
 @Controller
 @RequestMapping("/system/post")
 public class PostController {
+
     @Autowired
     private IPostService postService;
 
+    @Autowired
+    private IEXPostService exPostService;
 
     @Autowired
     private IEXCodeService excodeService;
@@ -175,7 +179,7 @@ public class PostController {
         String currentPageNo = HttpUtil.getParameter(request, "currentPageNo", "1");
         String pageSize = HttpUtil.getParameter(request, "pageSize", "10");
         String departmentCode=request.getParameter("departmentCode");
-       return  postService.queryPost(currentPageNo,pageSize,departmentCode);
+       return  exPostService.queryPost(currentPageNo,pageSize,departmentCode);
     }
 
     /**
@@ -188,7 +192,7 @@ public class PostController {
     @RequestMapping(value = "getPost", method = RequestMethod.GET)
     public Post getPost(HttpServletRequest request) {
         String postId = request.getParameter("id");
-        Post post = postService.getPost(postId);
+        Post post = exPostService.getPost(postId);
         List<PostDataauthority> postDataauthorities = iPostDataauthorityService.findList("postCode", post.getPostCode());
         PostPojo postPojo = new PostPojo();
         BeanUtils.copyProperties(post,postPojo);
@@ -223,7 +227,7 @@ public class PostController {
     @RequestMapping(value = "queryComboxPost",method = RequestMethod.GET)
     public Map<String,String> queryComboxPost(HttpServletRequest request){
         String departmentCode= request.getParameter("departmentCode");
-        return  postService.queryComboxPost(departmentCode);
+        return  exPostService.queryComboxPost(departmentCode);
     }
 
     /**
@@ -235,7 +239,7 @@ public class PostController {
     @RequestMapping(value = "getManagerPost",method = RequestMethod.GET)
     public Page<Post> getManagerPost(HttpServletRequest request){
         Long postCode=Long.valueOf(HttpUtil.getParameter(request, "postCode", "-1"));
-       return  postService.getManagerPost(postCode);
+       return  exPostService.getManagerPost(postCode);
     }
 
 }

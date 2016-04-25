@@ -17,23 +17,5 @@ import java.util.Map;
 
 public interface IPostService<D extends IBaseDAO<T>, T extends BaseDomain> extends IBaseService<D, T>,IPageService<D, T>{
 
-    Page<Post> queryPost(String currentPageNo,String pageSize,String departmentCode);
-
-    Post getPost(String postId);
-
-    /**
-     * 获取岗位Code和岗位名称
-     * @param departmentCode
-     * @return
-     */
-    Map<String,String> queryComboxPost(String departmentCode);
-
-
-    /**
-     * 获取管理岗位
-     * @param postCode
-     * @return
-     */
-    Page<Post> getManagerPost(Long postCode);
 
 }

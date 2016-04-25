@@ -31,106 +31,15 @@ import java.util.Map;
 
 @Service("PostServiceImpl")
 public class PostServiceImpl extends AbstractPageService<IBaseDAO<Post>, Post> implements IPostService<IBaseDAO<Post>,Post>{
-    @Autowired
-    private IPostDAO postDAO;
 
     @Autowired
-    private IUserInfoService userInfoService;
+    private IPostDAO postDAO;
 
     @Override
     public IBaseDAO<Post> getDao() {
         return postDAO;
     }
 
-
-    public Page<Post> queryPost(String currentPageNo,String pageSize,String departmentCode){
-        if(StringUtils.isBlank(departmentCode)){
-            throw  new BizException(ERRORCODE.PARAM_ISNULL.getCode(), ERRORCODE.PARAM_ISNULL.getMessage());
-        }
-        Map<String,Object> dataMap=new HashMap<>();
-        Map<String,Object> statusMap=new HashMap<String,Object>();
-        Map<String,Object> departmentMap=new HashMap<String,Object>();
-        departmentMap.put("op"," = ");
-        departmentMap.put("data",Long.parseLong(departmentCode));
-        statusMap.put("op"," = ");
-        statusMap.put("data", Constants.NORMAL_STATUS);
-        dataMap.put("groupOp", " AND ");
-        dataMap.put("status", statusMap);
-        dataMap.put("departmentCode",departmentMap);
-        int count=this.count(dataMap);
-        if(count>0){
-            List<Post> postList = this.queryPage(dataMap, ((Integer.valueOf(currentPageNo) - 1) * Integer.valueOf(pageSize)), Integer.valueOf(pageSize), CodeFactoryUtil.ORDER_BY_FIELD, SqlOrderEnum.DESC);
-            Page<Post> page=new Page<>();
-            page.setCount(count);
-            page.setList(postList);
-            return page;
-        }else{
-            throw new BizException(ERRORCODE.NO_MESSAGE.getCode(),ERRORCODE.NO_MESSAGE.getMessage());
-        }
-    }
-
-    public Post getPost(String postId){
-        if (StringUtils.isBlank(postId)) {
-            throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(), ERRORCODE.PARAM_ISNULL.getMessage());
-        }
-        Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("id", Long.parseLong(postId));
-        dataMap.put("status", Constants.NORMAL_STATUS);
-        Post post = (Post)this.queryOne(dataMap);
-        if (post == null) {
-            throw new BizException(ERRORCODE.NO_MESSAGE.getCode(), ERRORCODE.NO_MESSAGE.getMessage());
-        }
-        return post;
-    }
-
-
-    public Map<String,String> queryComboxPost(String departmentCode){
-        if(StringUtils.isBlank(departmentCode)){
-            throw  new BizException(ERRORCODE.PARAM_ISNULL.getCode(), ERRORCODE.PARAM_ISNULL.getMessage());
-        }
-        Map<String, String> resultMap = new HashMap<>();
-        Map<String,Object> dataMap = new HashMap<>();
-        dataMap.put("status",Constants.NORMAL_STATUS);
-        dataMap.put("departmentCode",departmentCode);
-        List<Post> postList = this.queryList(dataMap, CodeFactoryUtil.ORDER_BY_FIELD, SqlOrderEnum.DESC.getAction());
-        for(Post p :postList){
-            Map<String,Object> dataMap1 = new HashMap<>();
-            dataMap1.put("status",Constants.NORMAL_STATUS);
-            dataMap1.put("postCode",p.getPostCode());
-            if(userInfoService.queryOne(dataMap1)==null) {
-                resultMap.put(p.getPostCode() + "", p.getPostName());
-            }
-        }
-        if(resultMap.size()==0) {
-            throw new BizException(ERRORCODE.NO_MESSAGE.getCode(),ERRORCODE.NO_MESSAGE.getMessage());
-        }
-        return resultMap;
-    }
-
-    public Page<Post> getManagerPost(Long postCode){
-        if(postCode==null || postCode==0){
-            postCode=-1L;
-        }
-        List<Post> list=new ArrayList<>();
-        if(postCode== IdentityUtil.ADMIN_MANAGER_POST){
-            Post productPost=new Post();
-            productPost.setDepartmentCode((long) IdentityUtil.PRODUCT_MANAGER_DEPARTMENT);
-            productPost.setPostCode((long) IdentityUtil.PRODUCT_MANAGER_POST);
-            productPost.setPostName("产品管理员岗位");
-            Post companyPost=new Post();
-            companyPost.setDepartmentCode((long) IdentityUtil.COMPANY_MANAGER_DEPARTMENT);
-            companyPost.setPostCode((long) IdentityUtil.COMPANY_MANAGER_POST);
-            companyPost.setPostName("代理公司管理员岗位");
-            list.add(productPost);
-            list.add(companyPost);
-            Page<Post> page=new Page<>();
-            page.setCount(list.size());
-            page.setList(list);
-            return page;
-        }else{
-            throw  new BizException(ERRORCODE.NO_PERMISSION.getCode(),ERRORCODE.NO_PERMISSION.getMessage());
-        }
-    }
 
 //    @Override
 //    public void insert(BaseDomain entity) {
