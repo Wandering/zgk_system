@@ -4,7 +4,7 @@
 #    folder   #
 ###############
 /_souceInsight_/
-/build/
+*/build/*
 /MoDIS/
 /Doc/
 /mtk_lib/

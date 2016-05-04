@@ -27,4 +27,9 @@ public class EXDepartmentServiceImpl implements IEXDeparmentService{
         Integer count = exDepartmentDAO.getDepartmentCountByAreaCode(areaCode);
         return count == null ? 0:count;
     }
+
+    @Override
+    public void updateDepartmentInfoByAreaCode(String areaCode,double wechatPrice,double webPrice) {
+        exDepartmentDAO.updateDepartmentInfoByAreaCode(areaCode,wechatPrice,webPrice);
+    }
 }

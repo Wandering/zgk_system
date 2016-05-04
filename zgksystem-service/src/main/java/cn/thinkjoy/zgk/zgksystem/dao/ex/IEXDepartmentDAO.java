@@ -29,4 +29,15 @@ public interface IEXDepartmentDAO {
      * @return
      */
     Integer getDepartmentCountByAreaCode(@Param("areaCode") String areaCode);
+
+    /**
+     * 根据区域编码修改部门信息
+     *
+     * @param areaCode
+     * @param wechatPrice
+     * @param webPrice
+     */
+    void updateDepartmentInfoByAreaCode(@Param("areaCode") String areaCode,
+                                        @Param("wechatPrice") double wechatPrice,
+                                        @Param("webPrice") double webPrice);
 }

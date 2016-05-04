@@ -135,9 +135,10 @@ define(function (require, exports, module) {
                             onClose: function () {
                                 $("#add_dep").dialog("destroy");
                             },
+
                             render: function () {
                                 var cookieJson = JSON.parse($.cookie('userInfo'));
-                                var roleType = cookieJson.roleType;
+                                var roleType = parseInt(cookieJson.roleType);
 
                                 var curProvincesCookieId = cookieJson.areaCode;
 
@@ -239,9 +240,11 @@ define(function (require, exports, module) {
                     if (anSelected.length === 0) {
                         return;
                     }
+
                     var aData = tableObj.fnGetData(anSelected[0]);
                     //console.log(aData)
                     $.get('/system/department/getDepartment?id=' + aData.id + '&token=' + token, function (data) {
+                        console.log(data)
                         if ('0000000' === data.rtnCode) {
                             $.get('../tmpl/dep/dep_form.html', function (tmpl) {
                                 require('dialog');
@@ -258,15 +261,20 @@ define(function (require, exports, module) {
                                         $('#dep_leading').val(data.bizData.departmentPrincipal);
                                         $('#sale_Price').val(data.bizData.salePrice);
                                         $('#goods_Address').val(data.bizData.goodsAddress);
+                                        $('#webPrice').val(data.bizData.webPrice);
+                                        $('#wechatPrice').val(data.bizData.wechatPrice);
 
                                         // 修改
-                                        var roleType = data.bizData.roleType;
+                                        var roleType = parseInt(data.bizData.roleType);
 
                                         var updateProvincesId = data.bizData.areaCode;
 
 
+                                        console.log("roleType:"+roleType);
+
+
                                         switch (roleType) {
-                                            case "2":
+                                            case 2:
                                                 $('#dep_provinces_from').show();
                                                 $('#dep_city_from,#dep_county_from').hide();
                                                 // 省份
@@ -278,7 +286,7 @@ define(function (require, exports, module) {
                                                     $('#dep_provinces').find('option[value="' + updateProvincesId + '0000"]').attr('selected', true);
                                                 });
                                                 break;
-                                            case "3":
+                                            case 3:
                                                 var curProvincesId = updateProvincesId.substring(0, 2) + "0000";
                                                 $('#dep_city_from').show();
                                                 $('#dep_provinces_from,#dep_county_from').hide();
@@ -290,7 +298,7 @@ define(function (require, exports, module) {
                                                     $('#dep_city').find('option[value="' + updateProvincesId + '00"]').attr('selected', true);
                                                 });
                                                 break;
-                                            case "4":
+                                            case 4:
                                                 var curProvincesCookieId = updateProvincesId.substring(0, 4) + "00";
                                                 $('#dep_county_from').show();
                                                 $('#dep_provinces_from,#dep_city_from').hide();

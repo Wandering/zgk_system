@@ -26,4 +26,11 @@ public interface IEXDeparmentService {
      * @return
      */
     int getDepartmentCountByAreaCode(String areaCode);
+
+    /**
+     * 根据区域编码修改部门信息
+     *
+     * @param areaCode
+     */
+    void updateDepartmentInfoByAreaCode(String areaCode,double wechatPrice,double webPrice);
 }
