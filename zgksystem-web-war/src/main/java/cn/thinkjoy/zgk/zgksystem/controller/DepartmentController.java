@@ -134,8 +134,8 @@ public class DepartmentController {
             Department parentDeparentment =(Department) departmentService.queryOne(queryMap);
 
             Department childDeparentment = new Department();
-            childDeparentment.setCompanyCode(parentDeparentment.getCompanyCode());
             BeanUtils.copyProperties(department,childDeparentment);
+            childDeparentment.setCompanyCode(parentDeparentment.getCompanyCode());
 
             UserPojo userPojo=(UserPojo)HttpUtil.getSession(request,"user");
             String areaCode = "";
