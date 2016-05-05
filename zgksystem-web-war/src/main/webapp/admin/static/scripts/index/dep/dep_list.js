@@ -142,8 +142,10 @@ define(function (require, exports, module) {
 
                                 var curProvincesCookieId = cookieJson.areaCode;
 
-                                console.log(roleType)
 
+                                console.log(curProvincesCookieId)
+
+                                console.log(roleType)
                                 switch (roleType) {
                                     case 1:
                                         $('#dep_provinces_from').show();
@@ -157,7 +159,7 @@ define(function (require, exports, module) {
                                         });
                                         break;
                                     case 2:
-                                        curProvincesCookieId = curProvincesCookieId + "0000";
+                                        curProvincesCookieId = curProvincesCookieId;
                                         $('#dep_city_from').show();
                                         $('#dep_provinces_from,#dep_county_from').hide();
                                         $.getJSON('/system/dataDictionary/findCityList?token=' + token + '&provinceId=' + curProvincesCookieId, function (res) {
@@ -168,7 +170,7 @@ define(function (require, exports, module) {
                                         });
                                         break;
                                     case 3:
-                                        curProvincesCookieId = curProvincesCookieId + "00";
+                                        curProvincesCookieId = curProvincesCookieId;
                                         $('#dep_county_from').show();
                                         $('#dep_provinces_from,#dep_city_from').hide();
                                         // 市
@@ -269,8 +271,10 @@ define(function (require, exports, module) {
 
                                         var updateProvincesId = data.bizData.areaCode;
 
+                                        console.log(updateProvincesId);
 
-                                        console.log("roleType:"+roleType);
+
+                                        //console.log("roleType:"+roleType);
 
 
                                         switch (roleType) {
