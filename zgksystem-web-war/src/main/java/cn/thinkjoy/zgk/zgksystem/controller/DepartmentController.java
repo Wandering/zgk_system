@@ -140,11 +140,11 @@ public class DepartmentController {
             UserPojo userPojo=(UserPojo)HttpUtil.getSession(request,"user");
             String areaCode = "";
             if (userPojo.getRoleType().equals(UserRoleEnum.SUPER_MANAGE.getValue())){
-                areaCode=department.getAreaCode().substring(0,2)+"0000";
-                dataDictionaryService.updateProvince(areaCode,"-1");
+                areaCode=department.getAreaCode().substring(0,2);
+                dataDictionaryService.updateProvince(areaCode+"0000","-1");
             } else if (userPojo.getRoleType().equals(UserRoleEnum.PROVICE_AGENT.getValue())){
-                areaCode=department.getAreaCode().substring(0,4)+"00";
-                dataDictionaryService.updateCity(areaCode,"-1");
+                areaCode=department.getAreaCode().substring(0,4);
+                dataDictionaryService.updateCity(areaCode+"00","-1");
             } else if (userPojo.getRoleType().equals(UserRoleEnum.CITY_AGENT.getValue())){
                 areaCode=department.getAreaCode().substring(0,6);
                 dataDictionaryService.updateCounty(areaCode,"-1");
