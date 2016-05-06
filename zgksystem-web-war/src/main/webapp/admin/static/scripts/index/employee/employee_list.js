@@ -234,19 +234,8 @@ define(function (require, exports, module) {
                                         $("#add_employee").dialog("destroy");
                                     },
                                     render: function () {
-                                        $.get('/system/post/queryComboxPost?departmentCode=' + parentCode.id + '&token=' + token, function (ret) {
-                                            if ('0000000' === ret.rtnCode) {
-                                                var comboxData = ret.bizData;
-                                                var str = [];
-                                                str.push('<option>请选择岗位...</option>');
-                                                for (var key in comboxData) {
-                                                    str.push('<option value="' + key + '">' + comboxData[key] + '</option>');
-                                                }
-                                                ;
-                                                $('#position_name').html(str.join(''));
-                                                $('#position_name').val(data.bizData.postCode);
-                                            }
-                                        });
+                                        $('#position_name').html('<option>'+ data.bizData.departmentName +'</option>');
+
                                         $('#employee_name').val(data.bizData.userName);
                                         $('#login_name').val(data.bizData.loginNumber);
                                         $('#login_pwd').val(data.bizData.password);
