@@ -159,7 +159,7 @@ define(function (require, exports, module) {
                                         });
                                         break;
                                     case 2:
-                                        curProvincesCookieId = curProvincesCookieId;
+                                        curProvincesCookieId = curProvincesCookieId+"0000";
                                         $('#dep_city_from').show();
                                         $('#dep_provinces_from,#dep_county_from').hide();
                                         $.getJSON('/system/dataDictionary/findCityList?token=' + token + '&provinceId=' + curProvincesCookieId, function (res) {
@@ -170,7 +170,7 @@ define(function (require, exports, module) {
                                         });
                                         break;
                                     case 3:
-                                        curProvincesCookieId = curProvincesCookieId;
+                                        curProvincesCookieId = curProvincesCookieId+"00";
                                         $('#dep_county_from').show();
                                         $('#dep_provinces_from,#dep_city_from').hide();
                                         // 市
