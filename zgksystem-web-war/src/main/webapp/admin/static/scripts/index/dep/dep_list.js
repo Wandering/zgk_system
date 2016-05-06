@@ -158,10 +158,11 @@ define(function (require, exports, module) {
                                             }
                                         });
                                         break;
+
                                     case 2:
                                         curProvincesCookieId = curProvincesCookieId+"0000";
                                         $('#dep_city_from').show();
-                                        $('#dep_provinces_from,#dep_county_from').hide();
+                                        $('#dep_provinces_from,#dep_county_from,#web-control-group,#wechat-control-group').hide();
                                         $.getJSON('/system/dataDictionary/findCityList?token=' + token + '&provinceId=' + curProvincesCookieId, function (res) {
                                             console.log(res)
                                             for (var i = 0; i < res.bizData.length; i++) {
@@ -172,7 +173,7 @@ define(function (require, exports, module) {
                                     case 3:
                                         curProvincesCookieId = curProvincesCookieId+"00";
                                         $('#dep_county_from').show();
-                                        $('#dep_provinces_from,#dep_city_from').hide();
+                                        $('#dep_provinces_from,#dep_city_from,#web-control-group,#wechat-control-group').hide();
                                         // 市
                                         $.getJSON('/system/dataDictionary/findCountyList?token=' + token + '&cityId=' + curProvincesCookieId, function (res) {
                                             console.log(res)
