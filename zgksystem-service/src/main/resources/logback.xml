@@ -65,7 +65,7 @@
 
     <appender name="STDOUT-APPENDER" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <Pattern>%d{yyyyMMdd-HH:mm:ss.SSSZ}|%contextName|%thread|%-5level|%logger|%msg%n
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSSZ}|%contextName|%thread|%-5level|%logger|%msg%n
             </Pattern>
         </encoder>
     </appender>

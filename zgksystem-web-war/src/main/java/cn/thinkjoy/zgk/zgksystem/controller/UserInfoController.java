@@ -1,6 +1,7 @@
 package cn.thinkjoy.zgk.zgksystem.controller;
 
 import cn.thinkjoy.common.exception.BizException;
+import cn.thinkjoy.common.utils.ObjectFactory;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.zgk.zgksystem.common.ERRORCODE;
 import cn.thinkjoy.zgk.zgksystem.common.HttpUtil;
@@ -316,11 +317,12 @@ public class UserInfoController {
      */
     @ResponseBody
     @RequestMapping(value = "delUserInfo",method = RequestMethod.GET)
-    public String delUserInfo(HttpServletRequest request){
+    public Object delUserInfo(HttpServletRequest request){
         String userInfoId = request.getParameter("id");
         if(StringUtils.isBlank(userInfoId)){
-            throw  new BizException(ERRORCODE.PARAM_ISNULL.getCode(), ERRORCODE.PARAM_ISNULL.getMessage());
+            ModelUtil.throwException(ERRORCODE.PARAM_ISNULL);
         }
+        //TODO 可以改为根据字段修改对象
         UserInfo userInfo = (UserInfo)userInfoService.findOne("id", userInfoId);
         userInfo.setStatus(Constants.DELETEED_STATUS);
         userInfoService.update(userInfo);
@@ -328,7 +330,7 @@ public class UserInfoController {
         UserAccount userAccount = (UserAccount) userAccountService.findOne("userCode",userCode);
         userAccount.setStatus(Constants.DELETEED_STATUS);
         userAccountService.update(userAccount);
-        return "ok";
+        return ObjectFactory.getSingle();
     }
 
     /**
