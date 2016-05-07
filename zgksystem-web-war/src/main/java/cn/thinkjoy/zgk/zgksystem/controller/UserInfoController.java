@@ -12,10 +12,7 @@ import cn.thinkjoy.zgk.zgksystem.service.account.IUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserInfoService;
 import cn.thinkjoy.zgk.zgksystem.service.code.IEXCodeService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
-import cn.thinkjoy.zgk.zgksystem.util.CacheService;
-import cn.thinkjoy.zgk.zgksystem.util.CodeFactoryUtil;
-import cn.thinkjoy.zgk.zgksystem.util.Constants;
-import cn.thinkjoy.zgk.zgksystem.util.IdentityUtil;
+import cn.thinkjoy.zgk.zgksystem.util.*;
 import cn.thinkjoy.zgk.zgksystem.domain.UserInfo;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.fastjson.JSON;
@@ -92,21 +89,21 @@ public class UserInfoController {
     public String addOrEditUserInfo(HttpServletRequest request){
         String userPojoJson = request.getParameter("userPojoJson");
         if(StringUtils.isBlank(userPojoJson)){
-            throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(),ERRORCODE.PARAM_ISNULL.getMessage());
+            ModelUtil.throwException(ERRORCODE.PARAM_ISNULL);
         }
         UserPojo userPojo =  null;
         try {
             userPojo=JsonMapper.buildNormalMapper().fromJson(userPojoJson, UserPojo.class);
         }catch (Exception e){
-            LOGGER.error(ERRORCODE.JSONCONVERT_ERROR.getMessage());
-            throw new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
+            LOGGER.error("convert json to userPojo error :",e);
+            ModelUtil.throwException(ERRORCODE.JSONCONVERT_ERROR);
         }
         UserInfo userInfo =  null;
         try {
             userInfo=JsonMapper.buildNormalMapper().fromJson(userPojoJson, UserInfo.class);
         }catch (Exception e){
-            LOGGER.error(ERRORCODE.JSONCONVERT_ERROR.getMessage());
-            throw new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
+            LOGGER.error("convert json to userInfo error :",e);
+            ModelUtil.throwException(ERRORCODE.JSONCONVERT_ERROR);
         }
         //修改用户信息
         if (userInfo!=null&&userInfo.getId()!=null){
@@ -124,10 +121,10 @@ public class UserInfoController {
         map.put("status",0);
         UserAccount userAccount = (UserAccount)userAccountService.queryOne(map);
         if (userAccount!=null){
-            throw new BizException(ERRORCODE.ACCOUNT_ISEXIST.getCode(),ERRORCODE.ACCOUNT_ISEXIST.getMessage());
+            ModelUtil.throwException(ERRORCODE.ACCOUNT_ISEXIST);
         }
         if(userPojo == null){
-            throw  new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
+            ModelUtil.throwException(ERRORCODE.JSONCONVERT_ERROR);
         }
 
         //添加用户账户及信息
@@ -151,8 +148,8 @@ public class UserInfoController {
             if(null != department)
             {
                 u.setAreaCode(department.getAreaCode());
-                u.setRoleType(Integer.parseInt(department.getRoleType()));
-                u.setSalePrice(department.getSalePrice());
+                u.setRoleType(department.getRoleType());
+                u.setSalePrice(String.valueOf(department.getSalePrice()));
                 u.setGoodsAddress(department.getGoodsAddress());
             }
             userInfoService.updateOrSave(u, null);

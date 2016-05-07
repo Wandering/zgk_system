@@ -1,21 +1,29 @@
 /*
  * Copyright (c) 2013-2014, thinkjoy Inc. All Rights Reserved.
  *
- * Project Name: k12system
- * $Id:  Department.java 2015-09-01 11:47:23 $
+ * Project Name: system
+ * $Id:  Department.java 2016-04-15 15:26:03 $
  */
 
 
 
 package cn.thinkjoy.zgk.zgksystem.domain;
 
-import cn.thinkjoy.common.domain.CreateBaseDomain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import cn.thinkjoy.common.domain.CreateBaseDomain;
+
+import java.util.*;
 
 public class Department extends CreateBaseDomain{
+    private String areaCode;
+    private Integer roleType;
+    private Double wechatPrice;
+    private Double webPrice;
+    private Double salePrice;
+    private String goodsAddress;
     private Long departmentCode;
     private Long companyCode;
     private Long parentCode;
@@ -25,45 +33,51 @@ public class Department extends CreateBaseDomain{
     private String departmentName;
     private Integer seqSort;
     private String description;
-    private String areaCode;
-    private String roleType;
-    private String salePrice;
-    private String goodsAddress;
 
-    public String getSalePrice() {
-        return salePrice;
-    }
-
-    public void setSalePrice(String salePrice) {
-        this.salePrice = salePrice;
-    }
-
-    public String getGoodsAddress() {
-        return goodsAddress;
-    }
-
-    public void setGoodsAddress(String goodsAddress) {
-        this.goodsAddress = goodsAddress;
-    }
-
-    public String getRoleType() {
-        return roleType;
-    }
-
-    public void setRoleType(String roleType) {
-        this.roleType = roleType;
+	public Department(){
+	}
+    public void setAreaCode(String value) {
+        this.areaCode = value;
     }
 
     public String getAreaCode() {
-        return areaCode;
+        return this.areaCode;
+    }
+    public void setRoleType(Integer value) {
+        this.roleType = value;
     }
 
-    public void setAreaCode(String areaCode) {
-        this.areaCode = areaCode;
+    public Integer getRoleType() {
+        return this.roleType;
+    }
+    public void setWechatPrice(Double value) {
+        this.wechatPrice = value;
     }
 
-    public Department(){
-	}
+    public Double getWechatPrice() {
+        return this.wechatPrice;
+    }
+    public void setWebPrice(Double value) {
+        this.webPrice = value;
+    }
+
+    public Double getWebPrice() {
+        return this.webPrice;
+    }
+    public void setSalePrice(Double value) {
+        this.salePrice = value;
+    }
+
+    public Double getSalePrice() {
+        return this.salePrice;
+    }
+    public void setGoodsAddress(String value) {
+        this.goodsAddress = value;
+    }
+
+    public String getGoodsAddress() {
+        return this.goodsAddress;
+    }
     public void setDepartmentCode(Long value) {
         this.departmentCode = value;
     }
@@ -131,6 +145,12 @@ public class Department extends CreateBaseDomain{
 	public String toString() {
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
 			.append("Id",getId())
+			.append("AreaCode",getAreaCode())
+			.append("RoleType",getRoleType())
+			.append("WechatPrice",getWechatPrice())
+			.append("WebPrice",getWebPrice())
+			.append("SalePrice",getSalePrice())
+			.append("GoodsAddress",getGoodsAddress())
 			.append("DepartmentCode",getDepartmentCode())
 			.append("CompanyCode",getCompanyCode())
 			.append("ParentCode",getParentCode())

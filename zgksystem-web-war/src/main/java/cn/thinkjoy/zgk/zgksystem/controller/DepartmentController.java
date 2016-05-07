@@ -1,6 +1,7 @@
 package cn.thinkjoy.zgk.zgksystem.controller;
 
 import cn.thinkjoy.common.exception.BizException;
+import cn.thinkjoy.common.utils.ObjectFactory;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.zgk.zgksystem.PostApiService;
 import cn.thinkjoy.zgk.zgksystem.common.ERRORCODE;
@@ -9,19 +10,22 @@ import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.common.TreeBean;
 import cn.thinkjoy.zgk.zgksystem.domain.*;
 import cn.thinkjoy.zgk.zgksystem.common.TreePojo;
+import cn.thinkjoy.zgk.zgksystem.edomain.UserRoleEnum;
 import cn.thinkjoy.zgk.zgksystem.pojo.PostPojo;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserInfoService;
 import cn.thinkjoy.zgk.zgksystem.service.dataDictionary.IDataDictionaryService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
+import cn.thinkjoy.zgk.zgksystem.service.department.IEXDeparmentService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IEXPostDataauthorityService;
-import cn.thinkjoy.zgk.zgksystem.service.post.IPostDataauthorityService;
+import cn.thinkjoy.zgk.zgksystem.service.post.IEXPostService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IPostService;
 import cn.thinkjoy.zgk.zgksystem.service.code.IEXCodeService;
 import cn.thinkjoy.zgk.zgksystem.service.role.IRolePostService;
 import cn.thinkjoy.zgk.zgksystem.util.CodeFactoryUtil;
 import cn.thinkjoy.zgk.zgksystem.util.Constants;
+import cn.thinkjoy.zgk.zgksystem.util.ModelUtil;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.jlusoft.microschool.core.utils.JsonMapper;
 import org.slf4j.Logger;
@@ -52,7 +56,13 @@ public class DepartmentController {
     private IDepartmentService departmentService;
 
     @Autowired
+    private IEXDeparmentService iexDeparmentService;
+
+    @Autowired
     private IPostService postService;//岗位Service
+
+    @Autowired
+    private IEXPostService  iexPostService;
 
     @Autowired
     private IUserInfoService userInfoService;//人员Service
@@ -65,9 +75,6 @@ public class DepartmentController {
 
     @Autowired
     private IEXPostDataauthorityService iexPostDataauthorityService;
-
-    @Autowired
-    private IPostDataauthorityService iPostDataauthorityService;
 
     @Autowired
     private IRolePostService rolePostService;
@@ -93,6 +100,7 @@ public class DepartmentController {
         }
         return "1";
     }
+
     /**
      * 新增和修改部门
      * @return String
@@ -103,77 +111,113 @@ public class DepartmentController {
 
         String departmentJson = request.getParameter("departmentJson");
         if(StringUtils.isBlank(departmentJson)){
-            throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(),ERRORCODE.PARAM_ISNULL.getMessage());
+            ModelUtil.throwException(ERRORCODE.PARAM_ISNULL);
         }
         Department department =  JsonMapper.buildNormalMapper().fromJson(departmentJson, Department.class);
         if(department == null){
-            throw  new BizException(ERRORCODE.JSONCONVERT_ERROR.getCode(),ERRORCODE.JSONCONVERT_ERROR.getMessage());
+            ModelUtil.throwException(ERRORCODE.JSONCONVERT_ERROR);
         }
 
-        UserPojo userPojo=(UserPojo)HttpUtil.getSession(request,"user");
+        Map<String,Object> queryMap = new HashMap<>();
 
-        Map<String,Object> dataMap = new HashMap<>();
-        dataMap.put("departmentCode",department.getParentCode());
-        dataMap.put("status", Constants.NORMAL_STATUS);//获取正常
-        Department temp =(Department) departmentService.queryOne(dataMap);
-        if(department.getId()==null || department.getId().equals(0) ){
-            Map<String,Object> condition=new HashMap<>();
-            condition.put("departmentName",department.getDepartmentName());
-            condition.put("status", 0);
-            if(departmentService.queryOne(condition)!=null){
-                throw  new BizException(ERRORCODE.ALREADY_EXIST_ERROR.getCode(),ERRORCODE.ALREADY_EXIST_ERROR.getMessage());
+        if(department.getId()==null || department.getId().equals(0)){
+
+            queryMap.put("departmentName",department.getDepartmentName());
+            queryMap.put("status", 0);
+            if(departmentService.queryOne(queryMap)!=null){
+                ModelUtil.throwException(ERRORCODE.ALREADY_EXIST_ERROR);
             }
-            Department d=new Department();
-            d.setCompanyCode(temp.getCompanyCode());
-            d.setDepartmentName(department.getDepartmentName());
-            d.setParentCode(department.getParentCode());
-            d.setDescription(department.getDescription());
-            d.setDepartmentFax(department.getDepartmentFax());
-            d.setDepartmentPhone(department.getDepartmentPhone());
-            d.setDepartmentPrincipal(department.getDepartmentPrincipal());
-            d.setSeqSort(department.getSeqSort());
-            d.setGoodsAddress(department.getGoodsAddress());
-            d.setSalePrice(department.getSalePrice());
-            d.setStatus(Constants.NORMAL_STATUS);
-            String areaCode;
-            if (userPojo.getRoleType().equals(1)){
-                areaCode=department.getAreaCode().substring(0,2);
-                dataDictionaryService.updateProvince(areaCode+"0000","-1");
-            } else if (userPojo.getRoleType().equals(2)){
-                areaCode=department.getAreaCode().substring(0,4);
-                dataDictionaryService.updateCity(areaCode+"00","-1");
-            } else if (userPojo.getRoleType().equals(3)){
+
+            queryMap.clear();
+            queryMap.put("departmentCode",department.getParentCode());
+            queryMap.put("status", Constants.NORMAL_STATUS);//获取正常
+            Department parentDeparentment =(Department) departmentService.queryOne(queryMap);
+
+            Department childDeparentment = new Department();
+            BeanUtils.copyProperties(department,childDeparentment);
+            childDeparentment.setCompanyCode(parentDeparentment.getCompanyCode());
+
+            UserPojo userPojo=(UserPojo)HttpUtil.getSession(request,"user");
+            String areaCode = "";
+            if (userPojo.getRoleType().equals(UserRoleEnum.SUPER_MANAGE.getValue())){
+                areaCode=department.getAreaCode().substring(0,2)+"0000";
+                dataDictionaryService.updateProvince(areaCode,"-1");
+            } else if (userPojo.getRoleType().equals(UserRoleEnum.PROVICE_AGENT.getValue())){
+                areaCode=department.getAreaCode().substring(0,4)+"00";
+                dataDictionaryService.updateCity(areaCode,"-1");
+            } else if (userPojo.getRoleType().equals(UserRoleEnum.CITY_AGENT.getValue())){
                 areaCode=department.getAreaCode().substring(0,6);
                 dataDictionaryService.updateCounty(areaCode,"-1");
             } else {
-                throw  new BizException(ERRORCODE.INSERT_ERROR.getCode(),ERRORCODE.INSERT_ERROR.getMessage());
+                ModelUtil.throwException(ERRORCODE.INSERT_ERROR);
             }
-            d.setAreaCode(areaCode);
-            d.setRoleType(String.valueOf(userPojo.getRoleType()+1));
-            Long maxDepartmentCode=excodeService.selectMaxCodeByParent(CodeFactoryUtil.DEPARTMENT_CODE,CodeFactoryUtil.DEPARTMENT_TABLE,CodeFactoryUtil.COMPANY_CODE, temp.getCompanyCode());
+
+            if(userPojo.getRoleType().equals(UserRoleEnum.SUPER_MANAGE.getValue())){
+                childDeparentment.setWebPrice(department.getWebPrice());
+                childDeparentment.setWechatPrice(department.getWechatPrice());
+            }else {
+                // 若不是创建或修改省代的信息,则需要关联查出省代的信息
+                Department tempDepartment = (Department) departmentService.findOne(
+                        "areaCode",
+                        department.getAreaCode().substring(0,2));
+                childDeparentment.setWebPrice(tempDepartment.getWebPrice());
+                childDeparentment.setWechatPrice(tempDepartment.getWechatPrice());
+            }
+
+            childDeparentment.setAreaCode(areaCode);
+            childDeparentment.setRoleType(userPojo.getRoleType()+1);
+            Long maxDepartmentCode=excodeService.selectMaxCodeByParent(
+                    CodeFactoryUtil.DEPARTMENT_CODE,
+                    CodeFactoryUtil.DEPARTMENT_TABLE,
+                    CodeFactoryUtil.COMPANY_CODE,
+                    childDeparentment.getCompanyCode());
             if(maxDepartmentCode==null||maxDepartmentCode==0){
-                maxDepartmentCode= CodeFactoryUtil.getInitDepartment(temp.getCompanyCode());//部门Code初始生成规则 所属公司信息的Code*1000+1
+                maxDepartmentCode= CodeFactoryUtil.getInitDepartment(childDeparentment.getCompanyCode());//部门Code初始生成规则 所属公司信息的Code*1000+1
             }else{
                 ++maxDepartmentCode;
             }
-            d.setDepartmentCode(maxDepartmentCode);
+            childDeparentment.setDepartmentCode(maxDepartmentCode);
 
-            departmentService.updateOrSave(d, null);
-            addPost(d,userPojo.getAccountCode());
-            return d;
+            departmentService.insert(childDeparentment);
+            addPost(childDeparentment,userPojo.getAccountCode());
+            return childDeparentment;
         }else{
             department.setAreaCode(null);
-            departmentService.updateOrSave(department, department.getId());
-            Map<String, Object> queryMap = new HashMap<>();
-            queryMap.put("id", department.getId());
-            Department depart = (Department) departmentService.queryOne(queryMap);
-            dataMap.put("departmentCode",String.valueOf(depart.getDepartmentCode()));
-            List<Post> postList = postService.queryList(dataMap, CodeFactoryUtil.ORDER_BY_FIELD, SqlOrderEnum.DESC.getAction());
-            for(Post p :postList){
-                p.setPostName(department.getDepartmentName());
-                postService.update(p);
+            departmentService.update(department);
+            // TODO 待优化,去掉for循环,用sql执行
+//            Department depart = (Department) departmentService.findOne("id", department.getId());
+//            queryMap.clear();
+//            queryMap.put("status", 0);
+//            queryMap.put("departmentCode",String.valueOf(depart.getDepartmentCode()));
+//            List<Post> postList = postService.queryList(queryMap, CodeFactoryUtil.ORDER_BY_FIELD, SqlOrderEnum.DESC.getAction());
+//            for(Post p : postList){
+//                p.setPostName(department.getDepartmentName());
+//                postService.update(p);
+//            }
+
+            Department tempDepart = (Department) departmentService.findOne("id", department.getId());
+            // 名称是否修改
+            if(!tempDepart.getDepartmentName().equals(department.getDepartmentName())){
+                iexPostService.updatePostNameByDeparntmentId(
+                        Long.valueOf(department.getId().toString()),
+                        department.getDepartmentName());
             }
-            return "ok";
+            // web售价是否修改
+            if(!tempDepart.getWebPrice().equals(department.getWebPrice())){
+                iexDeparmentService.updateDepartmentInfoByAreaCode(
+                        department.getAreaCode().substring(0,2),
+                        tempDepart.getWechatPrice(),
+                        department.getWebPrice());
+            }
+            // 微信售价是否修改
+            if(!tempDepart.getWechatPrice().equals(department.getWechatPrice())){
+                iexDeparmentService.updateDepartmentInfoByAreaCode(
+                        department.getAreaCode().substring(0,2),
+                        department.getWechatPrice(),
+                        tempDepart.getWebPrice());
+            }
+
+            return ObjectFactory.getSingle();
         }
 
 
@@ -348,15 +392,15 @@ public class DepartmentController {
         return "ok";
     }
 
-    private String distributionRole(Post post,String roleCode){
+    private String distributionRole(Post post,int roleCode){
         RolePost rolePost=new RolePost();
         rolePost.setPostCode(post.getPostCode());
         Long roleCodeLong=0L;
         switch (roleCode){
-            case "1":roleCodeLong=10L;break;
-            case "2":roleCodeLong=11L;break;
-            case "3":roleCodeLong=12L;break;
-            case "4":roleCodeLong=13L;break;
+            case 1:roleCodeLong=10L;break;
+            case 2:roleCodeLong=11L;break;
+            case 3:roleCodeLong=12L;break;
+            case 4:roleCodeLong=13L;break;
         }
         rolePost.setRoleCode(roleCodeLong);
         Map<String,Object> dataMap = new HashMap<>();
@@ -374,7 +418,7 @@ public class DepartmentController {
         rp.setRoleCode(rolePost.getRoleCode());
         rp.setStatus(Constants.NORMAL_STATUS);
         rolePostService.updateOrSave(rp, null);
-        if (roleCode.equals("1")||roleCode.equals("2")||roleCode.equals("3")) {
+        if (roleCode == 1||roleCode == 2||roleCode == 3) {
             distributionSystemCode(rp.getPostCode(), 1L);
         }
         distributionSystemCode(rp.getPostCode(),2L);

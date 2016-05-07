@@ -26,4 +26,13 @@ public interface IEXPostDAO {
 
     Integer countPostByCreator(@Param("creator") String creator);
 
+    /**
+     * 根据代理商ID修改部门名称
+     *
+     * @param departmentId
+     * @param departmentName
+     */
+    void updatePostNameByDeparntmentId(@Param("departmentId") long departmentId,
+                                       @Param("departmentName") String departmentName);
+
 }

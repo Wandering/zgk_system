@@ -21,8 +21,7 @@ import java.util.Map;
 public class PostApiServiceImpl implements PostApiService {
     @Autowired
     private IK12systemPostService ik12systemPostService;
-    @Autowired
-    private IPostService iPostService;
+
     @Autowired
     private IEXPostService iexPostService;
     /**
@@ -45,7 +44,7 @@ public class PostApiServiceImpl implements PostApiService {
      * @return
      */
     public Page<Post> getManagerPost(Long postCode){
-        return  iPostService.getManagerPost(postCode);
+        return  iexPostService.getManagerPost(postCode);
     }
     /**
      * 根据用户部门code获取部门树
@@ -55,7 +54,7 @@ public class PostApiServiceImpl implements PostApiService {
      * @return
      */
     public Page<Post> queryPost(String currentPageNo,String pageSize,String departmentCode){
-       return iPostService.queryPost(currentPageNo,pageSize,departmentCode);
+       return iexPostService.queryPost(currentPageNo,pageSize,departmentCode);
     }
 
     /**
