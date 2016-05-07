@@ -15,4 +15,12 @@ public interface IEXUserAccountService {
      * @return
      */
     Map<String, Object> findUserInfo(Map<String,String> paramMap);
+
+    /**
+     * 根据用户Id删除用户信息和账号信息
+     *
+     * @param userId
+     * @return
+     */
+    boolean delUserInfo(long userId);
 }

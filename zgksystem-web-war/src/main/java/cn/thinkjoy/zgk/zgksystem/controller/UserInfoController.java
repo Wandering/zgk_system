@@ -10,6 +10,7 @@ import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.domain.UserAccount;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserAndDepartmentPojo;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
+import cn.thinkjoy.zgk.zgksystem.service.account.IEXUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserInfoService;
 import cn.thinkjoy.zgk.zgksystem.service.code.IEXCodeService;
@@ -53,6 +54,9 @@ public class UserInfoController {
 
     @Autowired
     private IUserAccountService userAccountService;
+
+    @Autowired
+    private IEXUserAccountService exUserAccountService;
 
     @Autowired
     private IEXCodeService excodeService;
@@ -318,18 +322,24 @@ public class UserInfoController {
     @ResponseBody
     @RequestMapping(value = "delUserInfo",method = RequestMethod.GET)
     public Object delUserInfo(HttpServletRequest request){
-        String userInfoId = request.getParameter("id");
-        if(StringUtils.isBlank(userInfoId)){
+        String userId = request.getParameter("id");
+        if(StringUtils.isBlank(userId)){
             ModelUtil.throwException(ERRORCODE.PARAM_ISNULL);
         }
-        //TODO 可以改为根据字段修改对象
-        UserInfo userInfo = (UserInfo)userInfoService.findOne("id", userInfoId);
-        userInfo.setStatus(Constants.DELETEED_STATUS);
-        userInfoService.update(userInfo);
-        Long userCode = userInfo.getUserCode();
-        UserAccount userAccount = (UserAccount) userAccountService.findOne("userCode",userCode);
-        userAccount.setStatus(Constants.DELETEED_STATUS);
-        userAccountService.update(userAccount);
+//        UserInfo userInfo = (UserInfo)userInfoService.findOne("id", userInfoId);
+//        userInfo.setStatus(Constants.DELETEED_STATUS);
+//        userInfoService.update(userInfo);
+//        Long userCode = userInfo.getUserCode();
+//        UserAccount userAccount = (UserAccount) userAccountService.findOne("userCode",userCode);
+//        userAccount.setStatus(Constants.DELETEED_STATUS);
+//        userAccountService.update(userAccount);
+
+        boolean result = exUserAccountService.delUserInfo(Long.valueOf(userId));
+
+        if(!result){
+            ModelUtil.throwException(ERRORCODE.DELETE_ERROR);
+        }
+
         return ObjectFactory.getSingle();
     }
 

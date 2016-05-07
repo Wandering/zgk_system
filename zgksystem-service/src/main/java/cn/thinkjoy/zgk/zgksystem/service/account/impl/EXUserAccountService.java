@@ -24,4 +24,10 @@ public class EXUserAccountService implements IEXUserAccountService{
     {
         return exUserAccountDAO.queryUserInfo(paramMap);
     }
+
+    @Override
+    public boolean delUserInfo(long userId) {
+        int result = exUserAccountDAO.delUserInfo(userId);
+        return result == 1;
+    }
 }
