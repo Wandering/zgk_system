@@ -95,8 +95,9 @@ define(function(require, exports, module) {
                 tip($('#real_name').parent().parent(), '管理员的真实姓名不能为空');
                 return;
             }
-
             params.push(realName);
+
+
             var userName = $('#user_name').val().trim();
             if (!/^[0-9a-zA-Z]{6,10}$/ig.test(userName)) {
                 tip($('#real_name').parent().parent(), '管理员账号格式错误');

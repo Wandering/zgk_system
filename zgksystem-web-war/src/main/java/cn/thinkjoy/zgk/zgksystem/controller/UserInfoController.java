@@ -1,13 +1,16 @@
 package cn.thinkjoy.zgk.zgksystem.controller;
 
 import cn.thinkjoy.common.exception.BizException;
+import cn.thinkjoy.common.utils.ObjectFactory;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.zgk.zgksystem.common.ERRORCODE;
 import cn.thinkjoy.zgk.zgksystem.common.HttpUtil;
 import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.domain.UserAccount;
+import cn.thinkjoy.zgk.zgksystem.pojo.UserAndDepartmentPojo;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
+import cn.thinkjoy.zgk.zgksystem.service.account.IEXUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserAccountService;
 import cn.thinkjoy.zgk.zgksystem.service.account.IUserInfoService;
 import cn.thinkjoy.zgk.zgksystem.service.code.IEXCodeService;
@@ -19,6 +22,7 @@ import com.alibaba.fastjson.JSON;
 import com.jlusoft.microschool.core.utils.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +54,9 @@ public class UserInfoController {
 
     @Autowired
     private IUserAccountService userAccountService;
+
+    @Autowired
+    private IEXUserAccountService exUserAccountService;
 
     @Autowired
     private IEXCodeService excodeService;
@@ -314,19 +321,26 @@ public class UserInfoController {
      */
     @ResponseBody
     @RequestMapping(value = "delUserInfo",method = RequestMethod.GET)
-    public String delUserInfo(HttpServletRequest request){
-        String userInfoId = request.getParameter("id");
-        if(StringUtils.isBlank(userInfoId)){
-            throw  new BizException(ERRORCODE.PARAM_ISNULL.getCode(), ERRORCODE.PARAM_ISNULL.getMessage());
+    public Object delUserInfo(HttpServletRequest request){
+        String userId = request.getParameter("id");
+        if(StringUtils.isBlank(userId)){
+            ModelUtil.throwException(ERRORCODE.PARAM_ISNULL);
         }
-        UserInfo userInfo = (UserInfo)userInfoService.findOne("id", userInfoId);
-        userInfo.setStatus(Constants.DELETEED_STATUS);
-        userInfoService.update(userInfo);
-        Long userCode = userInfo.getUserCode();
-        UserAccount userAccount = (UserAccount) userAccountService.findOne("userCode",userCode);
-        userAccount.setStatus(Constants.DELETEED_STATUS);
-        userAccountService.update(userAccount);
-        return "ok";
+//        UserInfo userInfo = (UserInfo)userInfoService.findOne("id", userInfoId);
+//        userInfo.setStatus(Constants.DELETEED_STATUS);
+//        userInfoService.update(userInfo);
+//        Long userCode = userInfo.getUserCode();
+//        UserAccount userAccount = (UserAccount) userAccountService.findOne("userCode",userCode);
+//        userAccount.setStatus(Constants.DELETEED_STATUS);
+//        userAccountService.update(userAccount);
+
+        boolean result = exUserAccountService.delUserInfo(Long.valueOf(userId));
+
+        if(!result){
+            ModelUtil.throwException(ERRORCODE.DELETE_ERROR);
+        }
+
+        return ObjectFactory.getSingle();
     }
 
     /**
@@ -372,18 +386,29 @@ public class UserInfoController {
     @ResponseBody
     @RequestMapping(value = "getUserInfo",method = RequestMethod.GET)
     public UserInfo getUserInfo(HttpServletRequest request){
+
         String userInfoId = request.getParameter("id");
+
         if (StringUtils.isBlank(userInfoId)){
-            throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(),ERRORCODE.PARAM_ISNULL.getMessage());
+            ModelUtil.throwException(ERRORCODE.PARAM_ISNULL);
         }
-        Map<String,Object> dataMap = new HashMap<>();
-        dataMap.put("id",Long.parseLong(userInfoId));
-        dataMap.put("status",Constants.NORMAL_STATUS);
-        UserInfo userInfo = (UserInfo)userInfoService.queryOne(dataMap);
+
+        UserInfo userInfo = (UserInfo)userInfoService.findOne(
+                "id",
+                Long.parseLong(userInfoId));
         if(userInfo == null){
-            throw new BizException(ERRORCODE.NO_MESSAGE.getCode(),ERRORCODE.NO_MESSAGE.getMessage());
+            ModelUtil.throwException(ERRORCODE.NO_MESSAGE);
         }
-        return userInfo;
+
+        Department department = (Department) departmentService.findOne(
+                "departmentCode",
+                userInfo.getDepartmentCode());
+
+        UserAndDepartmentPojo pojo = new UserAndDepartmentPojo();
+        BeanUtils.copyProperties(userInfo,pojo);
+        pojo.setDepartmentName(department.getDepartmentName());
+
+        return pojo;
     }
 
 
