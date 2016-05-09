@@ -18,9 +18,8 @@ define(function(require, exports, module) {
             return this.replace(/(^\s*)|(\s*$)/g,'');
         };
     }
-
     function validateForm(callback, flag) {
-        var position_name = $('#position_name option').attr('value');
+        var position_name = $('#position_name option:selected').attr('value');
         if (!position_name) {
             tip($('#position_name').parent().parent(), '请选择代理商名称');
             return;
