@@ -28,6 +28,6 @@ public class EXUserAccountService implements IEXUserAccountService{
     @Override
     public boolean delUserInfo(long userId) {
         int result = exUserAccountDAO.delUserInfo(userId);
-        return result == 1;
+        return result > 0;
     }
 }
