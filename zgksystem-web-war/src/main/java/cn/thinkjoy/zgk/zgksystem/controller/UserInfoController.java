@@ -336,9 +336,9 @@ public class UserInfoController {
 
         boolean result = exUserAccountService.delUserInfo(Long.valueOf(userId));
 
-//        if(!result){
-//            ModelUtil.throwException(ERRORCODE.DELETE_ERROR);
-//        }
+        if(!result){
+            ModelUtil.throwException(ERRORCODE.DELETE_ERROR);
+        }
 
         return ObjectFactory.getSingle();
     }
