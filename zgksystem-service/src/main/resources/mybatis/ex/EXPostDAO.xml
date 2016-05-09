@@ -14,7 +14,7 @@
         limit ${offset}, ${rows}
     </select>
     <select id="countPostByCreator" resultType="java.lang.Integer">
-        SELECT count(*) FROM k12system_post where creator = #{creator}
+        SELECT count(*) FROM k12system_post where creator = #{creator} AND status = 0
     </select>
 
     <!-- 根据代理商ID修改部门名称 -->
