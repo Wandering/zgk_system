@@ -5,53 +5,104 @@ define(function (require, exports, module) {
         var token = $.cookie('bizData');
         var message = require('../message.js');
         var Table = require('../datatable.js');
-        var col = [{
-            data: 'id'
-        }, {
-            data: 'departmentName',
-            title: '代理商名称'
-        }, {
-            data: 'roleType',
-            title: '代理商类型'
-        }, {
-            data: 'wechatPrice',
-            title: '微信售价'
-        }, {
-            data: 'webPrice',
-            title: 'web售价'
-        }, {
-            data: 'salePrice',
-            title: '拿货价'
-        }, {
-            data: 'departmentPrincipal',
-            title: '代理商负责人'
-        }, {
-            data: 'departmentPhone',
-            title: '代理商电话'
-        }, {
-            data: 'goodsAddress',
-            title: '联系地址'
-        }
-        ];
-        var columnDefs = [{
-            "bVisible": false,
-            "aTargets": [0]
-        },{
-            "aTargets": [2],
-            "render": function (data, type, row) {
-                var  dataTxt = ['管理员','省级代理','市级代理','区县级代理'];
-                return dataTxt[data-1];
-            },
-        }];
-        Table.initTable({
-            columns: col,
-            tableContentId: 'menu_table_content',
-            tableId: new Date().getTime() + '_table_body',
-            columnDefs: columnDefs,
-            sAjaxSource: '/system/department/queryDepartment?parentCode=' + parentCode + '&token=' + token
-        });
+        var cookieJson = JSON.parse($.cookie('userInfo'));
+        var roleType = cookieJson.roleType;
 
-        var tableObj = Table.dataTable;
+
+
+        if(roleType=='1'){
+            var col = [{
+                data: 'id'
+            }, {
+                data: 'departmentName',
+                title: '代理商名称'
+            }, {
+                data: 'roleType',
+                title: '代理商类型'
+            }, {
+                data: 'wechatPrice',
+                title: '微信售价'
+            }, {
+                data: 'webPrice',
+                title: 'web售价'
+            }, {
+                data: 'salePrice',
+                title: '拿货价'
+            }, {
+                data: 'departmentPrincipal',
+                title: '代理商负责人'
+            }, {
+                data: 'departmentPhone',
+                title: '代理商电话'
+            }, {
+                data: 'goodsAddress',
+                title: '联系地址'
+            }
+            ];
+            var columnDefs = [{
+                "bVisible": false,
+                "aTargets": [0]
+            },{
+                "aTargets": [2],
+                "render": function (data, type, row) {
+                    var  dataTxt = ['管理员','省级代理','市级代理','区县级代理'];
+                    return dataTxt[data-1];
+                },
+            }];
+            Table.initTable({
+                columns: col,
+                tableContentId: 'menu_table_content',
+                tableId: new Date().getTime() + '_table_body',
+                columnDefs: columnDefs,
+                sAjaxSource: '/system/department/queryDepartment?parentCode=' + parentCode + '&token=' + token
+            });
+
+            var tableObj = Table.dataTable;
+        }else{
+            var col = [{
+                data: 'id'
+            }, {
+                data: 'departmentName',
+                title: '代理商名称'
+            }, {
+                data: 'roleType',
+                title: '代理商类型'
+            },{
+                data: 'salePrice',
+                title: '拿货价'
+            }, {
+                data: 'departmentPrincipal',
+                title: '代理商负责人'
+            }, {
+                data: 'departmentPhone',
+                title: '代理商电话'
+            }, {
+                data: 'goodsAddress',
+                title: '联系地址'
+            }
+            ];
+            var columnDefs = [{
+                "bVisible": false,
+                "aTargets": [0]
+            },{
+                "aTargets": [2],
+                "render": function (data, type, row) {
+                    var  dataTxt = ['管理员','省级代理','市级代理','区县级代理'];
+                    return dataTxt[data-1];
+                },
+            }];
+            Table.initTable({
+                columns: col,
+                tableContentId: 'menu_table_content',
+                tableId: new Date().getTime() + '_table_body',
+                columnDefs: columnDefs,
+                sAjaxSource: '/system/department/queryDepartment?parentCode=' + parentCode + '&token=' + token
+            });
+
+            var tableObj = Table.dataTable;
+        }
+
+
 
         var errorTip = function (msg) {
             $('#model_error_msg').html(msg);
@@ -70,9 +121,9 @@ define(function (require, exports, module) {
                 departmentFax: formArry[2] || '',  // 传真
                 departmentPrincipal: formArry[3] || '', // 部门负责人
                 salePrice: formArry[7] || '',    // 拿货价
-                goodsAddress: formArry[8] || '',  // 取货地址
-                webPrice: formArry[9] || '',  // web售价
-                wechatPrice: formArry[10] || ''  // 微信售价
+                goodsAddress: formArry[8] || ''  // 取货地址
+                //webPrice: formArry[9] || '',  // web售价
+                //wechatPrice: formArry[10] || ''  // 微信售价
             };
 
             if (id) {
@@ -80,10 +131,11 @@ define(function (require, exports, module) {
             } else {
                 departmentJson.parentCode = parentCode;  // 添加节点
             }
-            var cookieJson = JSON.parse($.cookie('userInfo'));
-            var roleType = cookieJson.roleType;
+
             switch (roleType) {
                 case 1:
+                    departmentJson.webPrice=formArry[9] || '';  // web售价
+                    departmentJson.wechatPrice=formArry[10] || '';  // 微信售价
                     departmentJson.areaCode = formArry[4];
                     break;
                 case 2:
@@ -119,7 +171,6 @@ define(function (require, exports, module) {
             });
         };
 
-
         var ButtonEvent = {
             add: function (elementId) {
                 $('#' + elementId).off('click');
@@ -142,8 +193,10 @@ define(function (require, exports, module) {
 
                                 var curProvincesCookieId = cookieJson.areaCode;
 
-                                console.log(roleType)
 
+                                console.log(curProvincesCookieId)
+
+                                console.log(roleType)
                                 switch (roleType) {
                                     case 1:
                                         $('#dep_provinces_from').show();
@@ -157,9 +210,9 @@ define(function (require, exports, module) {
                                         });
                                         break;
                                     case 2:
-                                        curProvincesCookieId = curProvincesCookieId + "0000";
+                                        curProvincesCookieId = curProvincesCookieId+"0000";
                                         $('#dep_city_from').show();
-                                        $('#dep_provinces_from,#dep_county_from').hide();
+                                        $('#dep_provinces_from,#dep_county_from,#web-control-group,#wechat-control-group').hide();
                                         $.getJSON('/system/dataDictionary/findCityList?token=' + token + '&provinceId=' + curProvincesCookieId, function (res) {
                                             console.log(res)
                                             for (var i = 0; i < res.bizData.length; i++) {
@@ -168,9 +221,9 @@ define(function (require, exports, module) {
                                         });
                                         break;
                                     case 3:
-                                        curProvincesCookieId = curProvincesCookieId + "00";
+                                        curProvincesCookieId = curProvincesCookieId+"00";
                                         $('#dep_county_from').show();
-                                        $('#dep_provinces_from,#dep_city_from').hide();
+                                        $('#dep_provinces_from,#dep_city_from,#web-control-group,#wechat-control-group').hide();
                                         // 市
                                         $.getJSON('/system/dataDictionary/findCountyList?token=' + token + '&cityId=' + curProvincesCookieId, function (res) {
                                             console.log(res)
@@ -182,6 +235,7 @@ define(function (require, exports, module) {
                                     default:
                                 }
                             },
+
                             buttons: [{
                                 text: "新增",
                                 'class': "btn btn-primary single-buttons",
@@ -269,8 +323,10 @@ define(function (require, exports, module) {
 
                                         var updateProvincesId = data.bizData.areaCode;
 
+                                        console.log(updateProvincesId);
 
-                                        console.log("roleType:"+roleType);
+
+                                        //console.log("roleType:"+roleType);
 
 
                                         switch (roleType) {
@@ -289,7 +345,7 @@ define(function (require, exports, module) {
                                             case 3:
                                                 var curProvincesId = updateProvincesId.substring(0, 2) + "0000";
                                                 $('#dep_city_from').show();
-                                                $('#dep_provinces_from,#dep_county_from').hide();
+                                                $('#dep_provinces_from,#dep_county_from,#web-control-group,#wechat-control-group').hide();
                                                 $.getJSON('/system/dataDictionary/findCityList?token=' + token + '&provinceId=' + curProvincesId, function (res) {
                                                     console.log(res)
                                                     for (var i = 0; i < res.bizData.length; i++) {
@@ -301,7 +357,7 @@ define(function (require, exports, module) {
                                             case 4:
                                                 var curProvincesCookieId = updateProvincesId.substring(0, 4) + "00";
                                                 $('#dep_county_from').show();
-                                                $('#dep_provinces_from,#dep_city_from').hide();
+                                                $('#dep_provinces_from,#dep_city_from,#web-control-group,#wechat-control-group').hide();
                                                 // 市
                                                 $.getJSON('/system/dataDictionary/findCountyList?token=' + token + '&cityId=' + curProvincesCookieId, function (res) {
                                                     console.log(res)
@@ -401,6 +457,7 @@ define(function (require, exports, module) {
             resource(ButtonEvent, token);
         });
     };
+
 });
 
 

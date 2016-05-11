@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="cn.thinkjoy.zgk.zgksystem.dao.ex.IEXUserAccountDAO">
+
     <select id="queryUserInfo" resultType="java.util.HashMap">
         select acc.account,info.provinceId,info.cityId,info.countyId
         from zgk2.zgk_user_account acc
@@ -9,5 +10,16 @@
         where acc.id=#{accountId}
         limit 1
     </select>
+
+    <!-- 根据用户Id删除用户信息和账号信息 -->
+    <update id="delUserInfo" parameterType="long">
+        UPDATE k12system_user_info t0,
+               k12system_user_account t1
+        SET t0.`status` = -1,
+            t1.`status` = -1
+        WHERE
+            t0.userCode = t1.userCode
+        AND t0.id = #{userId}
+    </update>
 </mapper>
 
