@@ -342,7 +342,6 @@ public class AgentServiceImpl implements AgentService {
 //    private ArrayList<Integer>
     private Department fixReturnValue(Department countyDepartment) {
         countyDepartment.setCompanyCode(null);
-        countyDepartment.setDepartmentCode(null);
         countyDepartment.setDepartmentPrincipal(null);
         countyDepartment.setDescription(null);
         countyDepartment.setParentCode(null);

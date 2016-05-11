@@ -61,12 +61,12 @@ define(function (require, exports, module) {
                 postJson.id = id;
                 postJson.departmentCode = parentCode.id;
             } else {
+
                 postJson.departmentCode = parentCode.id;
                 require('md5');
                 postJson.password = $.md5(postJson.password);
             }
-            //console.log(JSON.stringify(postJson))
-
+            console.log(JSON.stringify(postJson))
             $.ajax({
                 type: 'post',
                 url: '/system/userInfo/addOrEditUserInfo?token=' + token,
@@ -137,7 +137,6 @@ define(function (require, exports, module) {
                     $.get('/system/post/queryComboxPost?departmentCode=' + parentCode.id + '&token=' + token, function (data) {
                         if ('0000000' === data.rtnCode) {
                             var comboxData = data.bizData;
-
                             if (comboxData) {
                                 $.get('../tmpl/employee/employee_form.html', function (tmpl) {
                                     require('dialog');
@@ -234,8 +233,7 @@ define(function (require, exports, module) {
                                         $("#add_employee").dialog("destroy");
                                     },
                                     render: function () {
-                                        $('#position_name').html('<option>'+ data.bizData.departmentName +'</option>');
-
+                                        $('#position_name').html('<option value="'+ data.bizData.postCode +'">'+ data.bizData.departmentName +'</option>');
                                         $('#employee_name').val(data.bizData.userName);
                                         $('#login_name').val(data.bizData.loginNumber);
                                         $('#login_pwd').val(data.bizData.password);
@@ -315,7 +313,6 @@ define(function (require, exports, module) {
                 });
             }
         };
-
         require.async('../renderResource', function (resource) {
             resource(ButtonEvent, token);
         });
