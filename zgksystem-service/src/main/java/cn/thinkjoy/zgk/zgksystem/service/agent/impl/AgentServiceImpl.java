@@ -292,9 +292,9 @@ public class AgentServiceImpl implements AgentService {
                 break;
             case 2:
                  ArrayList<Integer> splitRole= getSplitArr(userPercent);
-                Integer pr0 = new BigDecimal(payPrice).multiply(new BigDecimal(splitRole.get(0)).divide(bigDecimal)).intValue();
+                Integer pr0 = new BigDecimal(payPrice).multiply(new BigDecimal(splitRole.get(1)).divide(bigDecimal)).intValue();
                 LOGGER.info("用户分成0:" + pr0);
-                Integer pr1 = new BigDecimal(payPrice).multiply(new BigDecimal(splitRole.get(1)).divide(bigDecimal)).intValue();
+                Integer pr1 = new BigDecimal(payPrice).multiply(new BigDecimal(splitRole.get(0)).divide(bigDecimal)).intValue();
                 LOGGER.info("用户分成1:" + pr1);
                 Integer pr2=new BigDecimal(payPrice).multiply(new BigDecimal(supplyPercent).divide(bigDecimal)).intValue();
                 LOGGER.info("供货商分成2:" + pr2);
