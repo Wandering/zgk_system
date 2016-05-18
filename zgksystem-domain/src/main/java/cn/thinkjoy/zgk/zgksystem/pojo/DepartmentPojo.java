@@ -10,51 +10,54 @@
 package cn.thinkjoy.zgk.zgksystem.pojo;
 
 
-public class DepartmentPojo extends UserPojo{
-    private Long id; //部门Id
-    private Long departmentCode;//部门Code
-    private Long companyCode;//代理公司Code
-    private Long parentCode; //上级部门Code
+import cn.thinkjoy.zgk.zgksystem.domain.DepartmentProductRelation;
+
+import java.util.List;
+
+public class DepartmentPojo {
+    private long id; //部门Id
+    private long departmentCode;//部门Code
+    private long companyCode;//代理公司Code
+    private long parentCode; //上级部门Code
     private String departmentPhone; //部门电话
     private String departmentFax;//部门传真
     private String departmentPrincipal;//部门负责人
     private String departmentName;//部门名称
-    private Integer seqSort; //部门排序
     private String description;//部门描述
-    private Integer roleType;
+    private int roleType;
     private String areaCode;
+    private String goodsAddress;//取货地址
+    private List<DepartmentProductRelation> products;//商品集合
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    @Override
-    public Long getDepartmentCode() {
+    public long getDepartmentCode() {
         return departmentCode;
     }
 
-    @Override
-    public void setDepartmentCode(Long departmentCode) {
+    public void setDepartmentCode(long departmentCode) {
         this.departmentCode = departmentCode;
     }
 
-    public Long getCompanyCode() {
+    public long getCompanyCode() {
         return companyCode;
     }
 
-    public void setCompanyCode(Long companyCode) {
+    public void setCompanyCode(long companyCode) {
         this.companyCode = companyCode;
     }
 
-    public Long getParentCode() {
+    public long getParentCode() {
         return parentCode;
     }
 
-    public void setParentCode(Long parentCode) {
+    public void setParentCode(long parentCode) {
         this.parentCode = parentCode;
     }
 
@@ -90,42 +93,63 @@ public class DepartmentPojo extends UserPojo{
         this.departmentName = departmentName;
     }
 
-    public Integer getSeqSort() {
-        return seqSort;
-    }
-
-    public void setSeqSort(Integer seqSort) {
-        this.seqSort = seqSort;
-    }
-
-    @Override
     public String getDescription() {
         return description;
     }
 
-    @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
-    @Override
-    public Integer getRoleType() {
+    public int getRoleType() {
         return roleType;
     }
 
-    @Override
-    public void setRoleType(Integer roleType) {
+    public void setRoleType(int roleType) {
         this.roleType = roleType;
     }
 
-    @Override
     public String getAreaCode() {
         return areaCode;
     }
 
-    @Override
     public void setAreaCode(String areaCode) {
         this.areaCode = areaCode;
+    }
+
+    public String getGoodsAddress() {
+        return goodsAddress;
+    }
+
+    public void setGoodsAddress(String goodsAddress) {
+        this.goodsAddress = goodsAddress;
+    }
+
+    public List<DepartmentProductRelation> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<DepartmentProductRelation> products) {
+        this.products = products;
+    }
+
+    @Override
+    public String toString() {
+        return "DepartmentPojo{" +
+                "id=" + id +
+                ", departmentCode=" + departmentCode +
+                ", companyCode=" + companyCode +
+                ", parentCode=" + parentCode +
+                ", departmentPhone='" + departmentPhone + '\'' +
+                ", departmentFax='" + departmentFax + '\'' +
+                ", departmentPrincipal='" + departmentPrincipal + '\'' +
+                ", departmentName='" + departmentName + '\'' +
+                ", description='" + description + '\'' +
+                ", roleType=" + roleType +
+                ", areaCode='" + areaCode + '\'' +
+                ", goodsAddress='" + goodsAddress + '\'' +
+                ", products=" + products +
+                '}';
     }
 }
 

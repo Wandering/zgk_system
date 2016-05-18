@@ -40,4 +40,15 @@ public interface IEXDepartmentDAO {
     void updateDepartmentInfoByAreaCode(@Param("areaCode") String areaCode,
                                         @Param("wechatPrice") double wechatPrice,
                                         @Param("webPrice") double webPrice);
+
+    /**
+     * 根据部门ID修改下级代理商的商品售价
+     *
+     * @param departmentCode
+     * @param productId
+     * @param salePrice
+     */
+    void updateDepartmentPrice(@Param("departmentCode") long departmentCode,
+                               @Param("productId") long productId,
+                               @Param("salePrice") double salePrice);
 }

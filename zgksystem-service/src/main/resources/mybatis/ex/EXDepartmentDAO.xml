@@ -56,5 +56,33 @@
             areaCode like CONCAT(#{areaCode} , '%')
     </update>
 
+    <!-- 根据部门ID修改下级代理商的商品售价 -->
+    <update id="updateDepartmentPrice" parameterType="map">
+        UPDATE zgk_department_product_relation
+        SET salePrice = #{salePrice}
+        WHERE
+            departmentCode IN (
+                <!-- 查询该区域下所有代理商编码 -->
+                SELECT
+                    departmentCode
+                FROM
+                    k12system_department
+                WHERE
+                    areaCode LIKE CONCAT(
+                        (
+                            <!-- 根据部门编号查询部门所在区域 -->
+                            SELECT
+                                areaCode
+                            FROM
+                                k12system_department
+                            WHERE
+                                departmentCode = #{departmentCode}
+                        ),
+                        "%"
+                    )
+            )
+        AND productId = #{productId}
+    </update>
+
 </mapper>
 
