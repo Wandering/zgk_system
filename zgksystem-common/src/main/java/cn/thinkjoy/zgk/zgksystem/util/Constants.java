@@ -17,5 +17,8 @@ public class Constants {
 
     public static final Long SYSTEM_CODE =1L;//系统与岗位的关系表中的特殊处理系统Code 1
 
+    public static final String ID = "id";
+
+    public static final String DESC = "desc";
 
 }

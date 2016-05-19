@@ -33,4 +33,13 @@ public interface IEXDeparmentService {
      * @param areaCode
      */
     void updateDepartmentInfoByAreaCode(String areaCode,double wechatPrice,double webPrice);
+
+    /**
+     * 根据部门ID修改下级代理商的商品售价
+     *
+     * @param departmentCode
+     * @param productId
+     * @param salePrice
+     */
+    void updateDepartmentPrice(long departmentCode,long productId,double salePrice);
 }
