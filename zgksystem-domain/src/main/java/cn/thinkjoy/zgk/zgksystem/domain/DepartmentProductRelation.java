@@ -23,6 +23,7 @@ public class DepartmentProductRelation extends CreateBaseDomain{
     private Long departmentCode;
     private Double salePrice;
     private Double pickupPrice;
+    private Integer productType;
 
 	public DepartmentProductRelation(){
 	}
@@ -62,7 +63,15 @@ public class DepartmentProductRelation extends CreateBaseDomain{
         return this.pickupPrice;
     }
 
-	public String toString() {
+    public Integer getProductType() {
+        return productType;
+    }
+
+    public void setProductType(Integer productType) {
+        this.productType = productType;
+    }
+
+    public String toString() {
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
 			.append("Id",getId())
 			.append("Creator",getCreator())

@@ -2,6 +2,7 @@ package cn.thinkjoy.zgk.zgksystem;
 
 import cn.thinkjoy.zgk.zgksystem.common.TreeBean;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
+import cn.thinkjoy.zgk.zgksystem.domain.DepartmentProductRelation;
 
 import java.util.List;
 
@@ -43,4 +44,19 @@ public interface DeparmentApiService {
      */
     Department quertDepartmentInfoByCode(long departmentCode);
 
+    /**
+     * 根据部门编号查询部门代理产品的种类及价格
+     *
+     * @param departmentCode
+     * @return
+     */
+    List<DepartmentProductRelation> queryProductPriceByCode(long departmentCode);
+
+    /**
+     * 根据区域ID查询不同产品的价格信息
+     *
+     * @param areaId
+     * @return
+     */
+    List<DepartmentProductRelation> queryProductPriceByAreaId(String areaId);
 }

@@ -5,7 +5,7 @@ package cn.thinkjoy.zgk.zgksystem.edomain;
  *
  * 产品枚举
  */
-public enum ProductType {
+public enum ProductTypeEnum {
 
 
     JBDK(1,"金榜登科"),
@@ -20,7 +20,7 @@ public enum ProductType {
 
     private final String name;
 
-    ProductType(int value,String name){
+    ProductTypeEnum(int value, String name){
         this.value = value;
         this.name = name;
     }

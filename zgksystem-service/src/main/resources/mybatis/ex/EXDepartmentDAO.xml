@@ -84,5 +84,20 @@
         AND productId = #{productId}
     </update>
 
+    <!-- 根据部门编号查询部门代理产品的种类及价格 -->
+    <select id="queryProductPriceByCode" parameterType="long" resultType="DepartmentProductRelation">
+        SELECT
+            t0.pickupPrice,
+            t0.salePrice,
+            t0.productName,
+            t1.type AS productType
+        FROM
+            zgk_department_product_relation t0,
+            zgk_sale_product t1
+        WHERE
+            t0.productId = t1.id
+        AND t0.departmentCode = #{departmentCode}
+    </select>
+
 </mapper>
 
