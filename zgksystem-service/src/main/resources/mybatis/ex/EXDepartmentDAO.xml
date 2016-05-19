@@ -97,6 +97,7 @@
         WHERE
             t0.productId = t1.id
         AND t0.departmentCode = #{departmentCode}
+        and t1.type &lt; 3
     </select>
 
 </mapper>

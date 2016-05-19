@@ -458,7 +458,7 @@ public class DepartmentController {
 
         for(DepartmentProductRelation product : products){
             ModelUtil.initBuild(product);
-            product.setDepartmentCode(departmentPojo.getDepartmentCode());
+            product.setDepartmentCode(departmentCode);
 
             if(!isSuperManage){
                 // 若不是创建省代,则需要关联查出上级代理商对各产品的售价(一省一价原则)

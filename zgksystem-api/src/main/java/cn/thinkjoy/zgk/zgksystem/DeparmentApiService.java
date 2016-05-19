@@ -42,7 +42,7 @@ public interface DeparmentApiService {
      * @param departmentCode
      * @return
      */
-    Department quertDepartmentInfoByCode(long departmentCode);
+    Department queryDepartmentInfoByCode(long departmentCode);
 
     /**
      * 根据部门编号查询部门代理产品的种类及价格
@@ -50,7 +50,7 @@ public interface DeparmentApiService {
      * @param departmentCode
      * @return
      */
-    List<DepartmentProductRelation> queryProductPriceByCode(long departmentCode);
+    List<DepartmentProductRelation> queryProductPriceByDepartmentCode(long departmentCode);
 
     /**
      * 根据区域ID查询不同产品的价格信息

@@ -79,12 +79,12 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
     }
 
     @Override
-    public Department quertDepartmentInfoByCode(long departmentCode) {
+    public Department queryDepartmentInfoByCode(long departmentCode) {
         return (Department) iDepartmentService.findOne("departmentCode",departmentCode);
     }
 
     @Override
-    public List<DepartmentProductRelation> queryProductPriceByCode(long departmentCode) {
+    public List<DepartmentProductRelation> queryProductPriceByDepartmentCode(long departmentCode) {
         return exDepartmentDAO.queryProductPriceByCode(departmentCode);
     }
 
