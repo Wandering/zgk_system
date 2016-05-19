@@ -34,7 +34,6 @@ define(function(require, exports, module) {
 			this.dataTable = $('#' + options.tableId).dataTable({
 				"searching": false,
 				"ordering": false,
-				"targets": 0,
 				"language": {
 					"sLengthMenu": "每页显示 _MENU_ 条记录",
 					"sZeroRecords": "抱歉， 没有找到相关数据",
@@ -50,6 +49,7 @@ define(function(require, exports, module) {
 						"sLast": "尾页"
 					}
 				},
+
 				"columns": options.columns,
 				"columnDefs": options.columnDefs,
 				"sZeroRecords": "没有检索到数据",
@@ -62,8 +62,7 @@ define(function(require, exports, module) {
 					$("#content").mCustomScrollbar({
 						theme: "minimal"
 					});
-				},
-				"order": [[1, 'asc']]
+				}
 			}).removeClass('display').addClass('table table-datatable table-custom');
 			this.eventHandle();
 		},

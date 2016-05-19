@@ -12,6 +12,9 @@ define(function (require, exports, module) {
         if (roleType == '1') {
             var col = [
                 {
+                    data: 'index',
+                    title: '序列'
+                },{
                     data: 'departmentName',
                     title: '名称'
                 }, {
@@ -39,7 +42,19 @@ define(function (require, exports, module) {
             ];
             var columnDefs = [
                 {
-                    "aTargets": [1],
+                    "sClass": "center",
+                    "aTargets": [0],
+                    "render": function (data, type, row) {
+                        console.log(data);
+                        console.log(row);
+                    }
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [1]
+                },
+                {
+                    "aTargets": [2],
                     "render": function (data, type, row) {
                         var dataTxt = ['管理员', '省级代理', '市级代理', '区县级代理'];
                         return dataTxt[data - 1];
@@ -55,6 +70,10 @@ define(function (require, exports, module) {
             var tableObj = Table.dataTable;
         } else {
             var col = [
+                {
+                    data: 'index',
+                    title: '序列'
+                },
                 {
                     data: 'departmentName',
                     title: '名称'
