@@ -14,6 +14,15 @@ define(function (require, exports, module) {
         }, 2000)
     }
 
+
+    function tip2(ele, str) {
+        ele.html(str);
+        ele.show(500);
+        setTimeout(function () {
+            ele.hide(500);
+        }, 2000)
+    }
+
     if (typeof String.prototype.trim !== 'function') {
         String.prototype.trim = function () {
             return this.replace(/(^\s*)|(\s*$)/g, '');
@@ -51,6 +60,7 @@ define(function (require, exports, module) {
     }
 
     function validateForm(callback) {
+        //============名称
         var name = $('#dep_name').val().trim();
         var reg = /^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{1,10}$/;
         if (!reg.test(name)) {
@@ -58,16 +68,21 @@ define(function (require, exports, module) {
             return;
         }
         checkLoginNameIsExist(name);
+        //============电话
         var telephone = $('#dep_telephone').val().trim();
         if (!Tool.isMobile(telephone) && !Tool.isTelephone(telephone)) {
             tip($('#dep_telephone').parent().parent(), '代理商电话输入格式错误');
             return;
         }
+
+        //============传真
         var fax = $('#dep_fax').val().trim();
         if (!Tool.isFax(fax)) {
             tip($('#dep_fax').parent().parent(), '代理商传真输入格式错误');
             return;
         }
+
+        //============负责人
         var leading = $('#dep_leading').val().trim();
         if (!leading) {
             tip($('#dep_leading').parent().parent(), '代理商负责人不能为空');
@@ -77,82 +92,230 @@ define(function (require, exports, module) {
         var provinces = $("#dep_provinces").find("option:selected").val();
         var city = $("#dep_city").find("option:selected").val();
         var county = $("#dep_county").find("option:selected").val();
-        var salePrice = $.trim($('#sale_Price').val());
-        var webPrice = $.trim($('#webPrice').val());
-        var wechatPrice = $.trim($('#wechatPrice').val());
-        if (!salePrice) {
-            tip($('#sale_Price').parent().parent(), '零售价格不能为空');
-            return;
-        }
-        if (salePrice.length > 6 || isNaN(salePrice)) {
-            tip($('#sale_Price').parent().parent(), '零售价格输入长度或格式错误');
-            return;
-        }
-        var goodsAddress = $('#goods_Address').val().trim();
-        if (!goodsAddress) {
-            tip($('#goods_Address').parent().parent(), '取货地址不能为空');
-            return;
-        }
+
+
+        // 金榜登科 进货价
+        var products1Purchases = $.trim($('#products1-purchases').val());
+        // 金榜登科 售价
+        var products1Price = $.trim($('#products1-price').val());
+
+
+        // 金榜提名 进货价
+        var products2Purchases = $.trim($('#products2-purchases').val());
+        // 金榜提名 售价
+        var products2Price = $.trim($('#products2-price').val());
+
+
+        // 状元及第 进货价
+        var products3Purchases = $.trim($('#products3-purchases').val());
+        // 状元及第 售价
+        var products3Price = $.trim($('#products3-price').val());
 
         var cookieJson = JSON.parse($.cookie('userInfo'));
         var roleType = parseInt(cookieJson.roleType);
         console.log(roleType)
 
-        if(roleType=='1'){
-            if (!webPrice) {
-                tip($('#webPrice').parent().parent(), 'web售价不能为空');
-                return;
-            }
-            if (webPrice.length > 6 || isNaN(webPrice)) {
-                tip($('#webPrice').parent().parent(), 'web售价输入长度或格式错误');
-                return;
-            }
-            if (!wechatPrice) {
-                tip($('#wechatPrice').parent().parent(), '微信售价不能为空');
-                return;
-            }
-            if (wechatPrice.length > 6 || isNaN(wechatPrice)) {
-                tip($('#wechatPrice').parent().parent(), '微信售价输入长度或格式错误');
-                return;
-            }
 
-            callback(
-                [
-                    name,    // 部门名称
-                    telephone, // 联系电话
-                    fax,  // 传真
-                    leading, //
-                    provinces, // 省份
-                    city,   // 市
-                    county, // 城市
-                    salePrice, // 拿货价
-                    goodsAddress, // 取货地址
-                    webPrice,  // web售价
-                    wechatPrice // 微信售价
-                ]);
-        }else{
-            callback(
-                [
-                    name,    // 部门名称
-                    telephone, // 联系电话
-                    fax,  // 传真
-                    leading, //
-                    provinces, // 省份
-                    city,   // 市
-                    county, // 城市
-                    salePrice, // 拿货价
-                    goodsAddress // 取货地址
-                    //webPrice,  // web售价
-                    //wechatPrice // 微信售价
-                ]);
+        switch (roleType) {
+            case 1:
+                //============省份
+                if(!provinces){
+                    tip($("#dep_provinces").parent().parent(), '请选择省份');
+                    return;
+                }
+                //============金榜登科
+                if (!products1Purchases) {
+                    tip2($('#form-error-price'), '金榜登科进货价不能为空');
+                    return;
+                }
+                if (products1Purchases.length > 6 || isNaN(products1Purchases)) {
+                    tip2($('#form-error-price'), '金榜登科进货价输入长度或格式错误');
+                    return;
+                }
+                if (!products1Price) {
+                    tip2($('#form-error-price'), '金榜登科售价不能为空');
+                    return;
+                }
+                if (products1Price.length > 6 || isNaN(products1Price)) {
+                    tip2($('#form-error-price'), '金榜登科售价输入长度或格式错误');
+                    return;
+                }
+
+                //============金榜提名
+                if (!products2Purchases) {
+                    tip2($('#form-error-price'), '金榜提名进货价不能为空');
+                    return;
+                }
+                if (products2Purchases.length > 6 || isNaN(products2Purchases)) {
+                    tip2($('#form-error-price'), '金榜提名进货价输入长度或格式错误');
+                    return;
+                }
+                if (!products2Price) {
+                    tip2($('#form-error-price'), '金榜提名售价不能为空');
+                    return;
+                }
+                if (products2Price.length > 6 || isNaN(products2Price)) {
+                    tip2($('#form-error-price'), '金榜提名售价输入长度或格式错误');
+                    return;
+                }
+
+                //============状元及第
+                if (!products3Purchases) {
+                    tip2($('#form-error-price'), '状元及第进货价不能为空');
+                    return;
+                }
+                if (products3Purchases.length > 6 || isNaN(products3Purchases)) {
+                    tip2($('#form-error-price'), '状元及第进货价输入长度或格式错误');
+                    return;
+                }
+                if (!products3Price) {
+                    tip2($('#form-error-price'), '状元及第售价不能为空');
+                    return;
+                }
+                if (products3Price.length > 6 || isNaN(products3Price)) {
+                    tip2($('#form-error-price'), '状元及第售价输入长度或格式错误');
+                    return;
+                }
+                //============取货地址
+                var goodsAddress = $('#goods_Address').val().trim();
+                if (!goodsAddress) {
+                    tip($('#goods_Address').parent().parent(), '取货地址不能为空');
+                    return;
+                }
+
+                callback(
+                    [
+                        name,    // 部门名称
+                        telephone, // 联系电话
+                        fax,  // 传真
+                        leading, // 部门负责人
+                        provinces, // 省份
+                        goodsAddress, // 取货地址
+                        products1Purchases,//金榜登科进货价
+                        products1Price,//金榜登科售价
+                        products2Purchases,//金榜提名进货价
+                        products2Price,//金榜提名售价
+                        products3Purchases,//状元及第进货价
+                        products3Price//状元及第售价
+                    ]);
+                break;
+            case 2:
+                //============省份
+                if(!city){
+                    tip($("#dep_provinces").parent().parent(), '请选择城市');
+                    return;
+                }
+                //============金榜登科
+                if (!products1Purchases) {
+                    tip2($('#form-error-price'), '金榜登科进货价不能为空');
+                    return;
+                }
+                if (products1Purchases.length > 6 || isNaN(products1Purchases)) {
+                    tip2($('#form-error-price'), '金榜登科进货价输入长度或格式错误');
+                    return;
+                }
+
+                //============金榜提名
+                if (!products2Purchases) {
+                    tip2($('#form-error-price'), '金榜提名进货价不能为空');
+                    return;
+                }
+                if (products2Purchases.length > 6 || isNaN(products2Purchases)) {
+                    tip2($('#form-error-price'), '金榜提名进货价输入长度或格式错误');
+                    return;
+                }
+
+                //============状元及第
+                if (!products3Purchases) {
+                    tip2($('#form-error-price'), '状元及第进货价不能为空');
+                    return;
+                }
+                if (products3Purchases.length > 6 || isNaN(products3Purchases)) {
+                    tip2($('#form-error-price'), '状元及第进货价输入长度或格式错误');
+                    return;
+                }
+                //============取货地址
+                var goodsAddress = $('#goods_Address').val().trim();
+                if (!goodsAddress) {
+                    tip($('#goods_Address').parent().parent(), '取货地址不能为空');
+                    return;
+                }
+
+                callback(
+                    [
+                        name,    // 部门名称
+                        telephone, // 联系电话
+                        fax,  // 传真
+                        leading, // 部门负责人
+                        city, // 城市
+                        goodsAddress, // 取货地址
+                        products1Purchases,//金榜登科进货价
+                        products2Purchases,//金榜提名进货价
+                        products3Purchases//状元及第进货价
+                    ]);
+                break;
+            case 3:
+                //============区县
+                if(!county){
+                    tip($("#dep_provinces").parent().parent(), '请选择区县');
+                    return;
+                }
+                //============金榜登科
+                if (!products1Purchases) {
+                    tip2($('#form-error-price'), '金榜登科进货价不能为空');
+                    return;
+                }
+                if (products1Purchases.length > 6 || isNaN(products1Purchases)) {
+                    tip2($('#form-error-price'), '金榜登科进货价输入长度或格式错误');
+                    return;
+                }
+
+                //============金榜提名
+                if (!products2Purchases) {
+                    tip2($('#form-error-price'), '金榜提名进货价不能为空');
+                    return;
+                }
+                if (products2Purchases.length > 6 || isNaN(products2Purchases)) {
+                    tip2($('#form-error-price'), '金榜提名进货价输入长度或格式错误');
+                    return;
+                }
+
+                //============状元及第
+                if (!products3Purchases) {
+                    tip2($('#form-error-price'), '状元及第进货价不能为空');
+                    return;
+                }
+                if (products3Purchases.length > 6 || isNaN(products3Purchases)) {
+                    tip2($('#form-error-price'), '状元及第进货价输入长度或格式错误');
+                    return;
+                }
+                //============取货地址
+                var goodsAddress = $('#goods_Address').val().trim();
+                if (!goodsAddress) {
+                    tip($('#goods_Address').parent().parent(), '取货地址不能为空');
+                    return;
+                }
+
+                callback(
+                    [
+                        name,    // 部门名称
+                        telephone, // 联系电话
+                        fax,  // 传真
+                        leading, // 部门负责人
+                        county, // 区县
+                        goodsAddress, // 取货地址
+                        products1Purchases,//金榜登科进货价
+                        products2Purchases,//金榜提名进货价
+                        products3Purchases//状元及第进货价
+                    ]);
+                break;
+            default:
         }
-
-
-
     }
 
     module.exports = {
         validate: function (callback) {
+            console.log(callback);
             validateForm(callback);
         }
     }

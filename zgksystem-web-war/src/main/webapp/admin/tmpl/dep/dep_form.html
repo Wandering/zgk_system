@@ -2,28 +2,28 @@
     <div class="control-group">
         <label class="control-label" for="dep_name">代理商名称:</label>
         <div class="controls">
-            <input class="form-control form-w200" type="text" id="dep_name" placeholder="请输入部门名称，1-10字" />
+            <input class="form-control form-w200" type="text" id="dep_name" placeholder="请输入部门名称，1-10字"/>
         </div>
         <p class="form-error"></p>
     </div>
     <div class="control-group">
         <label class="control-label" for="dep_telephone">代理商电话:</label>
         <div class="controls">
-            <input class="form-control form-w200" type="text" id="dep_telephone" placeholder="请输入部门电话" />
+            <input class="form-control form-w200" type="text" id="dep_telephone" placeholder="请输入手机号码"/>
         </div>
         <p class="form-error"></p>
     </div>
     <div class="control-group">
         <label class="control-label" for="dep_fax">代理商传真:</label>
         <div class="controls">
-            <input class="form-control form-w200" type="text" id="dep_fax" placeholder="请输入部门传真" />
+            <input class="form-control form-w200" type="text" id="dep_fax" placeholder="如:0298765432"/>
         </div>
         <p class="form-error"></p>
     </div>
     <div class="control-group">
         <label class="control-label" for="dep_leading">代理商负责人:</label>
         <div class="controls">
-            <input class="form-control form-w200" type="text" id="dep_leading" placeholder="请输入部门负责人" />
+            <input class="form-control form-w200" type="text" id="dep_leading" placeholder="请输入部门负责人"/>
         </div>
         <p class="form-error"></p>
     </div>
@@ -55,33 +55,116 @@
         <p class="form-error"></p>
     </div>
     <div id="model_error_msg" style="display: none"></div>
+    <!--<div class="control-group">-->
+    <!--<label class="control-label" for="dep_leading">拿货价:</label>-->
+    <!--<div class="controls">-->
+    <!--<input class="form-control form-w200" type="text" id="sale_Price" placeholder="请输入零售价格" />-->
+    <!--</div>-->
+    <!--<p class="form-error"></p>-->
+    <!--</div>-->
+    <!--<div class="control-group" id="web-control-group">-->
+    <!--<label class="control-label" for="dep_leading">web售价:</label>-->
+    <!--<div class="controls">-->
+    <!--<input class="form-control form-w200" type="text" id="webPrice" placeholder="请输入web售价" />-->
+    <!--</div>-->
+    <!--<p class="form-error"></p>-->
+    <!--</div>-->
+    <!--<div class="control-group"  id="wechat-control-group">-->
+    <!--<label class="control-label" for="dep_leading">微信售价:</label>-->
+    <!--<div class="controls">-->
+    <!--<input class="form-control form-w200" type="text" id="wechatPrice" placeholder="请输入微信售价" />-->
+    <!--</div>-->
+    <!--<p class="form-error"></p>-->
+    <!--</div>-->
+    <style>
+        .form-w60{
+            width:60px;
+        }
+        .price-list{
+            width:180px;
+            float: left;
+            border:1px solid #ccc;
+            margin:0 -1px 0 0;
+        }
+
+        .price-list .title{
+            text-align: center;
+        }
+        .form-horizontal .price-list .control-label{
+            width:70px;
+        }
+        .form-horizontal .price-list .controls{
+            margin-left: 83px;
+        }
+        .price-content{
+            margin:0 0 20px;
+            overflow: hidden;
+        }
+        .price-content .form-control{
+            padding:6px;
+        }
+        #form-error-price{
+            clear: both;
+        }
+    </style>
+    <div class="price-content" id="products-price">
+        <div class="price-list" id="products-price1">
+            <h4 class="title">金榜登科</h4>
+            <div class="control-group" id="products1-control">
+                <label class="control-label" for="products1-purchases">进货价:</label>
+                <div class="controls">
+                    <input class="form-control form-w60" type="text" id="products1-purchases" placeholder="进货价"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="products1-price">售价:</label>
+                <div class="controls">
+                    <input class="form-control form-w60" type="text" id="products1-price" placeholder="售价"/>
+                </div>
+            </div>
+        </div>
+        <div class="price-list" id="products-price2">
+            <h4 class="title">金榜提名</h4>
+            <div class="control-group"  id="products2-control">
+                <label class="control-label" for="products2-purchases">进货价:</label>
+                <div class="controls">
+                    <input class="form-control form-w60" type="text" id="products2-purchases" placeholder="进货价"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="products2-price">售价:</label>
+                <div class="controls">
+                    <input class="form-control form-w60" type="text" id="products2-price" placeholder="售价"/>
+                </div>
+            </div>
+        </div>
+        <div class="price-list" id="products-price3">
+            <h4 class="title">状元及第</h4>
+            <div class="control-group" id="products3-control">
+                <label class="control-label" for="products3-purchases">进货价:</label>
+                <div class="controls">
+                    <input class="form-control form-w60" type="text" id="products3-purchases" placeholder="进货价"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="products3-price">售价:</label>
+                <div class="controls">
+                    <input class="form-control form-w60" type="text" id="products3-price" placeholder="售价"/>
+                </div>
+
+            </div>
+        </div>
+        <div class="form-error" id="form-error-price"></div>
+    </div>
+
     <div class="control-group">
-        <label class="control-label" for="dep_leading">拿货价:</label>
+        <label class="control-label" for="goods_Address">取货地址:</label>
         <div class="controls">
-            <input class="form-control form-w200" type="text" id="sale_Price" placeholder="请输入零售价格" />
-        </div>
-        <p class="form-error"></p>
-    </div>
-    <div class="control-group" id="web-control-group">
-        <label class="control-label" for="dep_leading">web售价:</label>
-        <div class="controls">
-            <input class="form-control form-w200" type="text" id="webPrice" placeholder="请输入web售价" />
-        </div>
-        <p class="form-error"></p>
-    </div>
-    <div class="control-group"  id="wechat-control-group">
-        <label class="control-label" for="dep_leading">微信售价:</label>
-        <div class="controls">
-            <input class="form-control form-w200" type="text" id="wechatPrice" placeholder="请输入微信售价" />
-        </div>
-        <p class="form-error"></p>
-    </div>
-    <div class="control-group">
-        <label class="control-label" for="dep_leading">取货地址:</label>
-        <div class="controls">
-            <input class="form-control form-w200" type="text" id="goods_Address" placeholder="请输入取货地址" />
+            <input class="form-control form-w200" type="text" id="goods_Address" placeholder="请输入取货地址"/>
         </div>
         <p class="form-error"></p>
     </div>
 </div>
+
+
 
