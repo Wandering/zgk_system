@@ -49,6 +49,7 @@ define(function(require, exports, module) {
 						"sLast": "尾页"
 					}
 				},
+
 				"columns": options.columns,
 				"columnDefs": options.columnDefs,
 				"sZeroRecords": "没有检索到数据",

@@ -9,46 +9,104 @@ define(function (require, exports, module) {
         var roleType = cookieJson.roleType;
 
 
-
-        if(roleType=='1'){
-            var col = [{
-                data: 'id'
-            }, {
-                data: 'departmentName',
-                title: '代理商名称'
-            }, {
-                data: 'roleType',
-                title: '代理商类型'
-            }, {
-                data: 'wechatPrice',
-                title: '微信售价'
-            }, {
-                data: 'webPrice',
-                title: 'web售价'
-            }, {
-                data: 'salePrice',
-                title: '拿货价'
-            }, {
-                data: 'departmentPrincipal',
-                title: '代理商负责人'
-            }, {
-                data: 'departmentPhone',
-                title: '代理商电话'
-            }, {
-                data: 'goodsAddress',
-                title: '联系地址'
-            }
+        if (roleType == '1') {
+            var col = [
+                {
+                    data: 'id',
+                    title: '序列'
+                }, {
+                    data: 'departmentName',
+                    title: '名称'
+                }, {
+                    data: 'roleType',
+                    title: '类型'
+                }, {
+                    data: 'departmentPrincipal',
+                    title: '负责人'
+                }, {
+                    data: 'departmentPhone',
+                    title: '电话'
+                }, {
+                    data: 'goodsAddress',
+                    title: '联系地址'
+                }, {
+                    data: 'products',
+                    title: '种类',
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.products.length; i++) {
+                            listHtml += '<div>' + row.products[i].productName + '</div>';
+                        }
+                        return listHtml;
+                    }
+                }, {
+                    data: 'webPrice',
+                    title: '进货价',
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.products.length; i++) {
+                            listHtml += '<div>' + row.products[i].pickupPrice + '</div>';
+                        }
+                        return listHtml;
+                    }
+                }, {
+                    data: 'salePrice',
+                    title: '售价',
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.products.length; i++) {
+                            listHtml += '<div>' + row.products[i].salePrice + '</div>';
+                        }
+                        return listHtml;
+                    }
+                }
             ];
-            var columnDefs = [{
-                "bVisible": false,
-                "aTargets": [0]
-            },{
-                "aTargets": [2],
-                "render": function (data, type, row) {
-                    var  dataTxt = ['管理员','省级代理','市级代理','区县级代理'];
-                    return dataTxt[data-1];
+            var columnDefs = [
+                {
+                    "bVisible": false,
+                    "sClass": "center",
+                    "aTargets": [0],
+                    "render": function (data, type, row) {
+                        console.log(data);
+                        console.log(row);
+                    }
                 },
-            }];
+                {
+                    "sClass": "line50 center",
+                    "aTargets": [1]
+                },
+                {
+                    "aTargets": [2],
+                    "sClass": "line50 center",
+                    "render": function (data, type, row) {
+                        var dataTxt = ['管理员', '省级代理', '市级代理', '区县级代理'];
+                        return dataTxt[data - 1];
+                    }
+                },
+                {
+                    "sClass": "line50 center",
+                    "aTargets": [3]
+                },
+                {
+                    "sClass": "line50 center",
+                    "aTargets": [4]
+                },
+                {
+                    "sClass": "line50 center",
+                    "aTargets": [5]
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [6]
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [7]
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [8]
+                }];
             Table.initTable({
                 columns: col,
                 tableContentId: 'menu_table_content',
@@ -56,41 +114,91 @@ define(function (require, exports, module) {
                 columnDefs: columnDefs,
                 sAjaxSource: '/system/department/queryDepartment?parentCode=' + parentCode + '&token=' + token
             });
-
             var tableObj = Table.dataTable;
-        }else{
-            var col = [{
-                data: 'id'
-            }, {
-                data: 'departmentName',
-                title: '代理商名称'
-            }, {
-                data: 'roleType',
-                title: '代理商类型'
-            },{
-                data: 'salePrice',
-                title: '拿货价'
-            }, {
-                data: 'departmentPrincipal',
-                title: '代理商负责人'
-            }, {
-                data: 'departmentPhone',
-                title: '代理商电话'
-            }, {
-                data: 'goodsAddress',
-                title: '联系地址'
-            }
+        } else {
+            var col = [
+                {
+                    data: 'id',
+                    title: '序列'
+                }, {
+                    data: 'departmentName',
+                    title: '名称'
+                }, {
+                    data: 'roleType',
+                    title: '类型'
+                }, {
+                    data: 'departmentPrincipal',
+                    title: '负责人'
+                }, {
+                    data: 'departmentPhone',
+                    title: '电话'
+                }, {
+                    data: 'goodsAddress',
+                    title: '联系地址'
+                }, {
+                    data: 'products',
+                    title: '种类',
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.products.length; i++) {
+                            listHtml += '<div>' + row.products[i].productName + '</div>';
+                        }
+                        return listHtml;
+                    }
+                }, {
+                    data: 'webPrice',
+                    title: '进货价',
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.products.length; i++) {
+                            listHtml += '<div>' + row.products[i].pickupPrice + '</div>';
+                        }
+                        return listHtml;
+                    }
+                }
             ];
-            var columnDefs = [{
-                "bVisible": false,
-                "aTargets": [0]
-            },{
-                "aTargets": [2],
-                "render": function (data, type, row) {
-                    var  dataTxt = ['管理员','省级代理','市级代理','区县级代理'];
-                    return dataTxt[data-1];
+            var columnDefs = [
+                {
+                    "bVisible": false,
+                    "sClass": "center",
+                    "aTargets": [0],
+                    "render": function (data, type, row) {
+                        console.log(data);
+                        console.log(row);
+                    }
                 },
-            }];
+                {
+                    "sClass": "line50 center",
+                    "aTargets": [1]
+                },
+                {
+                    "sClass": "line50 center",
+                    "aTargets": [2],
+                    "render": function (data, type, row) {
+                        var dataTxt = ['管理员', '省级代理', '市级代理', '区县级代理'];
+                        return dataTxt[data - 1];
+                    }
+                },
+                {
+                    "sClass": "line50 center",
+                    "aTargets": [3]
+                },
+                {
+                    "sClass": "line50 center",
+                    "aTargets": [4]
+                },
+                {
+                    "sClass": "line50 center",
+                    "aTargets": [5]
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [6]
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [7]
+                }];
             Table.initTable({
                 columns: col,
                 tableContentId: 'menu_table_content',
@@ -98,11 +206,8 @@ define(function (require, exports, module) {
                 columnDefs: columnDefs,
                 sAjaxSource: '/system/department/queryDepartment?parentCode=' + parentCode + '&token=' + token
             });
-
             var tableObj = Table.dataTable;
         }
-
-
 
         var errorTip = function (msg) {
             $('#model_error_msg').html(msg);
@@ -114,16 +219,12 @@ define(function (require, exports, module) {
             }, 2000);
         };
 
-        var addOrUpdateDepartment = function (formArry, succCallback, id) {
+        var addDepartment = function (formArry, succCallback, id) {
             var departmentJson = {
                 departmentName: formArry[0] || '', // 部门名称
                 departmentPhone: formArry[1] || '', // 联系电话
                 departmentFax: formArry[2] || '',  // 传真
                 departmentPrincipal: formArry[3] || '', // 部门负责人
-                salePrice: formArry[7] || '',    // 拿货价
-                goodsAddress: formArry[8] || ''  // 取货地址
-                //webPrice: formArry[9] || '',  // web售价
-                //wechatPrice: formArry[10] || ''  // 微信售价
             };
 
             if (id) {
@@ -131,25 +232,205 @@ define(function (require, exports, module) {
             } else {
                 departmentJson.parentCode = parentCode;  // 添加节点
             }
+            departmentJson.goodsAddress = formArry[5] || '';
+
 
             switch (roleType) {
                 case 1:
-                    departmentJson.webPrice=formArry[9] || '';  // web售价
-                    departmentJson.wechatPrice=formArry[10] || '';  // 微信售价
-                    departmentJson.areaCode = formArry[4];
+                    departmentJson.areaCode = formArry[4] || '';
+                    var roleType1Arr = [
+                        {
+                            "salePrice": formArry[7] || '',
+                            "pickupPrice": formArry[6] || '',
+                            "productId": 1,
+                            "productName": "金榜登科"
+                        },
+                        {
+                            "salePrice": formArry[9] || '',
+                            "pickupPrice": formArry[8] || '',
+                            "productId": 2,
+                            "productName": "金榜提名"
+                        },
+                        {
+                            "salePrice": formArry[11] || '',
+                            "pickupPrice": formArry[10] || '',
+                            "productId": 3,
+                            "productName": "状元及第"
+                        }
+                    ];
+                    departmentJson.products = roleType1Arr;
                     break;
                 case 2:
-                    departmentJson.areaCode = formArry[5];
+                    departmentJson.areaCode = formArry[4];
+                    var roleType2Arr = [
+                        {
+                            "salePrice": "",
+                            "pickupPrice": formArry[6],
+                            "productId": 1,
+                            "productName": "金榜登科"
+                        },
+                        {
+                            "salePrice": "",
+                            "pickupPrice": formArry[7],
+                            "productId": 2,
+                            "productName": "金榜提名"
+                        },
+                        {
+                            "salePrice": "",
+                            "pickupPrice": formArry[8],
+                            "productId": 3,
+                            "productName": "状元及第"
+                        }
+                    ];
+                    departmentJson.products = roleType2Arr;
                     break;
                 case 3:
-                    departmentJson.areaCode = formArry[6];
+                    departmentJson.areaCode = formArry[4];
+                    var roleType3Arr = [
+                        {
+                            "salePrice": "",
+                            "pickupPrice": formArry[6],
+                            "productId": 1,
+                            "productName": "金榜登科"
+                        },
+                        {
+                            "salePrice": "",
+                            "pickupPrice": formArry[7],
+                            "productId": 2,
+                            "productName": "金榜提名"
+                        },
+                        {
+                            "salePrice": "",
+                            "pickupPrice": formArry[8],
+                            "productId": 3,
+                            "productName": "状元及第"
+                        }
+                    ];
+                    departmentJson.products = roleType3Arr;
                     break;
                 default:
             }
+            console.log(departmentJson)
 
             $.ajax({
                 type: 'post',
-                url: '/system/department/addOrEditDepartment?token=' + token,
+                url: '/system/department/addDepartment?token=' + token,
+                contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+                data: {
+                    departmentJson: JSON.stringify(departmentJson)
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+                    succCallback(data);
+                },
+
+                beforeSend: function (xhr) {
+                    $('.single-buttons').attr('disabled', 'disabled');
+                },
+                complete: function () {
+                    $('.single-buttons').removeAttr('disabled');
+                },
+                error: function (data) {
+
+                }
+            });
+        };
+
+        var updateDepartment = function (formArry, succCallback, id) {
+            var departmentJson = {
+                departmentName: formArry[0] || '', // 部门名称
+                departmentPhone: formArry[1] || '', // 联系电话
+                departmentFax: formArry[2] || '',  // 传真
+                departmentPrincipal: formArry[3] || '', // 部门负责人
+            };
+            if (id) {
+                departmentJson.id = id;    // 修改
+            } else {
+                departmentJson.parentCode = parentCode;  // 添加节点
+            }
+            departmentJson.goodsAddress = formArry[5] || '';
+
+
+            switch (roleType) {
+                case 1:
+                    departmentJson.areaCode = formArry[4] || '';
+                    var roleType1Arr = [
+                        {
+                            "salePrice": formArry[7] || '',
+                            "pickupPrice": formArry[6] || '',
+                            "productId": 1,
+                            "productName": "金榜登科"
+                        },
+                        {
+                            "salePrice": formArry[9] || '',
+                            "pickupPrice": formArry[8] || '',
+                            "productId": 2,
+                            "productName": "金榜提名"
+                        },
+                        {
+                            "salePrice": formArry[11] || '',
+                            "pickupPrice": formArry[10] || '',
+                            "productId": 3,
+                            "productName": "状元及第"
+                        }
+                    ];
+                    departmentJson.products = roleType1Arr;
+                    break;
+                case 2:
+                    departmentJson.areaCode = formArry[4];
+                    var roleType2Arr = [
+                        {
+                            "salePrice": "",
+                            "pickupPrice": formArry[6],
+                            "productId": 1,
+                            "productName": "金榜登科"
+                        },
+                        {
+                            "salePrice": "",
+                            "pickupPrice": formArry[7],
+                            "productId": 2,
+                            "productName": "金榜提名"
+                        },
+                        {
+                            "salePrice": "",
+                            "pickupPrice": formArry[8],
+                            "productId": 3,
+                            "productName": "状元及第"
+                        }
+                    ];
+                    departmentJson.products = roleType2Arr;
+                    break;
+                case 3:
+                    departmentJson.areaCode = formArry[4];
+                    var roleType3Arr = [
+                        {
+                            "salePrice": "",
+                            "pickupPrice": formArry[6],
+                            "productId": 1,
+                            "productName": "金榜登科"
+                        },
+                        {
+                            "salePrice": "",
+                            "pickupPrice": formArry[7],
+                            "productId": 2,
+                            "productName": "金榜提名"
+                        },
+                        {
+                            "salePrice": "",
+                            "pickupPrice": formArry[8],
+                            "productId": 3,
+                            "productName": "状元及第"
+                        }
+                    ];
+                    departmentJson.products = roleType3Arr;
+                    break;
+                default:
+            }
+            console.log(departmentJson)
+            $.ajax({
+                type: 'post',
+                url: '/system/department/updateDepartment?token=' + token,
                 contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
                 data: {
                     departmentJson: JSON.stringify(departmentJson)
@@ -210,9 +491,9 @@ define(function (require, exports, module) {
                                         });
                                         break;
                                     case 2:
-                                        curProvincesCookieId = curProvincesCookieId+"0000";
+                                        curProvincesCookieId = curProvincesCookieId + "0000";
                                         $('#dep_city_from').show();
-                                        $('#dep_provinces_from,#dep_county_from,#web-control-group,#wechat-control-group').hide();
+                                        $('#dep_provinces_from,#dep_county_from,#products1-control,#products2-control,#products3-control').hide();
                                         $.getJSON('/system/dataDictionary/findCityList?token=' + token + '&provinceId=' + curProvincesCookieId, function (res) {
                                             console.log(res)
                                             for (var i = 0; i < res.bizData.length; i++) {
@@ -221,9 +502,9 @@ define(function (require, exports, module) {
                                         });
                                         break;
                                     case 3:
-                                        curProvincesCookieId = curProvincesCookieId+"00";
+                                        curProvincesCookieId = curProvincesCookieId + "00";
                                         $('#dep_county_from').show();
-                                        $('#dep_provinces_from,#dep_city_from,#web-control-group,#wechat-control-group').hide();
+                                        $('#dep_provinces_from,#dep_city_from,#products1-control,#products2-control,#products3-control').hide();
                                         // 市
                                         $.getJSON('/system/dataDictionary/findCountyList?token=' + token + '&cityId=' + curProvincesCookieId, function (res) {
                                             console.log(res)
@@ -242,7 +523,7 @@ define(function (require, exports, module) {
                                 click: function () {
                                     var vali = require('./dep_form.js');
                                     vali.validate(function (formArry) {
-                                        addOrUpdateDepartment(formArry, function (ret) {
+                                        addDepartment(formArry, function (ret) {
                                             tableObj.fnDraw();
                                             //console.log(ret)
                                             if ('0000000' === ret.rtnCode) {
@@ -315,8 +596,6 @@ define(function (require, exports, module) {
                                         $('#dep_leading').val(data.bizData.departmentPrincipal);
                                         $('#sale_Price').val(data.bizData.salePrice);
                                         $('#goods_Address').val(data.bizData.goodsAddress);
-                                        $('#webPrice').val(data.bizData.webPrice);
-                                        $('#wechatPrice').val(data.bizData.wechatPrice);
 
                                         // 修改
                                         var roleType = parseInt(data.bizData.roleType);
@@ -326,7 +605,23 @@ define(function (require, exports, module) {
                                         console.log(updateProvincesId);
 
 
-                                        //console.log("roleType:"+roleType);
+
+                                        // 1:金榜登科  2:状元及第  3:金榜题名
+
+                                        for(var i=0;i<data.bizData.products.length;i++){
+                                            if(data.bizData.products[i].productId==1){
+                                                $('#products1-purchases').val(data.bizData.products[i].productId);
+                                                $('#products1-price').val(data.bizData.products[i].salePrice);
+                                            }
+                                            if(data.bizData.products[i].productId==2){
+                                                $('#products3-purchases').val(data.bizData.products[i].productId);
+                                                $('#products3-price').val(data.bizData.products[i].salePrice);
+                                            }
+                                            if(data.bizData.products[i].productId==3){
+                                                $('#products2-purchases').val(data.bizData.products[i].productId);
+                                                $('#products2-price').val(data.bizData.products[i].salePrice);
+                                            }
+                                        }
 
 
                                         switch (roleType) {
@@ -375,7 +670,7 @@ define(function (require, exports, module) {
                                         click: function () {
                                             var vali = require('./dep_form.js');
                                             vali.validate(function (formArry) {
-                                                addOrUpdateDepartment(formArry, function (ret) {
+                                                updateDepartment(formArry, function (ret) {
                                                     tableObj.fnDraw();
                                                     if ('0000000' === ret.rtnCode) {
                                                         var cookieJson = JSON.parse($.cookie('userInfo'));

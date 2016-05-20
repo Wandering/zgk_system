@@ -436,7 +436,7 @@ public class DepartmentController {
         addProductRelation(
                 departmentPojo,
                 roleType == UserRoleEnum.SUPER_MANAGE.getValue(),
-                userPojo.getDepartmentCode());
+                maxDepartmentCode);
         addPost(childDeparentment,userPojo.getAccountCode());
 
         return ObjectFactory.getSingle();
@@ -463,7 +463,7 @@ public class DepartmentController {
             if(!isSuperManage){
                 // 若不是创建省代,则需要关联查出上级代理商对各产品的售价(一省一价原则)
                 Map<String,Object> queryMap = Maps.newHashMap();
-                queryMap.put("departmentCode",departmentCode);
+                queryMap.put("departmentCode",departmentPojo.getParentCode());
                 queryMap.put("productId",product.getProductId());
                 DepartmentProductRelation productPrice = (DepartmentProductRelation) departmentProductRelationService.queryOne(queryMap);
                 if(productPrice != null){

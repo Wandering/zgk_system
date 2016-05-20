@@ -14,6 +14,17 @@ define(function(require, exports, module) {
 			this.addEvent(contentId);
 		},
 		tmpl: function(data) {
+
+			console.log(data)
+				if(data.length==2){
+					data[0].systemLogo = '../static/images/icon_manage.png';
+					data[1].systemLogo = '../static/images/icon_organization.png';
+				}else{
+					data[0].systemLogo = '../static/images/icon_organization.png';
+				}
+
+
+			console.log(data);
 			var htmlStr = [];
 			if (data.length <= 0) {
 				return '<h1 style="margin-top: 150px;color:#fff">请联系系统管理员分配平台管理权限！</h1>';
@@ -71,8 +82,10 @@ define(function(require, exports, module) {
 		});
 	};
 
+
 	$.get('/system/system/getSystemList?token=' + token, function(data) {
 		if ('0000000' === data.rtnCode) {
+			console.log(data)
 			SYS.init(data.bizData, 'content');
 		} else {
 			ajaxEerror(data);
