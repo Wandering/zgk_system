@@ -436,7 +436,7 @@ public class DepartmentController {
         addProductRelation(
                 departmentPojo,
                 roleType == UserRoleEnum.SUPER_MANAGE.getValue(),
-                userPojo.getDepartmentCode());
+                maxDepartmentCode);
         addPost(childDeparentment,userPojo.getAccountCode());
 
         return ObjectFactory.getSingle();

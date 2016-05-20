@@ -75,6 +75,7 @@ public class DepartmentServiceImpl extends AbstractPageService<IBaseDAO<Departme
 
             DepartmentPojo pojo = new DepartmentPojo();
             BeanUtils.copyProperties(department,pojo);
+            pojo.setId(Long.valueOf(department.getId().toString()));
 
             List<DepartmentProductRelation> products = departmentProductRelationDAO.findList(
                     "departmentCode",
