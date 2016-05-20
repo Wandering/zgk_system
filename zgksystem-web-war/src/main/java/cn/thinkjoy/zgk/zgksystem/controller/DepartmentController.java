@@ -98,14 +98,21 @@ public class DepartmentController {
     @RequestMapping(value = "checkDepartmentNameIsExist",method = RequestMethod.POST)
     public String checkDepartmentNameIsExist(HttpServletRequest request){
         String departmentName = request.getParameter("departmentName");
+        String departmentId = request.getParameter("departmentId");
         Map<String,Object> condition=new HashMap<>();
         condition.put("departmentName",departmentName);
         condition.put("status", 0);
         Department department = (Department)departmentService.queryOne(condition);
-        if (department!=null){
-            return "0";
+        // 新增
+        if(departmentId == null || "0".equals(departmentId)){
+            return department==null?"1":"0";
+        }else {
+            // 修改
+            if(department != null && !department.getId().toString().equals(departmentId)){
+                return "0";
+            }
+            return "1";
         }
-        return "1";
     }
 
     /**
