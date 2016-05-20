@@ -344,7 +344,6 @@ define(function (require, exports, module) {
                 departmentFax: formArry[2] || '',  // 传真
                 departmentPrincipal: formArry[3] || '', // 部门负责人
             };
-
             if (id) {
                 departmentJson.id = id;    // 修改
             } else {
@@ -597,8 +596,6 @@ define(function (require, exports, module) {
                                         $('#dep_leading').val(data.bizData.departmentPrincipal);
                                         $('#sale_Price').val(data.bizData.salePrice);
                                         $('#goods_Address').val(data.bizData.goodsAddress);
-                                        $('#webPrice').val(data.bizData.webPrice);
-                                        $('#wechatPrice').val(data.bizData.wechatPrice);
 
                                         // 修改
                                         var roleType = parseInt(data.bizData.roleType);
