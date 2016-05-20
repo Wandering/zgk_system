@@ -30,7 +30,6 @@ define(function (require, exports, module) {
     }
     //验证用户账号是否存在
     var token = $.cookie('bizData');
-
     function checkLoginNameIsExist(userName) {
         $.ajax({
             type: 'post',

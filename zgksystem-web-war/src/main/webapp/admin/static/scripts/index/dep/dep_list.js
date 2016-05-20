@@ -168,10 +168,11 @@ define(function (require, exports, module) {
                     }
                 },
                 {
-                    "sClass": "center",
+                    "sClass": "line50 center",
                     "aTargets": [1]
                 },
                 {
+                    "sClass": "line50 center",
                     "aTargets": [2],
                     "render": function (data, type, row) {
                         var dataTxt = ['管理员', '省级代理', '市级代理', '区县级代理'];
@@ -179,15 +180,15 @@ define(function (require, exports, module) {
                     }
                 },
                 {
-                    "sClass": "center",
+                    "sClass": "line50 center",
                     "aTargets": [3]
                 },
                 {
-                    "sClass": "center",
+                    "sClass": "line50 center",
                     "aTargets": [4]
                 },
                 {
-                    "sClass": "center",
+                    "sClass": "line50 center",
                     "aTargets": [5]
                 },
                 {
@@ -493,7 +494,7 @@ define(function (require, exports, module) {
                                     case 2:
                                         curProvincesCookieId = curProvincesCookieId + "0000";
                                         $('#dep_city_from').show();
-                                        $('#dep_provinces_from,#dep_county_from,#products1-control,#products2-control').hide();
+                                        $('#dep_provinces_from,#dep_county_from,#products1-control,#products2-control,#products3-control').hide();
                                         $.getJSON('/system/dataDictionary/findCityList?token=' + token + '&provinceId=' + curProvincesCookieId, function (res) {
                                             console.log(res)
                                             for (var i = 0; i < res.bizData.length; i++) {
@@ -504,7 +505,7 @@ define(function (require, exports, module) {
                                     case 3:
                                         curProvincesCookieId = curProvincesCookieId + "00";
                                         $('#dep_county_from').show();
-                                        $('#dep_provinces_from,#dep_city_from,#web-control-group,#wechat-control-group').hide();
+                                        $('#dep_provinces_from,#dep_city_from,#products1-control,#products2-control,#products3-control').hide();
                                         // 市
                                         $.getJSON('/system/dataDictionary/findCountyList?token=' + token + '&cityId=' + curProvincesCookieId, function (res) {
                                             console.log(res)
@@ -607,7 +608,23 @@ define(function (require, exports, module) {
                                         console.log(updateProvincesId);
 
 
-                                        //console.log("roleType:"+roleType);
+
+                                        // 1:金榜登科  2:状元及第  3:金榜题名
+
+                                        for(var i=0;i<data.bizData.products.length;i++){
+                                            if(data.bizData.products[i].productId==1){
+                                                $('#products1-purchases').val(data.bizData.products[i].productId);
+                                                $('#products1-price').val(data.bizData.products[i].salePrice);
+                                            }
+                                            if(data.bizData.products[i].productId==2){
+                                                $('#products3-purchases').val(data.bizData.products[i].productId);
+                                                $('#products3-price').val(data.bizData.products[i].salePrice);
+                                            }
+                                            if(data.bizData.products[i].productId==3){
+                                                $('#products2-purchases').val(data.bizData.products[i].productId);
+                                                $('#products2-price').val(data.bizData.products[i].salePrice);
+                                            }
+                                        }
 
 
                                         switch (roleType) {

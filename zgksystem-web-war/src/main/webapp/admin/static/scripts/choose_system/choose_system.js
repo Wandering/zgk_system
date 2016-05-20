@@ -15,8 +15,14 @@ define(function(require, exports, module) {
 		},
 		tmpl: function(data) {
 
-				data[0].systemLogo = '../static/images/icon_manage.png';
-				data[1].systemLogo = '../static/images/icon_organization.png';
+			console.log(data)
+				if(data.length==2){
+					data[0].systemLogo = '../static/images/icon_manage.png';
+					data[1].systemLogo = '../static/images/icon_organization.png';
+				}else{
+					data[0].systemLogo = '../static/images/icon_organization.png';
+				}
+
 
 			console.log(data);
 			var htmlStr = [];
