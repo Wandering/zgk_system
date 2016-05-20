@@ -227,11 +227,7 @@ define(function (require, exports, module) {
                 departmentPrincipal: formArry[3] || '', // 部门负责人
             };
 
-            if (id) {
-                departmentJson.id = id;    // 修改
-            } else {
-                departmentJson.parentCode = parentCode;  // 添加节点
-            }
+            departmentJson.parentCode = parentCode;  // 添加节点
             departmentJson.goodsAddress = formArry[5] || '';
 
 
@@ -248,13 +244,13 @@ define(function (require, exports, module) {
                         {
                             "salePrice": formArry[9] || '',
                             "pickupPrice": formArry[8] || '',
-                            "productId": 2,
+                            "productId": 3,
                             "productName": "金榜提名"
                         },
                         {
                             "salePrice": formArry[11] || '',
                             "pickupPrice": formArry[10] || '',
-                            "productId": 3,
+                            "productId": 2,
                             "productName": "状元及第"
                         }
                     ];
@@ -272,13 +268,13 @@ define(function (require, exports, module) {
                         {
                             "salePrice": "",
                             "pickupPrice": formArry[7],
-                            "productId": 2,
+                            "productId": 3,
                             "productName": "金榜提名"
                         },
                         {
                             "salePrice": "",
                             "pickupPrice": formArry[8],
-                            "productId": 3,
+                            "productId": 2,
                             "productName": "状元及第"
                         }
                     ];
@@ -296,13 +292,13 @@ define(function (require, exports, module) {
                         {
                             "salePrice": "",
                             "pickupPrice": formArry[7],
-                            "productId": 2,
+                            "productId": 3,
                             "productName": "金榜提名"
                         },
                         {
                             "salePrice": "",
                             "pickupPrice": formArry[8],
-                            "productId": 3,
+                            "productId": 2,
                             "productName": "状元及第"
                         }
                     ];
@@ -344,11 +340,7 @@ define(function (require, exports, module) {
                 departmentFax: formArry[2] || '',  // 传真
                 departmentPrincipal: formArry[3] || '', // 部门负责人
             };
-            if (id) {
-                departmentJson.id = id;    // 修改
-            } else {
-                departmentJson.parentCode = parentCode;  // 添加节点
-            }
+            departmentJson.id = id;
             departmentJson.goodsAddress = formArry[5] || '';
 
 
@@ -365,13 +357,13 @@ define(function (require, exports, module) {
                         {
                             "salePrice": formArry[9] || '',
                             "pickupPrice": formArry[8] || '',
-                            "productId": 2,
+                            "productId": 3,
                             "productName": "金榜提名"
                         },
                         {
                             "salePrice": formArry[11] || '',
                             "pickupPrice": formArry[10] || '',
-                            "productId": 3,
+                            "productId": 2,
                             "productName": "状元及第"
                         }
                     ];
@@ -389,13 +381,13 @@ define(function (require, exports, module) {
                         {
                             "salePrice": "",
                             "pickupPrice": formArry[7],
-                            "productId": 2,
+                            "productId": 3,
                             "productName": "金榜提名"
                         },
                         {
                             "salePrice": "",
                             "pickupPrice": formArry[8],
-                            "productId": 3,
+                            "productId": 2,
                             "productName": "状元及第"
                         }
                     ];
@@ -413,13 +405,13 @@ define(function (require, exports, module) {
                         {
                             "salePrice": "",
                             "pickupPrice": formArry[7],
-                            "productId": 2,
+                            "productId": 3,
                             "productName": "金榜提名"
                         },
                         {
                             "salePrice": "",
                             "pickupPrice": formArry[8],
-                            "productId": 3,
+                            "productId": 2,
                             "productName": "状元及第"
                         }
                     ];
@@ -451,7 +443,6 @@ define(function (require, exports, module) {
                 }
             });
         };
-
         var ButtonEvent = {
             add: function (elementId) {
                 $('#' + elementId).off('click');
@@ -590,6 +581,7 @@ define(function (require, exports, module) {
                                         $("#add_dep").dialog("destroy");
                                     },
                                     render: function () {
+                                        $('#dep_name').attr('departmentId',data.bizData.id);
                                         $('#dep_name').val(data.bizData.departmentName);
                                         $('#dep_telephone').val(data.bizData.departmentPhone);
                                         $('#dep_fax').val(data.bizData.departmentFax);
@@ -610,19 +602,18 @@ define(function (require, exports, module) {
 
                                         for(var i=0;i<data.bizData.products.length;i++){
                                             if(data.bizData.products[i].productId==1){
-                                                $('#products1-purchases').val(data.bizData.products[i].productId);
+                                                $('#products1-purchases').val(data.bizData.products[i].pickupPrice);
                                                 $('#products1-price').val(data.bizData.products[i].salePrice);
                                             }
                                             if(data.bizData.products[i].productId==2){
-                                                $('#products3-purchases').val(data.bizData.products[i].productId);
+                                                $('#products3-purchases').val(data.bizData.products[i].pickupPrice);
                                                 $('#products3-price').val(data.bizData.products[i].salePrice);
                                             }
                                             if(data.bizData.products[i].productId==3){
-                                                $('#products2-purchases').val(data.bizData.products[i].productId);
+                                                $('#products2-purchases').val(data.bizData.products[i].pickupPrice);
                                                 $('#products2-price').val(data.bizData.products[i].salePrice);
                                             }
                                         }
-
 
                                         switch (roleType) {
                                             case 2:
@@ -673,17 +664,17 @@ define(function (require, exports, module) {
                                                 updateDepartment(formArry, function (ret) {
                                                     tableObj.fnDraw();
                                                     if ('0000000' === ret.rtnCode) {
-                                                        var cookieJson = JSON.parse($.cookie('userInfo'));
-                                                        if ("-1" == cookieJson.departmentCode) {
-                                                            var node = {
-                                                                id: data.bizData.departmentCode,
-                                                                name: formArry[0]
-                                                            };
-                                                            treeCallback({
-                                                                type: 'update',
-                                                                obj: node
-                                                            });
-                                                        }
+                                                        //var cookieJson = JSON.parse($.cookie('userInfo'));
+                                                        //if ("-1" == cookieJson.departmentCode) {
+                                                        //    var node = {
+                                                        //        id: data.bizData.departmentCode,
+                                                        //        name: formArry[0]
+                                                        //    };
+                                                        //    treeCallback({
+                                                        //        type: 'update',
+                                                        //        obj: node
+                                                        //    });
+                                                        //}
                                                         $("#add_dep").dialog("destroy");
                                                     } else {
                                                         $("#add_dep").dialog("destroy");

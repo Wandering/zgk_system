@@ -30,13 +30,14 @@ define(function (require, exports, module) {
     }
     //验证用户账号是否存在
     var token = $.cookie('bizData');
-    function checkLoginNameIsExist(userName) {
+    function checkLoginNameIsExist(userName,id) {
         $.ajax({
             type: 'post',
             url: '/system/department/checkDepartmentNameIsExist?token=' + token,
             contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
             data: {
-                departmentName: userName
+                departmentName: userName,
+                departmentId:id
             },
             dataType: 'json',
             success: function (data) {
@@ -57,7 +58,6 @@ define(function (require, exports, module) {
             }
         });
     }
-
     function validateForm(callback) {
         //============名称
         var name = $('#dep_name').val().trim();
@@ -66,7 +66,13 @@ define(function (require, exports, module) {
             tip($('#dep_name').parent().parent(), '代理商名称输入格式错误');
             return;
         }
-        checkLoginNameIsExist(name);
+        var id = $('#dep_name').attr('departmentId');
+        if(!id){
+            checkLoginNameIsExist(name,"0");
+        }else{
+            checkLoginNameIsExist(name,id);
+        }
+
         //============电话
         var telephone = $('#dep_telephone').val().trim();
         if (!Tool.isMobile(telephone) && !Tool.isTelephone(telephone)) {
@@ -118,10 +124,10 @@ define(function (require, exports, module) {
         switch (roleType) {
             case 1:
                 //============省份
-                if(!provinces){
-                    tip($("#dep_provinces").parent().parent(), '请选择省份');
-                    return;
-                }
+                //if(!provinces){
+                //    tip($("#dep_provinces").parent().parent(), '请选择省份');
+                //    return;
+                //}
                 //============金榜登科
                 if (!products1Purchases) {
                     tip2($('#form-error-price'), '金榜登科进货价不能为空');
@@ -182,6 +188,7 @@ define(function (require, exports, module) {
                     return;
                 }
 
+
                 callback(
                     [
                         name,    // 部门名称
@@ -200,10 +207,10 @@ define(function (require, exports, module) {
                 break;
             case 2:
                 //============省份
-                if(!city){
-                    tip($("#dep_provinces").parent().parent(), '请选择城市');
-                    return;
-                }
+                //if(!city){
+                //    tip($("#dep_provinces").parent().parent(), '请选择城市');
+                //    return;
+                //}
                 //============金榜登科
                 if (!products1Purchases) {
                     tip2($('#form-error-price'), '金榜登科进货价不能为空');
@@ -255,10 +262,10 @@ define(function (require, exports, module) {
                 break;
             case 3:
                 //============区县
-                if(!county){
-                    tip($("#dep_provinces").parent().parent(), '请选择区县');
-                    return;
-                }
+                //if(!county){
+                //    tip($("#dep_provinces").parent().parent(), '请选择区县');
+                //    return;
+                //}
                 //============金榜登科
                 if (!products1Purchases) {
                     tip2($('#form-error-price'), '金榜登科进货价不能为空');
