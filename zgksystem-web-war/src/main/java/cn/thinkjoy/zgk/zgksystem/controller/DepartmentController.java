@@ -157,9 +157,9 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping(value = "getDepartment",method = RequestMethod.GET)
-    public Department getDepartment(HttpServletRequest request){
+    public DepartmentPojo getDepartment(HttpServletRequest request){
         String departmentId = request.getParameter("id");
-        return departmentService.getDepartment(departmentId);
+        return departmentService.getDepartmentById(departmentId);
     }
 
     /**

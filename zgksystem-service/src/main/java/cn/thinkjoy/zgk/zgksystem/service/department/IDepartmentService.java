@@ -36,6 +36,14 @@ public interface IDepartmentService<D extends IBaseDAO<T>, T extends BaseDomain>
     Department getDepartment(String departmentId);
 
     /**
+     * 根据部门ID查询代理商信息
+     *
+     * @param departmentId
+     * @return
+     */
+    DepartmentPojo getDepartmentById(String departmentId);
+
+    /**
      * 获取部门Code和部门名称树形结构
      * @param parentCode
      * @return
