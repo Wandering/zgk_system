@@ -105,6 +105,29 @@ public class DepartmentServiceImpl extends AbstractPageService<IBaseDAO<Departme
         return department;
     }
 
+    @Override
+    public DepartmentPojo getDepartmentById(String departmentId){
+        if(StringUtils.isBlank(departmentId)){
+            throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(),ERRORCODE.PARAM_ISNULL.getMessage());
+        }
+        Map<String,Object> dataMap = new HashMap<>();
+        dataMap.put("id",Long.parseLong(departmentId));
+        dataMap.put("status", Constants.NORMAL_STATUS);//获取正常
+        Department department = queryOne(dataMap);
+
+        DepartmentPojo pojo = new DepartmentPojo();
+        BeanUtils.copyProperties(department,pojo);
+
+        List<DepartmentProductRelation> products = departmentProductRelationDAO.findList(
+                "departmentCode",
+                department.getDepartmentCode(),
+                Constants.ID,
+                Constants.DESC);
+        pojo.setProducts(products);
+
+        return pojo;
+    }
+
     public TreePojo queryTreeDepartment(Long parentCode){
         if(parentCode==null || parentCode==0){
             parentCode=-1L;
