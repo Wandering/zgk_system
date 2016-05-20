@@ -527,16 +527,16 @@ public class DepartmentController {
 
         // 循环修改商品价格
         for(DepartmentProductRelation product : products){
-            Map<String, Object> updateMap = Maps.newHashMap();
-            updateMap.put("productId", product.getProductId());
-            updateMap.put("departmentCode", tempDepart.getDepartmentCode());
             Map<String, Object> condition = Maps.newHashMap();
+            condition.put("productId", product.getProductId());
+            condition.put("departmentCode", tempDepart.getDepartmentCode());
+            Map<String, Object> updateMap = Maps.newHashMap();
             // 拿货价
-            condition.put("pickupPrice", product.getSalePrice());
+            updateMap.put("pickupPrice", product.getPickupPrice());
             // 售价(只有超级管理员可以改省级代理商的售价)
             if(tempDepart.getRoleType() == UserRoleEnum.PROVICE_AGENT.getValue() &&
                     product.getSalePrice() != null){
-                condition.put("salePrice",product.getSalePrice());
+                updateMap.put("salePrice",product.getSalePrice());
                 // 级联修改省级代理商下边的分销商售价
                 // TODO 修改逻辑后期需迁移至service中,需要添加事物
                 iexDeparmentService.updateDepartmentPrice(
