@@ -500,14 +500,18 @@ public class DepartmentController {
         }
 
         // 修改代理商基本信息
+        Department tempDepart = (Department) departmentService.findOne(
+                "id",
+                departmentPojo.getId());
         Department department = new Department();
         BeanUtils.copyProperties(departmentPojo,department);
+        // 对区域做特殊处理
+        if(departmentPojo.getAreaCode() == null || "".equals(departmentPojo.getAreaCode())){
+            department.setAreaCode(tempDepart.getAreaCode());
+        }
         department.setLastModDate(System.currentTimeMillis());
         departmentService.update(department);
 
-        Department tempDepart = (Department) departmentService.findOne(
-                "id",
-                department.getId());
         // 判断名称是否修改
         if(!tempDepart.getDepartmentName().equals(department.getDepartmentName())){
             iexPostService.updatePostNameByDeparntmentId(
