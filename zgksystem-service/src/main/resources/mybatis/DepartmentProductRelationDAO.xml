@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.zgk.zgksystem.dao.IDepartmentProductRelationDAO">
+<!--
+insert
+update
+updateNull
+deleteById
+deleteByCondition
+deleteByProperty
+fetch
+findOne
+findList
+findAll
+queryPage
+like
+queryList
+queryOne
+count
+selectMaxId
+updateOrSave
+selectOne
+selectList
+-->
+    <sql id="Base_Column_List">
+        id,
+        creator,
+        createDate,
+        lastModDate,
+        lastModifier,
+        productId,
+        productName,
+        departmentCode,
+        salePrice,
+        pickupPrice
+    </sql>
+    <insert id="insert" parameterType="DepartmentProductRelation">
+        INSERT INTO zgk_department_product_relation (
+        creator,
+        createDate,
+        lastModDate,
+        lastModifier,
+        productId,
+        productName,
+        departmentCode,
+        salePrice,
+        pickupPrice
+        ) VALUES (
+        #{creator},
+        #{createDate},
+        #{lastModDate},
+        #{lastModifier},
+        #{productId},
+        #{productName},
+        #{departmentCode},
+        #{salePrice},
+        #{pickupPrice}
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+        SELECT LAST_INSERT_ID() AS ID
+        </selectKey>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="DepartmentProductRelation">
+        UPDATE zgk_department_product_relation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="creator!=null">
+                creator = #{creator},
+            </if>
+            <if test="createDate!=null">
+                createDate = #{createDate},
+            </if>
+            <if test="lastModDate!=null">
+                lastModDate = #{lastModDate},
+            </if>
+            <if test="lastModifier!=null">
+                lastModifier = #{lastModifier},
+            </if>
+            <if test="productId!=null">
+                productId = #{productId},
+            </if>
+            <if test="productName!=null">
+                productName = #{productName},
+            </if>
+            <if test="departmentCode!=null">
+                departmentCode = #{departmentCode},
+            </if>
+            <if test="salePrice!=null">
+                salePrice = #{salePrice},
+            </if>
+            <if test="pickupPrice!=null">
+                pickupPrice = #{pickupPrice},
+            </if>
+        </trim>
+        WHERE
+        id = #{id}
+    </update>
+
+    <update id="updateMap">
+        UPDATE zgk_department_product_relation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="map.creator!=null">
+                creator = #{map.creator},
+            </if>
+            <if test="map.createDate!=null">
+                createDate = #{map.createDate},
+            </if>
+            <if test="map.lastModDate!=null">
+                lastModDate = #{map.lastModDate},
+            </if>
+            <if test="map.lastModifier!=null">
+                lastModifier = #{map.lastModifier},
+            </if>
+            <if test="map.productId!=null">
+                productId = #{map.productId},
+            </if>
+            <if test="map.productName!=null">
+                productName = #{map.productName},
+            </if>
+            <if test="map.departmentCode!=null">
+                departmentCode = #{map.departmentCode},
+            </if>
+            <if test="map.salePrice!=null">
+                salePrice = #{map.salePrice},
+            </if>
+            <if test="map.pickupPrice!=null">
+                pickupPrice = #{map.pickupPrice},
+            </if>
+        </trim>
+        WHERE
+        id = #{map.id}
+    </update>
+
+    <update id="updateByCondition">
+        UPDATE zgk_department_product_relation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="update.creator!=null">
+                creator = #{update.creator},
+            </if>
+            <if test="update.createDate!=null">
+                createDate = #{update.createDate},
+            </if>
+            <if test="update.lastModDate!=null">
+                lastModDate = #{update.lastModDate},
+            </if>
+            <if test="update.lastModifier!=null">
+                lastModifier = #{update.lastModifier},
+            </if>
+            <if test="update.productId!=null">
+                productId = #{update.productId},
+            </if>
+            <if test="update.productName!=null">
+                productName = #{update.productName},
+            </if>
+            <if test="update.departmentCode!=null">
+                departmentCode = #{update.departmentCode},
+            </if>
+            <if test="update.salePrice!=null">
+                salePrice = #{update.salePrice},
+            </if>
+            <if test="update.pickupPrice!=null">
+                pickupPrice = #{update.pickupPrice},
+            </if>
+        </trim>
+
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.creator!=null">
+                AND creator = #{condition.creator}
+            </if>
+            <if test="condition.createDate!=null">
+                AND createDate = #{condition.createDate}
+            </if>
+            <if test="condition.lastModDate!=null">
+                AND lastModDate = #{condition.lastModDate}
+            </if>
+            <if test="condition.lastModifier!=null">
+                AND lastModifier = #{condition.lastModifier}
+            </if>
+            <if test="condition.productId!=null">
+                AND productId = #{condition.productId}
+            </if>
+            <if test="condition.productName!=null">
+                AND productName = #{condition.productName}
+            </if>
+            <if test="condition.departmentCode!=null">
+                AND departmentCode = #{condition.departmentCode}
+            </if>
+            <if test="condition.salePrice!=null">
+                AND salePrice = #{condition.salePrice}
+            </if>
+            <if test="condition.pickupPrice!=null">
+                AND pickupPrice = #{condition.pickupPrice}
+            </if>
+        </trim>
+    </update>
+
+    <insert id="insertMap" >
+        INSERT INTO zgk_department_product_relation (
+                creator,
+                createDate,
+                lastModDate,
+                lastModifier,
+                productId,
+                productName,
+                departmentCode,
+                salePrice,
+                pickupPrice
+        ) VALUES (
+                    #{map.creator},
+                    #{map.createDate},
+                    #{map.lastModDate},
+                    #{map.lastModifier},
+                    #{map.productId},
+                    #{map.productName},
+                    #{map.departmentCode},
+                    #{map.salePrice},
+                    #{map.pickupPrice}
+        )
+    </insert>
+
+
+    <update id="updateNull" parameterType="DepartmentProductRelation">
+        UPDATE zgk_department_product_relation
+        <trim prefix="SET" suffixOverrides=",">
+            creator = #{creator},
+            createDate = #{createDate},
+            lastModDate = #{lastModDate},
+            lastModifier = #{lastModifier},
+            productId = #{productId},
+            productName = #{productName},
+            departmentCode = #{departmentCode},
+            salePrice = #{salePrice},
+            pickupPrice = #{pickupPrice},
+        </trim>
+        WHERE
+        id = #{id} 
+    </update>
+
+    <!-- 按Id删除 -->
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM zgk_department_product_relation
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+    </delete>
+
+
+    <delete id="deleteByCondition" parameterType="java.util.Map">
+        DELETE FROM zgk_department_product_relation
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id!=null">
+                AND id = #{id}
+            </if>
+            <if test="creator!=null">
+                AND creator = #{creator}
+            </if>
+            <if test="createDate!=null">
+                AND createDate = #{createDate}
+            </if>
+            <if test="lastModDate!=null">
+                AND lastModDate = #{lastModDate}
+            </if>
+            <if test="lastModifier!=null">
+                AND lastModifier = #{lastModifier}
+            </if>
+            <if test="productId!=null">
+                AND productId = #{productId}
+            </if>
+            <if test="productName!=null">
+                AND productName = #{productName}
+            </if>
+            <if test="departmentCode!=null">
+                AND departmentCode = #{departmentCode}
+            </if>
+            <if test="salePrice!=null">
+                AND salePrice = #{salePrice}
+            </if>
+            <if test="pickupPrice!=null">
+                AND pickupPrice = #{pickupPrice}
+            </if>
+        </trim>
+    </delete>
+
+    <delete id="deleteByProperty" parameterType="java.util.Map">
+        DELETE FROM zgk_department_product_relation WHERE
+        ${property} = #{value}
+    </delete>
+
+    <select id="fetch" parameterType="java.lang.Long" resultType="DepartmentProductRelation">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_department_product_relation
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findOne" parameterType="java.util.Map" resultType="DepartmentProductRelation">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_department_product_relation WHERE
+        ${property} = #{value}
+        LIMIT 0,1
+    </select>
+
+    <select id="findList" parameterType="java.util.Map" resultType="DepartmentProductRelation">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_department_product_relation WHERE
+        ${property} = #{value}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findAll" resultType="DepartmentProductRelation">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_department_product_relation
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryPage" resultType="DepartmentProductRelation">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_department_product_relation
+        <where>
+
+            <if test="condition.whereSql != null">
+                and id in (#{condition.whereSql})
+            </if>
+
+            <if test="condition.id!=null">
+                ${condition.groupOp}   id  ${condition.id.op}  #{condition.id.data}
+            </if>
+            <if test="condition.creator!=null">
+                ${condition.groupOp}   creator  ${condition.creator.op}  #{condition.creator.data}
+            </if>
+            <if test="condition.createDate!=null">
+                ${condition.groupOp}   createDate  ${condition.createDate.op}  #{condition.createDate.data}
+            </if>
+            <if test="condition.lastModDate!=null">
+                ${condition.groupOp}   lastModDate  ${condition.lastModDate.op}  #{condition.lastModDate.data}
+            </if>
+            <if test="condition.lastModifier!=null">
+                ${condition.groupOp}   lastModifier  ${condition.lastModifier.op}  #{condition.lastModifier.data}
+            </if>
+            <if test="condition.productId!=null">
+                ${condition.groupOp}   productId  ${condition.productId.op}  #{condition.productId.data}
+            </if>
+            <if test="condition.productName!=null">
+                ${condition.groupOp}   productName  ${condition.productName.op}  #{condition.productName.data}
+            </if>
+            <if test="condition.departmentCode!=null">
+                ${condition.groupOp}   departmentCode  ${condition.departmentCode.op}  #{condition.departmentCode.data}
+            </if>
+            <if test="condition.salePrice!=null">
+                ${condition.groupOp}   salePrice  ${condition.salePrice.op}  #{condition.salePrice.data}
+            </if>
+            <if test="condition.pickupPrice!=null">
+                ${condition.groupOp}   pickupPrice  ${condition.pickupPrice.op}  #{condition.pickupPrice.data}
+            </if>
+
+
+    </where>
+
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="like" parameterType="java.util.Map" resultType="DepartmentProductRelation">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_department_product_relation
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id!=null">
+                AND id like CONCAT('%', #{id} , '%')
+            </if>
+            <if test="creator!=null">
+                AND creator like CONCAT('%', #{creator} , '%')
+            </if>
+            <if test="createDate!=null">
+                AND createDate like CONCAT('%', #{createDate} , '%')
+            </if>
+            <if test="lastModDate!=null">
+                AND lastModDate like CONCAT('%', #{lastModDate} , '%')
+            </if>
+            <if test="lastModifier!=null">
+                AND lastModifier like CONCAT('%', #{lastModifier} , '%')
+            </if>
+            <if test="productId!=null">
+                AND productId like CONCAT('%', #{productId} , '%')
+            </if>
+            <if test="productName!=null">
+                AND productName like CONCAT('%', #{productName} , '%')
+            </if>
+            <if test="departmentCode!=null">
+                AND departmentCode like CONCAT('%', #{departmentCode} , '%')
+            </if>
+            <if test="salePrice!=null">
+                AND salePrice like CONCAT('%', #{salePrice} , '%')
+            </if>
+            <if test="pickupPrice!=null">
+                AND pickupPrice like CONCAT('%', #{pickupPrice} , '%')
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+
+    <select id="queryList" parameterType="java.util.Map" resultType="DepartmentProductRelation">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_department_product_relation
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.creator!=null">
+                AND creator = #{condition.creator}
+            </if>
+            <if test="condition.createDate!=null">
+                AND createDate = #{condition.createDate}
+            </if>
+            <if test="condition.lastModDate!=null">
+                AND lastModDate = #{condition.lastModDate}
+            </if>
+            <if test="condition.lastModifier!=null">
+                AND lastModifier = #{condition.lastModifier}
+            </if>
+            <if test="condition.productId!=null">
+                AND productId = #{condition.productId}
+            </if>
+            <if test="condition.productName!=null">
+                AND productName = #{condition.productName}
+            </if>
+            <if test="condition.departmentCode!=null">
+                AND departmentCode = #{condition.departmentCode}
+            </if>
+            <if test="condition.salePrice!=null">
+                AND salePrice = #{condition.salePrice}
+            </if>
+            <if test="condition.pickupPrice!=null">
+                AND pickupPrice = #{condition.pickupPrice}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryOne" parameterType="java.util.Map" resultType="DepartmentProductRelation">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_department_product_relation
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.creator!=null">
+                AND creator = #{condition.creator}
+            </if>
+            <if test="condition.createDate!=null">
+                AND createDate = #{condition.createDate}
+            </if>
+            <if test="condition.lastModDate!=null">
+                AND lastModDate = #{condition.lastModDate}
+            </if>
+            <if test="condition.lastModifier!=null">
+                AND lastModifier = #{condition.lastModifier}
+            </if>
+            <if test="condition.productId!=null">
+                AND productId = #{condition.productId}
+            </if>
+            <if test="condition.productName!=null">
+                AND productName = #{condition.productName}
+            </if>
+            <if test="condition.departmentCode!=null">
+                AND departmentCode = #{condition.departmentCode}
+            </if>
+            <if test="condition.salePrice!=null">
+                AND salePrice = #{condition.salePrice}
+            </if>
+            <if test="condition.pickupPrice!=null">
+                AND pickupPrice = #{condition.pickupPrice}
+            </if>
+        </trim>
+        limit 0,1
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(id) FROM zgk_department_product_relation
+       <where>
+           <if test="id!=null">
+               ${groupOp} id ${id.op}  #{id.data}
+           </if>
+           <if test="creator!=null">
+               ${groupOp} creator ${creator.op}  #{creator.data}
+           </if>
+           <if test="createDate!=null">
+               ${groupOp} createDate ${createDate.op}  #{createDate.data}
+           </if>
+           <if test="lastModDate!=null">
+               ${groupOp} lastModDate ${lastModDate.op}  #{lastModDate.data}
+           </if>
+           <if test="lastModifier!=null">
+               ${groupOp} lastModifier ${lastModifier.op}  #{lastModifier.data}
+           </if>
+           <if test="productId!=null">
+               ${groupOp} productId ${productId.op}  #{productId.data}
+           </if>
+           <if test="productName!=null">
+               ${groupOp} productName ${productName.op}  #{productName.data}
+           </if>
+           <if test="departmentCode!=null">
+               ${groupOp} departmentCode ${departmentCode.op}  #{departmentCode.data}
+           </if>
+           <if test="salePrice!=null">
+               ${groupOp} salePrice ${salePrice.op}  #{salePrice.data}
+           </if>
+           <if test="pickupPrice!=null">
+               ${groupOp} pickupPrice ${pickupPrice.op}  #{pickupPrice.data}
+           </if>
+
+       </where>
+    <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+    </if>
+    </select>
+
+    <select id="selectMaxId" resultType="java.lang.Long">
+        SELECT
+        MAX(id)
+        FROM zgk_department_product_relation
+    </select>
+
+</mapper>
+

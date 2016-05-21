@@ -14,6 +14,7 @@ import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.common.TreeBean;
 import cn.thinkjoy.zgk.zgksystem.common.TreePojo;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
+import cn.thinkjoy.zgk.zgksystem.pojo.DepartmentPojo;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface IDepartmentService<D extends IBaseDAO<T>, T extends BaseDomain>
      * @param parentCode
      * @return
      */
-    Page<Department> queryDepartment(String currentPageNo,String pageSize,String parentCode);
+    Page<DepartmentPojo> queryDepartment(String currentPageNo, String pageSize, String parentCode);
 
 
     /**
@@ -33,6 +34,14 @@ public interface IDepartmentService<D extends IBaseDAO<T>, T extends BaseDomain>
      * @return
      */
     Department getDepartment(String departmentId);
+
+    /**
+     * 根据部门ID查询代理商信息
+     *
+     * @param departmentId
+     * @return
+     */
+    DepartmentPojo getDepartmentById(String departmentId);
 
     /**
      * 获取部门Code和部门名称树形结构

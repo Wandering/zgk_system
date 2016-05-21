@@ -1,6 +1,7 @@
 package cn.thinkjoy.zgk.zgksystem.dao.ex;
 
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
+import cn.thinkjoy.zgk.zgksystem.domain.DepartmentProductRelation;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -40,4 +41,23 @@ public interface IEXDepartmentDAO {
     void updateDepartmentInfoByAreaCode(@Param("areaCode") String areaCode,
                                         @Param("wechatPrice") double wechatPrice,
                                         @Param("webPrice") double webPrice);
+
+    /**
+     * 根据部门ID修改下级代理商的商品售价
+     *
+     * @param departmentCode
+     * @param productId
+     * @param salePrice
+     */
+    void updateDepartmentPrice(@Param("departmentCode") long departmentCode,
+                               @Param("productId") long productId,
+                               @Param("salePrice") double salePrice);
+
+    /**
+     * 根据部门编号查询部门代理产品的种类及价格
+     *
+     * @param departmentCode
+     * @return
+     */
+    List<DepartmentProductRelation> queryProductPriceByCode(@Param("departmentCode") long departmentCode);
 }

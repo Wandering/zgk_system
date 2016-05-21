@@ -15,11 +15,18 @@ import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.common.TreeBean;
 import cn.thinkjoy.zgk.zgksystem.common.TreePojo;
 import cn.thinkjoy.zgk.zgksystem.dao.IDepartmentDAO;
+import cn.thinkjoy.zgk.zgksystem.dao.IDepartmentProductRelationDAO;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
+import cn.thinkjoy.zgk.zgksystem.domain.DepartmentProductRelation;
+import cn.thinkjoy.zgk.zgksystem.pojo.DepartmentPojo;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
 import cn.thinkjoy.zgk.zgksystem.util.CodeFactoryUtil;
 import cn.thinkjoy.zgk.zgksystem.util.Constants;
+import cn.thinkjoy.zgk.zgksystem.util.ModelUtil;
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,23 +38,23 @@ import java.util.Map;
 
 @Service("DepartmentServiceImpl")
 public class DepartmentServiceImpl extends AbstractPageService<IBaseDAO<Department>, Department> implements IDepartmentService<IBaseDAO<Department>,Department> {
+
     @Autowired
     private IDepartmentDAO departmentDAO;
+
+    @Autowired
+    private IDepartmentProductRelationDAO departmentProductRelationDAO;
 
     @Override
     public IBaseDAO<Department> getDao() {
         return departmentDAO;
     }
 
+    public Page<DepartmentPojo> queryDepartment(String currentPageNo, String pageSize, String parentCode){
 
-
-    public Page<Department> queryDepartment(String currentPageNo,String pageSize,String parentCode){
-        if(StringUtils.isBlank(parentCode)){
-            throw  new BizException(ERRORCODE.PARAM_ISNULL.getCode(), ERRORCODE.PARAM_ISNULL.getMessage());
-        }
-        Map<String,Object> dataMap=new HashMap<>();
-        Map<String,Object> statusMap=new HashMap<String,Object>();
-        Map<String,Object> parentMap=new HashMap<String,Object>();
+        Map<String,Object> dataMap = Maps.newHashMap();
+        Map<String,Object> statusMap = Maps.newHashMap();
+        Map<String,Object> parentMap = Maps.newHashMap();
         parentMap.put("op"," = ");
         parentMap.put("data", parentCode);
         statusMap.put("op", " = ");
@@ -55,16 +62,34 @@ public class DepartmentServiceImpl extends AbstractPageService<IBaseDAO<Departme
         dataMap.put("groupOp", " AND ");
         dataMap.put("status", statusMap);
         dataMap.put("parentCode", parentMap);
-        int count=this.count(dataMap);
-        if(count>0){
-            List<Department> departmentList = this.queryPage(dataMap, ((Integer.valueOf(currentPageNo) - 1) * Integer.valueOf(pageSize)), Integer.valueOf(pageSize), CodeFactoryUtil.ORDER_BY_FIELD, SqlOrderEnum.DESC);
-            Page<Department> page=new Page<>();
-            page.setCount(count);
-            page.setList(departmentList);
-            return page;
-        }else{
-            throw new BizException(ERRORCODE.NO_MESSAGE.getCode(),ERRORCODE.NO_MESSAGE.getMessage());
+
+        List<Department> departmentList = this.queryPage(
+                dataMap,
+                ((Integer.valueOf(currentPageNo) - 1) * Integer.valueOf(pageSize)),
+                Integer.valueOf(pageSize),
+                CodeFactoryUtil.ORDER_BY_FIELD,
+                SqlOrderEnum.DESC);
+
+        List<DepartmentPojo> pojos = Lists.newArrayList();
+        for(Department department : departmentList){
+
+            DepartmentPojo pojo = new DepartmentPojo();
+            BeanUtils.copyProperties(department,pojo);
+            pojo.setId(Long.valueOf(department.getId().toString()));
+
+            List<DepartmentProductRelation> products = departmentProductRelationDAO.findList(
+                    "departmentCode",
+                    department.getDepartmentCode(),
+                    Constants.ID,
+                    Constants.DESC);
+            pojo.setProducts(products);
+            pojos.add(pojo);
         }
+        int count=this.count(dataMap);
+        Page<DepartmentPojo> page=new Page<>();
+        page.setCount(count);
+        page.setList(pojos);
+        return page;
     }
 
     public Department getDepartment(String departmentId){
@@ -79,6 +104,30 @@ public class DepartmentServiceImpl extends AbstractPageService<IBaseDAO<Departme
             throw new BizException(ERRORCODE.NO_MESSAGE.getCode(),ERRORCODE.NO_MESSAGE.getMessage());
         }
         return department;
+    }
+
+    @Override
+    public DepartmentPojo getDepartmentById(String departmentId){
+        if(StringUtils.isBlank(departmentId)){
+            throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(),ERRORCODE.PARAM_ISNULL.getMessage());
+        }
+        Map<String,Object> dataMap = new HashMap<>();
+        dataMap.put("id",Long.parseLong(departmentId));
+        dataMap.put("status", Constants.NORMAL_STATUS);//获取正常
+        Department department = queryOne(dataMap);
+
+        DepartmentPojo pojo = new DepartmentPojo();
+        BeanUtils.copyProperties(department,pojo);
+        pojo.setId(Long.valueOf(departmentId));
+
+        List<DepartmentProductRelation> products = departmentProductRelationDAO.findList(
+                "departmentCode",
+                department.getDepartmentCode(),
+                Constants.ID,
+                Constants.DESC);
+        pojo.setProducts(products);
+
+        return pojo;
     }
 
     public TreePojo queryTreeDepartment(Long parentCode){

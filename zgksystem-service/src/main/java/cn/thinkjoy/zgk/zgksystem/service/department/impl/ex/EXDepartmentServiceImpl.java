@@ -32,4 +32,9 @@ public class EXDepartmentServiceImpl implements IEXDeparmentService{
     public void updateDepartmentInfoByAreaCode(String areaCode,double wechatPrice,double webPrice) {
         exDepartmentDAO.updateDepartmentInfoByAreaCode(areaCode,wechatPrice,webPrice);
     }
+
+    @Override
+    public void updateDepartmentPrice(long departmentCode,long productId, double salePrice) {
+        exDepartmentDAO.updateDepartmentPrice(departmentCode,productId,salePrice);
+    }
 }
