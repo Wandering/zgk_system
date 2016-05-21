@@ -499,6 +499,16 @@ public class DepartmentController {
             ModelUtil.throwException(ERRORCODE.JSONCONVERT_ERROR);
         }
 
+        Department tempDepart = (Department) departmentService.findOne(
+                "id",
+                departmentPojo.getId());
+        // 判断名称是否修改
+        if(!tempDepart.getDepartmentName().equals(departmentPojo.getDepartmentName())){
+            iexPostService.updatePostNameByDeparntmentId(
+                    Long.valueOf(departmentPojo.getId()),
+                    departmentPojo.getDepartmentName());
+        }
+
         // 修改代理商基本信息
         Department department = new Department();
         BeanUtils.copyProperties(departmentPojo,department);
@@ -510,15 +520,6 @@ public class DepartmentController {
         department.setLastModDate(System.currentTimeMillis());
         departmentService.update(department);
 
-        Department tempDepart = (Department) departmentService.findOne(
-                "id",
-                department.getId());
-        // 判断名称是否修改
-        if(!tempDepart.getDepartmentName().equals(department.getDepartmentName())){
-            iexPostService.updatePostNameByDeparntmentId(
-                    Long.valueOf(department.getId().toString()),
-                    department.getDepartmentName());
-        }
 
         List<DepartmentProductRelation> products = departmentPojo.getProducts();
         if(products == null || products.size() == 0){
