@@ -21,6 +21,7 @@ import cn.thinkjoy.zgk.zgksystem.service.dataDictionary.IDataDictionaryService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentProductRelationService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IEXDeparmentService;
+import cn.thinkjoy.zgk.zgksystem.service.department.ISaleProductService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IEXPostDataauthorityService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IEXPostService;
 import cn.thinkjoy.zgk.zgksystem.service.post.IPostService;
@@ -91,6 +92,9 @@ public class DepartmentController {
 
     @Autowired
     private IDepartmentProductRelationService departmentProductRelationService;
+
+    @Autowired
+    private ISaleProductService saleProductService;
 
     private static Logger LOGGER = LoggerFactory.getLogger(DepartmentController.class);
 
@@ -510,16 +514,7 @@ public class DepartmentController {
         }
 
         // 修改代理商基本信息
-        Department department = new Department();
-        BeanUtils.copyProperties(departmentPojo,department);
-        department.setAreaCode(null);
-        department.setDepartmentCode(null);
-        department.setCompanyCode(null);
-        department.setParentCode(null);
-        department.setRoleType(null);
-        department.setLastModDate(System.currentTimeMillis());
-        departmentService.update(department);
-
+        updateDepartmentInfo(departmentPojo);
 
         List<DepartmentProductRelation> products = departmentPojo.getProducts();
         if(products == null || products.size() == 0){
@@ -527,29 +522,73 @@ public class DepartmentController {
         }
 
         // 循环修改商品价格
-        for(DepartmentProductRelation product : products){
-            Map<String, Object> condition = Maps.newHashMap();
-            condition.put("productId", product.getProductId());
-            condition.put("departmentCode", tempDepart.getDepartmentCode());
-            Map<String, Object> updateMap = Maps.newHashMap();
-            // 拿货价
-            updateMap.put("pickupPrice", product.getPickupPrice());
+        for(DepartmentProductRelation relation : products){
+
+            boolean result = addOrUpdateProductRelation(relation,tempDepart);
+            if(!result){
+                ModelUtil.throwException(ERRORCODE.UPDATE_ERROR);
+            }
+
             // 售价(只有超级管理员可以改省级代理商的售价)
             if(tempDepart.getRoleType() == UserRoleEnum.PROVICE_AGENT.getValue() &&
-                    product.getSalePrice() != null){
-                updateMap.put("salePrice",product.getSalePrice());
+                    relation.getSalePrice() != null){
                 // 级联修改省级代理商下边的分销商售价
                 // TODO 修改逻辑后期需迁移至service中,需要添加事物
                 iexDeparmentService.updateDepartmentPrice(
                         tempDepart.getDepartmentCode(),
-                        product.getProductId(),
-                        product.getSalePrice());
+                        relation.getProductId(),
+                        relation.getSalePrice());
             }
 
-            departmentProductRelationService.updateByCondition(updateMap, condition);
         }
 
         return ObjectFactory.getSingle();
+    }
+
+    /**
+     *  修改代理商基本信息
+     *
+     * @param pojo
+     */
+    private void updateDepartmentInfo(DepartmentPojo pojo){
+        Department department = new Department();
+        BeanUtils.copyProperties(pojo,department);
+        department.setAreaCode(null);
+        department.setDepartmentCode(null);
+        department.setCompanyCode(null);
+        department.setParentCode(null);
+        department.setRoleType(null);
+        department.setLastModDate(System.currentTimeMillis());
+        departmentService.update(department);
+    }
+
+    /**
+     * 新增 or 修改代理商产品的价格
+     *
+     * @param relation
+     * @param department
+     */
+    private boolean addOrUpdateProductRelation(DepartmentProductRelation relation,Department department){
+        Map<String, Object> queryMap = Maps.newHashMap();
+        queryMap.put("productId", relation.getProductId());
+        queryMap.put("departmentCode", department.getDepartmentCode());
+        DepartmentProductRelation tempRelation = (DepartmentProductRelation) departmentProductRelationService.queryOne(queryMap);
+        if(tempRelation == null){
+            tempRelation = new DepartmentProductRelation();
+            ModelUtil.initBuild(tempRelation);
+            tempRelation.setProductId(relation.getProductId());
+            tempRelation.setDepartmentCode(department.getDepartmentCode());
+            tempRelation.setSalePrice(relation.getSalePrice());
+            tempRelation.setPickupPrice(relation.getPickupPrice());
+            SaleProduct product = (SaleProduct) saleProductService.findOne("id",relation.getProductId());
+            tempRelation.setProductType(product.getType());
+            tempRelation.setProductName(product.getProductName());
+            return departmentProductRelationService.insert(tempRelation) > 0;
+        }else {
+            tempRelation.setSalePrice(relation.getSalePrice());
+            tempRelation.setPickupPrice(relation.getPickupPrice());
+            return departmentProductRelationService.update(tempRelation) >= 0;
+        }
     }
 
 }
