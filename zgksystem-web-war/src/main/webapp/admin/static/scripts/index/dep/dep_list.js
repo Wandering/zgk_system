@@ -7,8 +7,6 @@ define(function (require, exports, module) {
         var Table = require('../datatable.js');
         var cookieJson = JSON.parse($.cookie('userInfo'));
         var roleType = cookieJson.roleType;
-
-
         if (roleType == '1') {
             var col = [
                 {
