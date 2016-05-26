@@ -638,6 +638,7 @@ define(function (require, exports, module) {
                                                     $('#dep_city').find('option[value="' + updateProvincesId + '00"]').attr('selected', true);
                                                 });
                                                 break;
+
                                             case 4:
                                                 var curProvincesCookieId = updateProvincesId.substring(0, 4) + "00";
                                                 $('#dep_county_from').show();
