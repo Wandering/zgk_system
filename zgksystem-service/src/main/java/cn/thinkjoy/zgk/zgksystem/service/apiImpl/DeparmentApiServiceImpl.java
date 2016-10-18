@@ -126,6 +126,7 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
                 queryMap.put("departmentCode",department.getDepartmentCode());
                 relation = (DepartmentProductRelation) departmentProductRelationService.queryOne(queryMap);
             }
+            relationPojo = new DepartmentProductRelationPojo();
 
             if(department == null || relation == null){
                 relation = convert2DepartmentProductRelation(product);
