@@ -8,16 +8,19 @@ import cn.thinkjoy.zgk.zgksystem.domain.DepartmentProductRelation;
 import cn.thinkjoy.zgk.zgksystem.domain.SaleProduct;
 import cn.thinkjoy.zgk.zgksystem.edomain.ProductTypeEnum;
 import cn.thinkjoy.zgk.zgksystem.edomain.UserRoleEnum;
+import cn.thinkjoy.zgk.zgksystem.pojo.DepartmentProductRelationPojo;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentProductRelationService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IDepartmentService;
 import cn.thinkjoy.zgk.zgksystem.service.department.IEXDeparmentService;
 import cn.thinkjoy.zgk.zgksystem.service.department.ISaleProductService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -89,7 +92,7 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
     }
 
     @Override
-    public List<DepartmentProductRelation> queryProductPriceByAreaId(String areaId) {
+    public List<DepartmentProductRelationPojo> queryProductPriceByAreaId(String areaId) throws InvocationTargetException, IllegalAccessException {
         /**
          * 1.查询出所有产品
          * 2.判断用户所在区域是否有省级代理商
@@ -98,6 +101,8 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
          * 5.没有:默认价格
          * 6.有:返回代理商定价
          */
+
+
         List<SaleProduct> saleProducts = saleProductService.findAll();
 
         Map<String,Object> queryMap = Maps.newHashMap();
@@ -106,13 +111,13 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
         queryMap.put("roleType", UserRoleEnum.PROVICE_AGENT.getValue());
         Department department = (Department) iDepartmentService.queryOne(queryMap);
 
-        List<DepartmentProductRelation> relations = Lists.newArrayList();
+        List<DepartmentProductRelationPojo> relations = Lists.newArrayList();
         for(SaleProduct product : saleProducts){
             // 忽略金榜题名套餐
             if(product.getType() == ProductTypeEnum.JBTM.getValue()){
                 continue;
             }
-
+            DepartmentProductRelationPojo relationPojo = null;
             DepartmentProductRelation relation = null;
             if(department != null){
                 queryMap.clear();
@@ -125,8 +130,9 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
             if(department == null || relation == null){
                 relation = convert2DepartmentProductRelation(product);
             }
-
-            relations.add(relation);
+            BeanUtils.copyProperties(relationPojo,relation);
+            relationPojo.setIntro(product.getIntro());
+            relations.add(relationPojo);
         }
         return relations;
     }

@@ -3,7 +3,9 @@ package cn.thinkjoy.zgk.zgksystem;
 import cn.thinkjoy.zgk.zgksystem.common.TreeBean;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.domain.DepartmentProductRelation;
+import cn.thinkjoy.zgk.zgksystem.pojo.DepartmentProductRelationPojo;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -58,5 +60,5 @@ public interface DeparmentApiService {
      * @param areaId
      * @return
      */
-    List<DepartmentProductRelation> queryProductPriceByAreaId(String areaId);
+    List<DepartmentProductRelationPojo> queryProductPriceByAreaId(String areaId) throws InvocationTargetException, IllegalAccessException;
 }
