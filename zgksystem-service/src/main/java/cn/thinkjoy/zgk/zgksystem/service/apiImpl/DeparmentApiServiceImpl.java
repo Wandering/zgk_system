@@ -156,8 +156,7 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
          */
 
         Map<String, Object> map = new HashedMap();
-        map.put("productId", productId);
-        map.put("areaId", areaId);
+        map.put("type", productId);
         SaleProduct saleProduct = (SaleProduct) saleProductService.queryOne(map);
 
         Map<String, Object> queryMap = Maps.newHashMap();
