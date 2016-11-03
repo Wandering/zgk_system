@@ -117,7 +117,12 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
             if(product.getType() == ProductTypeEnum.JBTM.getValue()){
                 continue;
             }
-            DepartmentProductRelationPojo relationPojo = null;
+
+            // 忽略非当前省的套餐
+            if(!"0".equals(product.getAreaId()) && product.getAreaId().indexOf(areaId) == -1){
+                continue;
+            }
+
             DepartmentProductRelation relation = null;
             if(department != null){
                 queryMap.clear();
@@ -126,7 +131,7 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
                 queryMap.put("departmentCode",department.getDepartmentCode());
                 relation = (DepartmentProductRelation) departmentProductRelationService.queryOne(queryMap);
             }
-            relationPojo = new DepartmentProductRelationPojo();
+            DepartmentProductRelationPojo relationPojo = new DepartmentProductRelationPojo();
 
             if(department == null || relation == null){
                 relation = convert2DepartmentProductRelation(product);

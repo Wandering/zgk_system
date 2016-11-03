@@ -7,8 +7,6 @@ define(function (require, exports, module) {
         var Table = require('../datatable.js');
         var cookieJson = JSON.parse($.cookie('userInfo'));
         var roleType = cookieJson.roleType;
-
-
         if (roleType == '1') {
             var col = [
                 {
@@ -631,7 +629,7 @@ define(function (require, exports, module) {
                                             case 3:
                                                 var curProvincesId = updateProvincesId.substring(0, 2) + "0000";
                                                 $('#dep_city_from').show();
-                                                $('#dep_provinces_from,#dep_county_from,#web-control-group,#wechat-control-group').hide();
+                                                $('#dep_provinces_from,#dep_county_from,#products1-control,#products2-control,#products3-control').hide();
                                                 $.getJSON('/system/dataDictionary/findCityList?token=' + token + '&provinceId=' + curProvincesId, function (res) {
                                                     console.log(res)
                                                     for (var i = 0; i < res.bizData.length; i++) {
@@ -640,10 +638,11 @@ define(function (require, exports, module) {
                                                     $('#dep_city').find('option[value="' + updateProvincesId + '00"]').attr('selected', true);
                                                 });
                                                 break;
+
                                             case 4:
                                                 var curProvincesCookieId = updateProvincesId.substring(0, 4) + "00";
                                                 $('#dep_county_from').show();
-                                                $('#dep_provinces_from,#dep_city_from,#web-control-group,#wechat-control-group').hide();
+                                                $('#dep_provinces_from,#dep_city_from,#products1-control,#products2-control,#products3-control').hide();
                                                 // 市
                                                 $.getJSON('/system/dataDictionary/findCountyList?token=' + token + '&cityId=' + curProvincesCookieId, function (res) {
                                                     console.log(res)
