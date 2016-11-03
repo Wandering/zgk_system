@@ -25,6 +25,7 @@ public class SaleProduct extends BaseDomain{
     private String icon;
     private String intro;
     private Integer state;
+    private String areaId;
 
 	public SaleProduct(){
 	}
@@ -78,7 +79,15 @@ public class SaleProduct extends BaseDomain{
         return this.state;
     }
 
-	public String toString() {
+    public String getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(String areaId) {
+        this.areaId = areaId;
+    }
+
+    public String toString() {
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
 			.append("Id",getId())
 			.append("ProductName",getProductName())

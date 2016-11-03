@@ -113,6 +113,11 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
                 continue;
             }
 
+            // 忽略非当前省的套餐
+            if(!"0".equals(product.getAreaId()) && product.getAreaId().indexOf(areaId) == -1){
+                continue;
+            }
+
             DepartmentProductRelation relation = null;
             if(department != null){
                 queryMap.clear();

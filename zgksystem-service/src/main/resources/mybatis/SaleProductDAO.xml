@@ -31,7 +31,8 @@ selectList
         defaultPickupPrice,
         icon,
         intro,
-        state
+        state,
+        areaId
     </sql>
     <insert id="insert" parameterType="SaleProduct">
         INSERT INTO zgk_sale_product (
