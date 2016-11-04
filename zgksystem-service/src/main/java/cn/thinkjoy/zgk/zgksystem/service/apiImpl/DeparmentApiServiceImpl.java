@@ -131,13 +131,15 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
                 queryMap.put("departmentCode",department.getDepartmentCode());
                 relation = (DepartmentProductRelation) departmentProductRelationService.queryOne(queryMap);
             }
-            DepartmentProductRelationPojo relationPojo = new DepartmentProductRelationPojo();
 
             if(department == null || relation == null){
                 relation = convert2DepartmentProductRelation(product);
             }
+
+            DepartmentProductRelationPojo relationPojo = new DepartmentProductRelationPojo();
             BeanUtils.copyProperties(relationPojo,relation);
             relationPojo.setIntro(product.getIntro());
+            relationPojo.setProductType(product.getType());
             relations.add(relationPojo);
         }
         return relations;
