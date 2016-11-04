@@ -61,4 +61,7 @@ public interface DeparmentApiService {
      * @return
      */
     List<DepartmentProductRelationPojo> queryProductPriceByAreaId(String areaId) throws InvocationTargetException, IllegalAccessException;
+
+
+    DepartmentProductRelationPojo queryProductPriceByAreaId(String areaId, Integer productId) throws InvocationTargetException, IllegalAccessException;
 }
