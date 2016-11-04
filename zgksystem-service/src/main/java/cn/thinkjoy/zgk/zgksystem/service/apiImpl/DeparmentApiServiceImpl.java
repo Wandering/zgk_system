@@ -180,6 +180,7 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
             relation = convert2DepartmentProductRelation(saleProduct);
         }
         BeanUtils.copyProperties(relationPojo, relation);
+        relationPojo.setProductType(saleProduct.getType());
         relationPojo.setIntro(saleProduct.getIntro());
         return relationPojo;
     }
