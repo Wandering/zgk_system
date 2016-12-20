@@ -2,37 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="cn.thinkjoy.zgk.zgksystem.dao.ISaleProductDAO">
-<!--
-insert
-update
-updateNull
-deleteById
-deleteByCondition
-deleteByProperty
-fetch
-findOne
-findList
-findAll
-queryPage
-like
-queryList
-queryOne
-count
-selectMaxId
-updateOrSave
-selectOne
-selectList
--->
+    <!--
+    insert
+    update
+    updateNull
+    deleteById
+    deleteByCondition
+    deleteByProperty
+    fetch
+    findOne
+    findList
+    findAll
+    queryPage
+    like
+    queryList
+    queryOne
+    count
+    selectMaxId
+    updateOrSave
+    selectOne
+    selectList
+    -->
     <sql id="Base_Column_List">
-        id,
-        productName,
-        type,
-        defaultSalePrice,
-        defaultPickupPrice,
-        icon,
-        intro,
-        state,
-        areaId
+        id as id,
+        productName as productName,
+        type as type,
+        defaultSalePrice as defaultSalePrice,
+        defaultPickupPrice as defaultPickupPrice,
+        icon as icon,
+        intro as intro,
+        state as state,
+        areaId as areaId,
+        cardBusinessType as cardBusinessType,
+        cardGrade as cardGrade,
+        cardOfficial as cardOfficial
     </sql>
     <insert id="insert" parameterType="SaleProduct">
         INSERT INTO zgk_sale_product (
@@ -42,7 +45,11 @@ selectList
         defaultPickupPrice,
         icon,
         intro,
-        state
+        state,
+        areaId,
+        cardBusinessType,
+        cardGrade,
+        cardOfficial
         ) VALUES (
         #{productName},
         #{type},
@@ -50,10 +57,14 @@ selectList
         #{defaultPickupPrice},
         #{icon},
         #{intro},
-        #{state}
+        #{state},
+        #{areaId},
+        #{cardBusinessType},
+        #{cardGrade},
+        #{cardOfficial}
         )
         <selectKey resultType="java.lang.Long" keyProperty="id">
-        SELECT LAST_INSERT_ID() AS ID
+            SELECT LAST_INSERT_ID() AS ID
         </selectKey>
     </insert>
 
@@ -81,6 +92,18 @@ selectList
             </if>
             <if test="state!=null">
                 state = #{state},
+            </if>
+            <if test="areaId!=null">
+                areaId = #{areaId},
+            </if>
+            <if test="cardBusinessType!=null">
+                cardBusinessType = #{cardBusinessType},
+            </if>
+            <if test="cardGrade!=null">
+                cardGrade = #{cardGrade},
+            </if>
+            <if test="cardOfficial!=null">
+                cardOfficial = #{cardOfficial},
             </if>
         </trim>
         WHERE
@@ -111,6 +134,18 @@ selectList
             <if test="map.state!=null">
                 state = #{map.state},
             </if>
+            <if test="map.areaId!=null">
+                areaId = #{map.areaId},
+            </if>
+            <if test="map.cardBusinessType!=null">
+                cardBusinessType = #{map.cardBusinessType},
+            </if>
+            <if test="map.cardGrade!=null">
+                cardGrade = #{map.cardGrade},
+            </if>
+            <if test="map.cardOfficial!=null">
+                cardOfficial = #{map.cardOfficial},
+            </if>
         </trim>
         WHERE
         id = #{map.id}
@@ -140,6 +175,18 @@ selectList
             <if test="update.state!=null">
                 state = #{update.state},
             </if>
+            <if test="update.areaId!=null">
+                areaId = #{update.areaId},
+            </if>
+            <if test="update.cardBusinessType!=null">
+                cardBusinessType = #{update.cardBusinessType},
+            </if>
+            <if test="update.cardGrade!=null">
+                cardGrade = #{update.cardGrade},
+            </if>
+            <if test="update.cardOfficial!=null">
+                cardOfficial = #{update.cardOfficial},
+            </if>
         </trim>
 
         <trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -167,26 +214,46 @@ selectList
             <if test="condition.state!=null">
                 AND state = #{condition.state}
             </if>
+            <if test="condition.areaId!=null">
+                AND areaId = #{condition.areaId}
+            </if>
+            <if test="condition.cardBusinessType!=null">
+                AND cardBusinessType = #{condition.cardBusinessType}
+            </if>
+            <if test="condition.cardGrade!=null">
+                AND cardGrade = #{condition.cardGrade}
+            </if>
+            <if test="condition.cardOfficial!=null">
+                AND cardOfficial = #{condition.cardOfficial}
+            </if>
         </trim>
     </update>
 
     <insert id="insertMap" >
         INSERT INTO zgk_sale_product (
-                productName,
-                type,
-                defaultSalePrice,
-                defaultPickupPrice,
-                icon,
-                intro,
-                state
+        productName,
+        type,
+        defaultSalePrice,
+        defaultPickupPrice,
+        icon,
+        intro,
+        state,
+        areaId,
+        cardBusinessType,
+        cardGrade,
+        cardOfficial
         ) VALUES (
-                    #{map.productName},
-                    #{map.type},
-                    #{map.defaultSalePrice},
-                    #{map.defaultPickupPrice},
-                    #{map.icon},
-                    #{map.intro},
-                    #{map.state}
+        #{map.productName},
+        #{map.type},
+        #{map.defaultSalePrice},
+        #{map.defaultPickupPrice},
+        #{map.icon},
+        #{map.intro},
+        #{map.state},
+        #{map.areaId},
+        #{map.cardBusinessType},
+        #{map.cardGrade},
+        #{map.cardOfficial}
         )
     </insert>
 
@@ -201,9 +268,13 @@ selectList
             icon = #{icon},
             intro = #{intro},
             state = #{state},
+            areaId = #{areaId},
+            cardBusinessType = #{cardBusinessType},
+            cardGrade = #{cardGrade},
+            cardOfficial = #{cardOfficial},
         </trim>
         WHERE
-        id = #{id} 
+        id = #{id}
     </update>
 
     <!-- 按Id删除 -->
@@ -242,6 +313,18 @@ selectList
             <if test="state!=null">
                 AND state = #{state}
             </if>
+            <if test="areaId!=null">
+                AND areaId = #{areaId}
+            </if>
+            <if test="cardBusinessType!=null">
+                AND cardBusinessType = #{cardBusinessType}
+            </if>
+            <if test="cardGrade!=null">
+                AND cardGrade = #{cardGrade}
+            </if>
+            <if test="cardOfficial!=null">
+                AND cardOfficial = #{cardOfficial}
+            </if>
         </trim>
     </delete>
 
@@ -257,9 +340,6 @@ selectList
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             AND id = #{id}
         </trim>
-        <if test="orderBy!=null">
-        ORDER BY ${orderBy} ${sortBy}
-        </if>
     </select>
 
     <select id="findOne" parameterType="java.util.Map" resultType="SaleProduct">
@@ -323,12 +403,24 @@ selectList
             <if test="condition.state!=null">
                 ${condition.groupOp}   state  ${condition.state.op}  #{condition.state.data}
             </if>
+            <if test="condition.areaId!=null">
+                ${condition.groupOp}   areaId  ${condition.areaId.op}  #{condition.areaId.data}
+            </if>
+            <if test="condition.cardBusinessType!=null">
+                ${condition.groupOp}   cardBusinessType  ${condition.cardBusinessType.op}  #{condition.cardBusinessType.data}
+            </if>
+            <if test="condition.cardGrade!=null">
+                ${condition.groupOp}   cardGrade  ${condition.cardGrade.op}  #{condition.cardGrade.data}
+            </if>
+            <if test="condition.cardOfficial!=null">
+                ${condition.groupOp}   cardOfficial  ${condition.cardOfficial.op}  #{condition.cardOfficial.data}
+            </if>
 
 
-    </where>
+        </where>
 
         <if test="orderBy!=null">
-        ORDER BY ${orderBy} ${sortBy}
+            ORDER BY ${orderBy} ${sortBy}
         </if>
         <if test="offset != null">
             limit ${offset}, ${rows}
@@ -340,33 +432,45 @@ selectList
         <include refid="Base_Column_List" />
         FROM zgk_sale_product
         <trim prefix="WHERE" prefixOverrides="AND | OR">
-            <if test="id!=null">
-                AND id like CONCAT('%', #{id} , '%')
+            <if test="condition.id!=null">
+                AND id like CONCAT('%', #{condition.id} , '%')
             </if>
-            <if test="productName!=null">
-                AND productName like CONCAT('%', #{productName} , '%')
+            <if test="condition.productName!=null">
+                AND productName like CONCAT('%', #{condition.productName} , '%')
             </if>
-            <if test="type!=null">
-                AND type like CONCAT('%', #{type} , '%')
+            <if test="condition.type!=null">
+                AND type like CONCAT('%', #{condition.type} , '%')
             </if>
-            <if test="defaultSalePrice!=null">
-                AND defaultSalePrice like CONCAT('%', #{defaultSalePrice} , '%')
+            <if test="condition.defaultSalePrice!=null">
+                AND defaultSalePrice like CONCAT('%', #{condition.defaultSalePrice} , '%')
             </if>
-            <if test="defaultPickupPrice!=null">
-                AND defaultPickupPrice like CONCAT('%', #{defaultPickupPrice} , '%')
+            <if test="condition.defaultPickupPrice!=null">
+                AND defaultPickupPrice like CONCAT('%', #{condition.defaultPickupPrice} , '%')
             </if>
-            <if test="icon!=null">
-                AND icon like CONCAT('%', #{icon} , '%')
+            <if test="condition.icon!=null">
+                AND icon like CONCAT('%', #{condition.icon} , '%')
             </if>
-            <if test="intro!=null">
-                AND intro like CONCAT('%', #{intro} , '%')
+            <if test="condition.intro!=null">
+                AND intro like CONCAT('%', #{condition.intro} , '%')
             </if>
-            <if test="state!=null">
-                AND state like CONCAT('%', #{state} , '%')
+            <if test="condition.state!=null">
+                AND state like CONCAT('%', #{condition.state} , '%')
+            </if>
+            <if test="condition.areaId!=null">
+                AND areaId like CONCAT('%', #{condition.areaId} , '%')
+            </if>
+            <if test="condition.cardBusinessType!=null">
+                AND cardBusinessType like CONCAT('%', #{condition.cardBusinessType} , '%')
+            </if>
+            <if test="condition.cardGrade!=null">
+                AND cardGrade like CONCAT('%', #{condition.cardGrade} , '%')
+            </if>
+            <if test="condition.cardOfficial!=null">
+                AND cardOfficial like CONCAT('%', #{condition.cardOfficial} , '%')
             </if>
         </trim>
         <if test="orderBy!=null">
-        ORDER BY ${orderBy} ${sortBy}
+            ORDER BY ${orderBy} ${sortBy}
         </if>
     </select>
 
@@ -400,9 +504,21 @@ selectList
             <if test="condition.state!=null">
                 AND state = #{condition.state}
             </if>
+            <if test="condition.areaId!=null">
+                AND areaId = #{condition.areaId}
+            </if>
+            <if test="condition.cardBusinessType!=null">
+                AND cardBusinessType = #{condition.cardBusinessType}
+            </if>
+            <if test="condition.cardGrade!=null">
+                AND cardGrade = #{condition.cardGrade}
+            </if>
+            <if test="condition.cardOfficial!=null">
+                AND cardOfficial = #{condition.cardOfficial}
+            </if>
         </trim>
         <if test="orderBy!=null">
-        ORDER BY ${orderBy} ${sortBy}
+            ORDER BY ${orderBy} ${sortBy}
         </if>
     </select>
 
@@ -435,42 +551,66 @@ selectList
             <if test="condition.state!=null">
                 AND state = #{condition.state}
             </if>
+            <if test="condition.areaId!=null">
+                AND areaId = #{condition.areaId}
+            </if>
+            <if test="condition.cardBusinessType!=null">
+                AND cardBusinessType = #{condition.cardBusinessType}
+            </if>
+            <if test="condition.cardGrade!=null">
+                AND cardGrade = #{condition.cardGrade}
+            </if>
+            <if test="condition.cardOfficial!=null">
+                AND cardOfficial = #{condition.cardOfficial}
+            </if>
         </trim>
         limit 0,1
     </select>
 
     <select id="count" resultType="java.lang.Integer">
         SELECT count(id) FROM zgk_sale_product
-       <where>
-           <if test="id!=null">
-               ${groupOp} id ${id.op}  #{id.data}
-           </if>
-           <if test="productName!=null">
-               ${groupOp} productName ${productName.op}  #{productName.data}
-           </if>
-           <if test="type!=null">
-               ${groupOp} type ${type.op}  #{type.data}
-           </if>
-           <if test="defaultSalePrice!=null">
-               ${groupOp} defaultSalePrice ${defaultSalePrice.op}  #{defaultSalePrice.data}
-           </if>
-           <if test="defaultPickupPrice!=null">
-               ${groupOp} defaultPickupPrice ${defaultPickupPrice.op}  #{defaultPickupPrice.data}
-           </if>
-           <if test="icon!=null">
-               ${groupOp} icon ${icon.op}  #{icon.data}
-           </if>
-           <if test="intro!=null">
-               ${groupOp} intro ${intro.op}  #{intro.data}
-           </if>
-           <if test="state!=null">
-               ${groupOp} state ${state.op}  #{state.data}
-           </if>
+        <where>
+            <if test="id!=null">
+                ${groupOp} id ${id.op}  #{id.data}
+            </if>
+            <if test="productName!=null">
+                ${groupOp} productName ${productName.op}  #{productName.data}
+            </if>
+            <if test="type!=null">
+                ${groupOp} type ${type.op}  #{type.data}
+            </if>
+            <if test="defaultSalePrice!=null">
+                ${groupOp} defaultSalePrice ${defaultSalePrice.op}  #{defaultSalePrice.data}
+            </if>
+            <if test="defaultPickupPrice!=null">
+                ${groupOp} defaultPickupPrice ${defaultPickupPrice.op}  #{defaultPickupPrice.data}
+            </if>
+            <if test="icon!=null">
+                ${groupOp} icon ${icon.op}  #{icon.data}
+            </if>
+            <if test="intro!=null">
+                ${groupOp} intro ${intro.op}  #{intro.data}
+            </if>
+            <if test="state!=null">
+                ${groupOp} state ${state.op}  #{state.data}
+            </if>
+            <if test="areaId!=null">
+                ${groupOp} areaId ${areaId.op}  #{areaId.data}
+            </if>
+            <if test="cardBusinessType!=null">
+                ${groupOp} cardBusinessType ${cardBusinessType.op}  #{cardBusinessType.data}
+            </if>
+            <if test="cardGrade!=null">
+                ${groupOp} cardGrade ${cardGrade.op}  #{cardGrade.data}
+            </if>
+            <if test="cardOfficial!=null">
+                ${groupOp} cardOfficial ${cardOfficial.op}  #{cardOfficial.data}
+            </if>
 
-       </where>
-    <if test="orderBy!=null">
-        ORDER BY ${orderBy} ${sortBy}
-    </if>
+        </where>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
     </select>
 
     <select id="selectMaxId" resultType="java.lang.Long">

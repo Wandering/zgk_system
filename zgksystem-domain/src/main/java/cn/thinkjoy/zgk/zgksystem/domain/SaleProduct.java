@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2013-2014, thinkjoy Inc. All Rights Reserved.
  *
- * Project Name: system
- * $Id:  SaleProduct.java 2016-05-18 11:22:12 $
+ * Project Name: zgksystem
+ * $Id:  SaleProduct.java 2016-12-20 16:10:40 $
  */
 
 
@@ -26,6 +26,9 @@ public class SaleProduct extends BaseDomain{
     private String intro;
     private Integer state;
     private String areaId;
+    private Integer cardBusinessType;
+    private String cardGrade;
+    private String cardOfficial;
 
 	public SaleProduct(){
 	}
@@ -78,16 +81,36 @@ public class SaleProduct extends BaseDomain{
     public Integer getState() {
         return this.state;
     }
+    public void setAreaId(String value) {
+        this.areaId = value;
+    }
 
     public String getAreaId() {
-        return areaId;
+        return this.areaId;
+    }
+    public void setCardBusinessType(Integer value) {
+        this.cardBusinessType = value;
     }
 
-    public void setAreaId(String areaId) {
-        this.areaId = areaId;
+    public Integer getCardBusinessType() {
+        return this.cardBusinessType;
+    }
+    public void setCardGrade(String value) {
+        this.cardGrade = value;
     }
 
-    public String toString() {
+    public String getCardGrade() {
+        return this.cardGrade;
+    }
+    public void setCardOfficial(String value) {
+        this.cardOfficial = value;
+    }
+
+    public String getCardOfficial() {
+        return this.cardOfficial;
+    }
+
+	public String toString() {
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
 			.append("Id",getId())
 			.append("ProductName",getProductName())
@@ -97,15 +120,19 @@ public class SaleProduct extends BaseDomain{
 			.append("Icon",getIcon())
 			.append("Intro",getIntro())
 			.append("State",getState())
+			.append("AreaId",getAreaId())
+			.append("CardBusinessType",getCardBusinessType())
+			.append("CardGrade",getCardGrade())
+			.append("CardOfficial",getCardOfficial())
 			.toString();
 	}
-	
+
 	public int hashCode() {
 		return new HashCodeBuilder()
 			.append(getId())
 			.toHashCode();
 	}
-	
+
 	public boolean equals(Object obj) {
 		if(obj instanceof SaleProduct == false) return false;
 		if(this == obj) return true;

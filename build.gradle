@@ -22,7 +22,7 @@ buildscript{
 /** 此闭包内的声明子类皆可使用 */
 allprojects {
     group = 'cn.thinkjoy.zgk.zgksystem'
-    version = '0.0.27-SNAPSHOT'
+    version = '0.0.29-SNAPSHOT'
 
     apply plugin: 'java'
     apply plugin: 'idea'
@@ -48,7 +48,7 @@ allprojects {
         repositories {
             maven {
                 name = 'thinkjoy'
-                url "http://repo.thinkjoy.cn/content/repositories/${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases'}"
+                url "http://repo.qtonecloud.cn/content/repositories/${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases'}"
             }
         }
     }

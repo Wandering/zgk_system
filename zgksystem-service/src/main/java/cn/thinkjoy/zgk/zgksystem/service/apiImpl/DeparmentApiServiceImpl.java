@@ -139,6 +139,9 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
             }
             BeanUtils.copyProperties(relationPojo, relation);
             relationPojo.setIntro(product.getIntro());
+            relationPojo.setCardBusinessType(product.getCardBusinessType());
+            relationPojo.setCardGrade(product.getCardGrade());
+            relationPojo.setCardOfficial(product.getCardOfficial());
             relations.add(relationPojo);
         }
         return relations;
@@ -180,6 +183,9 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
         }
         BeanUtils.copyProperties(relationPojo, relation);
         relationPojo.setIntro(saleProduct.getIntro());
+        relationPojo.setCardBusinessType(saleProduct.getCardBusinessType());
+        relationPojo.setCardGrade(saleProduct.getCardGrade());
+        relationPojo.setCardOfficial(saleProduct.getCardOfficial());
         return relationPojo;
     }
 
