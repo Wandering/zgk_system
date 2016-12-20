@@ -137,8 +137,11 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
             if (department == null || relation == null) {
                 relation = convert2DepartmentProductRelation(product);
             }
-            BeanUtils.copyProperties(relationPojo, relation);
+
+            DepartmentProductRelationPojo relationPojo = new DepartmentProductRelationPojo();
+            BeanUtils.copyProperties(relationPojo,relation);
             relationPojo.setIntro(product.getIntro());
+            relationPojo.setProductType(product.getType());
             relationPojo.setCardBusinessType(product.getCardBusinessType());
             relationPojo.setCardGrade(product.getCardGrade());
             relationPojo.setCardOfficial(product.getCardOfficial());
@@ -182,6 +185,7 @@ public class DeparmentApiServiceImpl implements DeparmentApiService {
             relation = convert2DepartmentProductRelation(saleProduct);
         }
         BeanUtils.copyProperties(relationPojo, relation);
+        relationPojo.setProductType(saleProduct.getType());
         relationPojo.setIntro(saleProduct.getIntro());
         relationPojo.setCardBusinessType(saleProduct.getCardBusinessType());
         relationPojo.setCardGrade(saleProduct.getCardGrade());
